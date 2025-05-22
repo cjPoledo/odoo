@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+upmin_stock.access_upmin_stock_issuance,access_upmin_stock_issuance,upmin_stock.model_upmin_stock_issuance,base.group_user,1,1,1,0
+upmin_stock.access_upmin_stock_stock,access_upmin_stock_stock,upmin_stock.model_upmin_stock_stock,base.group_user,1,1,1,0

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="issuances_view_form" model="ir.ui.view">
+        <field name="name">issuances.view.form</field>
+        <field name="model">upmin_stock.issuance</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="seq_no" />
+                        <field name="date_issued" />
+                        <field name="requested_by" />
+                        <field name="ris_no" />
+                        <field name="rc_code" />
+                        <field name="remarks" />
+                        <field name="stock_no" />
+                        <field name="quantity_requested" />
+                        <field name="quantity_issued" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="issuances_view_tree" model="ir.ui.view">
+        <field name="name">issuances.view.tree</field>
+        <field name="model">upmin_stock.issuance</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="seq_no" />
+                <field name="date_issued" />
+                <field name="requested_by" />
+                <field name="ris_no" />
+                <field name="rc_code" />
+                <field name="remarks" />
+                <field name="stock_no" />
+                <field name="quantity_requested" />
+                <field name="quantity_issued" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_issuances" model="ir.actions.act_window">
+        <field name="name">Issuances</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">upmin_stock.issuance</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem
+        id="upmin_stock_issuances"
+        name="Issuances"
+        parent="upmin_stock_menu"
+        action="action_issuances"
+        sequence="10"/>
+</odoo>

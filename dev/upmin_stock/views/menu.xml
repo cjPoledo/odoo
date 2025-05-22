@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="upmin_stock_menu"
+        name="UPMin Stock"
+        sequence="10"/>
+</odoo>
