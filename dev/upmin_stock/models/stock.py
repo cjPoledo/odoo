@@ -7,8 +7,15 @@ class Stock(models.Model):
 
     stock_no = fields.Char(string="Stock No", required=True)
     description = fields.Text(string="Description")
-    unit = fields.Char(string="Unit")
+    unit = fields.Many2one("upmin_stock.measure_units", string="Unit")
     initial_balance = fields.Integer(string="Initial Balance", default=0)
     price = fields.Float(string="Price", default=0.0)
     psdbm_price = fields.Float(string="PSDBM Price", default=0.0)
-    category = fields.Char(string="Category")
+    category = fields.Many2one("upmin_stock.category", string="Category")
+
+    def name_get(self):
+        result = []
+        for record in self:
+            name = f"{record.stock_no} - {record.description}"
+            result.append((record.id, name))
+        return result

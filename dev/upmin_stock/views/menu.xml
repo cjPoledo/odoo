@@ -4,4 +4,10 @@
         id="upmin_stock_menu"
         name="UPMin Stock"
         sequence="10"/>
+    
+    <menuitem
+        id="configuration_menu"
+        name="Configuration"
+        parent="upmin_stock_menu"
+        sequence="10"/>
 </odoo>

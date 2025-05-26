@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="measure_units_view_form" model="ir.ui.view">
+        <field name="name">measure_units.view.form</field>
+        <field name="model">upmin_stock.measure_units</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="measure_unit" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="measure_units_view_tree" model="ir.ui.view">
+        <field name="name">measure_units.view.tree</field>
+        <field name="model">upmin_stock.measure_units</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="measure_unit" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="measure_units_action" model="ir.actions.act_window">
+        <field name="name">Units of Measure</field>
+        <field name="res_model">upmin_stock.measure_units</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="measure_units_menu"
+        name="Units of Measure"
+        action="measure_units_action"
+        parent="configuration_menu"
+        sequence="10"/>
+
+</odoo>

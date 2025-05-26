@@ -8,5 +8,8 @@
         "views/menu.xml",
         "views/stock.xml",
         "views/issuances.xml",
+        "views/rc.xml",
+        "views/category.xml",
+        "views/measure_units.xml",
     ],
 }
