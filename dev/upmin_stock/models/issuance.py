@@ -16,8 +16,8 @@ class Issuance(models.Model):
     stock_no = fields.Many2one(
         "upmin_stock.stock", string="Stock Number", required=True
     )
-    quantity_requested = fields.Float(string="Quantity Requested", required=True)
-    quantity_issued = fields.Float(string="Quantity Issued", required=True)
+    quantity_requested = fields.Integer(string="Quantity Requested", required=True)
+    quantity_issued = fields.Integer(string="Quantity Issued", required=True)
 
     def name_get(self):
         result = []

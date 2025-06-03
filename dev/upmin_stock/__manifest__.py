@@ -11,5 +11,6 @@
         "views/rc.xml",
         "views/category.xml",
         "views/measure_units.xml",
+        "views/report.xml",
     ],
 }

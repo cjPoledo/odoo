@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_view_kanban" model="ir.ui.view">
+        <field name="name">report.view.kanban</field>
+        <field name="model">upmin_stock.report</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="o_kanban_details">
+                            <strong>
+                                <div>
+                                    Total Quantity: <field name="total_quantity"/>
+                                </div>
+                                <div>
+                                    Total Issued: <field name="total_issued"/>
+                                </div>
+                                <div>
+                                    Total Balance: <field name="total_balance"/>
+                                </div>
+                            </strong>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_report" model="ir.actions.act_window">
+        <field name="name">Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">upmin_stock.report</field>
+        <field name="view_mode">kanban</field>
+    </record>
+    <menuitem
+        id="upmin_stock_report"
+        name="Report"
+        parent="upmin_stock_menu"
+        action="action_report"
+        sequence="10"/>
+</odoo>

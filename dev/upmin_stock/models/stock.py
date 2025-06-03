@@ -13,6 +13,18 @@ class Stock(models.Model):
     psdbm_price = fields.Float(string="PSDBM Price", default=0.0)
     category = fields.Many2one("upmin_stock.category", string="Category")
 
+    balance = fields.Integer(string="Balance", compute="_compute_balance", store=False)
+
+    def _compute_balance(self):
+        for stock in self:
+            total_issued = sum(
+                issuance.quantity_issued
+                for issuance in self.env["upmin_stock.issuance"].search(
+                    [("stock_no", "=", stock.id)]
+                )
+            )
+            stock.balance = stock.initial_balance - total_issued
+
     def name_get(self):
         result = []
         for record in self:
