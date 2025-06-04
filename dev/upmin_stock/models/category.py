@@ -1,14 +1,13 @@
 from odoo import models, fields
 
+
 class Category(models.Model):
-    _name = 'upmin_stock.category'
-    _description = 'Category'
-    
+    _name = "upmin_stock.category"
+    _description = "Category"
+    _rec_name = "category"
+
     category = fields.Char(string="Category", required=True)
 
-    def name_get(self):
-        result = []
-        for record in self:
-            name = f"{record.category}"
-            result.append((record.id, name))
-        return result
+    _sql_constraints = [
+        ("category_unique", "unique(category)", "Category must be unique."),
+    ]
