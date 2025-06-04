@@ -63,6 +63,17 @@
         </field>
     </record>
 
+    <record id="stock_view_search" model="ir.ui.view">
+        <field name="name">stock.view.search</field>
+        <field name="model">upmin_stock.stock</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="description" />
+                <field name="stock_no" />
+            </search>
+        </field>
+    </record>
+
     <record id="action_stock" model="ir.actions.act_window">
         <field name="name">Stock</field>
         <field name="type">ir.actions.act_window</field>
