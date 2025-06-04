@@ -16,15 +16,13 @@ class Report(models.Model):
         tools.drop_view_if_exists(self.env.cr, self._table)
         self.env.cr.execute(
             """
-            CREATE or REPLACE VIEW upmin_stock_report AS (
-                SELECT
-                    1 AS id,
-                    COALESCE(SUM(s.initial_balance), 0) AS total_quantity,
-                    COALESCE(SUM(i.quantity_issued), 0) AS total_issued,
-                    COALESCE(SUM(s.initial_balance), 0) - COALESCE(SUM(i.quantity_issued), 0) AS total_balance
-                FROM
-                    upmin_stock_stock s
-                    LEFT JOIN upmin_stock_issuance i ON TRUE
-            )
+                CREATE or REPLACE VIEW upmin_stock_report AS (
+                    SELECT
+                        1 AS id,
+                        (SELECT COALESCE(SUM(initial_balance), 0) FROM upmin_stock_stock) AS total_quantity,
+                        (SELECT COALESCE(SUM(quantity_issued), 0) FROM upmin_stock_issuance) AS total_issued,
+                        (SELECT COALESCE(SUM(initial_balance), 0) FROM upmin_stock_stock) -
+                        (SELECT COALESCE(SUM(quantity_issued), 0) FROM upmin_stock_issuance) AS total_balance
+                )
             """
         )
