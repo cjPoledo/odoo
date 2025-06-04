@@ -6,14 +6,18 @@ class Stock(models.Model):
     _description = "Stock"
 
     stock_no = fields.Char(string="Stock No", required=True)
-    description = fields.Text(string="Description")
-    unit = fields.Many2one("upmin_stock.measure_units", string="Unit")
+    description = fields.Char(string="Description", required=True)
+    unit = fields.Many2one("upmin_stock.measure_units", string="Unit", required=True)
     initial_balance = fields.Integer(string="Initial Balance", default=0)
     price = fields.Float(string="Price", default=0.0)
     psdbm_price = fields.Float(string="PSDBM Price", default=0.0)
     category = fields.Many2one("upmin_stock.category", string="Category")
 
     balance = fields.Integer(string="Balance", compute="_compute_balance", store=False)
+
+    _sql_constraints = [
+        ("stock_no_unique", "unique(stock_no)", "Stock No must be unique."),
+    ]
 
     def _compute_balance(self):
         for stock in self:
