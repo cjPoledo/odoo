@@ -4,6 +4,7 @@ from odoo import models, fields
 class Issuance(models.Model):
     _name = "upmin_stock.issuance"
     _description = "Issuance"
+    _rec_name = "seq_no"
 
     seq_no = fields.Char(string="Sequence Number", required=True)
     date_issued = fields.Date(string="Date Issued", required=True)
