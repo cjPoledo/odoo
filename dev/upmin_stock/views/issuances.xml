@@ -51,5 +51,5 @@
         name="Issuances"
         parent="upmin_stock_menu"
         action="action_issuances"
-        sequence="10"/>
+        sequence="25"/>
 </odoo>

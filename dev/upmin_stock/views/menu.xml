@@ -9,5 +9,5 @@
         id="configuration_menu"
         name="Configuration"
         parent="upmin_stock_menu"
-        sequence="10"/>
+        sequence="50"/>
 </odoo>

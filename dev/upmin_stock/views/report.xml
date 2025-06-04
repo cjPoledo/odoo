@@ -4,21 +4,24 @@
         <field name="name">report.view.kanban</field>
         <field name="model">upmin_stock.report</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban create="false" delete="false">
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="o_kanban_details">
-                            <strong>
-                                <div>
-                                    Total Quantity: <field name="total_quantity"/>
+                        <div class="o_kanban_card" style="width: 100%; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); border-radius: 10px; background: white;">
+                            <div class="o_kanban_stat_box" style="display: flex; justify-content: space-around; text-align: center;">
+                                <div style="padding: 0px 10px;">
+                                    <div style="font-weight: bold; font-size: 16px;">Total Quantity</div>
+                                    <div style="font-size: 24px; color: #007bff;"><field name="total_quantity"/></div>
                                 </div>
-                                <div>
-                                    Total Issued: <field name="total_issued"/>
+                                <div style="padding: 0px 10px;">
+                                    <div style="font-weight: bold; font-size: 16px;">Total Issued</div>
+                                    <div style="font-size: 24px; color: #28a745;"><field name="total_issued"/></div>
                                 </div>
-                                <div>
-                                    Total Balance: <field name="total_balance"/>
+                                <div style="padding: 0px 10px;">
+                                    <div style="font-weight: bold; font-size: 16px;">Total Balance</div>
+                                    <div style="font-size: 24px; color: #ffc107;"><field name="total_balance"/></div>
                                 </div>
-                            </strong>
+                            </div>
                         </div>
                     </t>
                 </templates>
@@ -37,5 +40,5 @@
         name="Report"
         parent="upmin_stock_menu"
         action="action_report"
-        sequence="10"/>
+        sequence="15"/>
 </odoo>

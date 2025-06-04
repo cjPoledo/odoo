@@ -43,7 +43,7 @@
             <kanban>
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="o_kanban_details">
+                        <div class="o_kanban_details oe_kanban_global_click">
                             <strong>
                                 <field name="description" />
                             </strong>
@@ -54,7 +54,7 @@
                                 Price: <field name="price" />
                             </div>
                             <div>
-                                Balance: <field name="balance" />
+                                Balance: <field name="balance" /> <field name="unit" />
                             </div>
                         </div>
                     </t>
@@ -74,5 +74,5 @@
         name="Stock"
         parent="upmin_stock_menu"
         action="action_stock"
-        sequence="10"/>
+        sequence="20"/>
 </odoo>
