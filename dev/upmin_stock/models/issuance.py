@@ -20,6 +20,19 @@ class Issuance(models.Model):
     quantity_requested = fields.Integer(string="Quantity Requested", required=True)
     quantity_issued = fields.Integer(string="Quantity Issued", required=True)
 
+    _sql_constraints = [
+        (
+            "seq_no_unique",
+            "unique(seq_no)",
+            "Sequence Number must be unique.",
+        ),
+        (
+            "stock_no_quantity_check",
+            "CHECK (quantity_issued <= quantity_requested)",
+            "Quantity Issued cannot exceed Quantity Requested.",
+        ),
+    ]
+
     def name_get(self):
         result = []
         for record in self:
