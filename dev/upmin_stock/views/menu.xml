@@ -10,4 +10,10 @@
         name="Configuration"
         parent="upmin_stock_menu"
         sequence="50"/>
+
+    <menuitem
+        id="logs_menu"
+        name="Logs"
+        parent="upmin_stock_menu"
+        sequence="55"/>
 </odoo>

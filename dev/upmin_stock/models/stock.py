@@ -13,6 +13,11 @@ class Stock(models.Model):
     price = fields.Float(string="Price", default=0.0)
     psdbm_price = fields.Float(string="PSDBM Price", default=0.0)
     category = fields.Many2one("upmin_stock.category", string="Category")
+    replenishment_ids = fields.One2many(
+        "upmin_stock.replenishment",
+        "stock_id",
+        string="Replenishment Logs",
+    )
 
     balance = fields.Integer(string="Balance", compute="_compute_balance", store=False)
 
@@ -29,6 +34,21 @@ class Stock(models.Model):
                 )
             )
             stock.balance = stock.initial_balance - total_issued
+
+    def action_replenish_stock(self):
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Replenish Stock",
+            "res_model": "upmin_stock.replenishment",
+            "view_mode": "form",
+            "view_id": self.env.ref("upmin_stock.stock_replenishment_view_form").id,
+            "target": "new",
+            "context": {
+                "default_stock_id": self.id,
+                "default_quantity": 0,
+                "default_notes": "",
+            },
+        }
 
     def name_get(self):
         result = []
