@@ -40,6 +40,20 @@
         </field>
     </record>
 
+    <record id="issuances_view_search" model="ir.ui.view">
+        <field name="name">issuances.view.search</field>
+        <field name="model">upmin_stock.issuance</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="seq_no" />
+                <field name="requested_by" />
+                <field name="ris_no" />
+                <field name="rc_code" />
+                <field name="stock_no" />
+            </search>
+        </field>
+    </record>
+
     <record id="action_issuances" model="ir.actions.act_window">
         <field name="name">Issuances</field>
         <field name="type">ir.actions.act_window</field>
