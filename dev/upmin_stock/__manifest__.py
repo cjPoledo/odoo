@@ -11,7 +11,9 @@
         "views/rc.xml",
         "views/category.xml",
         "views/measure_units.xml",
-        "views/report.xml",
+        "views/summary_report.xml",
         "views/replenishment_logs.xml",
+        "views/rsmi.xml",
+        "reports/rsmi.xml",
     ],
 }

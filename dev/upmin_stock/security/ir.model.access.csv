@@ -6,3 +6,4 @@ upmin_stock.access_upmin_stock_category,access_upmin_stock_category,upmin_stock.
 upmin_stock.access_upmin_stock_measure_units,access_upmin_stock_measure_units,upmin_stock.model_upmin_stock_measure_units,base.group_user,1,1,1,1
 upmin_stock.access_upmin_stock_report,access_upmin_stock_report,upmin_stock.model_upmin_stock_report,base.group_user,1,1,1,1
 upmin_stock.access_upmin_stock_replenishment,access_upmin_stock_replenishment,upmin_stock.model_upmin_stock_replenishment,base.group_user,1,1,1,1
+upmin_stock.access_upmin_stock_rsmi,access_upmin_stock_rsmi,upmin_stock.model_upmin_stock_rsmi,base.group_user,1,1,1,1

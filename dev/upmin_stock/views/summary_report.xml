@@ -40,5 +40,5 @@
         name="Stock Balance Summary"
         parent="upmin_stock_report"
         action="action_report"
-        sequence="15"/>
+        sequence="10"/>
 </odoo>

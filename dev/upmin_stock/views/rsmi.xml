@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="rsmi_view_form" model="ir.ui.view">
+        <field name="name">rsmi.view.form</field>
+        <field name="model">upmin_stock.rsmi</field>
+        <field name="arch" type="xml">
+            <form string="rsmi">
+                <sheet>
+                    <group>
+                        <field name="serial_no" />
+                        <field name="entity_name" />
+                        <field name="fund_cluster" />
+                        <field name="date" />
+                        <field name="issuances" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="rsmi_view_tree" model="ir.ui.view">
+        <field name="name">rsmi.view.tree</field>
+        <field name="model">upmin_stock.rsmi</field>
+        <field name="arch" type="xml">
+            <tree string="rsmi">
+                <field name="serial_no" />
+                <field name="entity_name" />
+                <field name="fund_cluster" />
+                <field name="date" />
+                <field name="issuances" />
+                
+            </tree>
+        </field>
+    </record>
+
+    <record id="rsmi_action" model="ir.actions.act_window">
+        <field name="name">RSMI</field>
+        <field name="res_model">upmin_stock.rsmi</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="rsmi_menu"
+        name="RSMI"
+        action="rsmi_action"
+        parent="upmin_stock_report"
+        sequence="15"/>
+
+</odoo>

@@ -5,3 +5,4 @@ from . import category
 from . import measure_units
 from . import report
 from . import stock_replenishment
+from . import rsmi
