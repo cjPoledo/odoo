@@ -4,16 +4,22 @@
         id="upmin_stock_menu"
         name="UPMin Stock"
         sequence="10"/>
+
+    <menuitem
+        id="upmin_stock_report"
+        name="Report"
+        parent="upmin_stock_menu"
+        sequence="50"/>
     
     <menuitem
         id="configuration_menu"
         name="Configuration"
         parent="upmin_stock_menu"
-        sequence="50"/>
+        sequence="55"/>
 
     <menuitem
         id="logs_menu"
         name="Logs"
         parent="upmin_stock_menu"
-        sequence="55"/>
+        sequence="60"/>
 </odoo>

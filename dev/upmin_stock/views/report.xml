@@ -36,9 +36,9 @@
         <field name="view_mode">kanban</field>
     </record>
     <menuitem
-        id="upmin_stock_report"
-        name="Report"
-        parent="upmin_stock_menu"
+        id="report_summary"
+        name="Stock Balance Summary"
+        parent="upmin_stock_report"
         action="action_report"
         sequence="15"/>
 </odoo>
