@@ -36,6 +36,6 @@ class Issuance(models.Model):
     def name_get(self):
         result = []
         for record in self:
-            name = f"{record.seq_no} - {record.stock_no.stock_no} - {record.quantity_issued}"
+            name = f"{record.seq_no} - {record.rc_code.rc_code} - {record.stock_no.description}"
             result.append((record.id, name))
         return result
