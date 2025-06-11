@@ -2,7 +2,7 @@
 <odoo>
     <menuitem
         id="upmin_stock_menu"
-        name="UPMin Stock"
+        name="SPMO Inventory"
         sequence="10"/>
 
     <menuitem
