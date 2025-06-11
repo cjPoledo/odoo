@@ -27,21 +27,21 @@
                         <field name="category" />
                     </group>
                 </sheet>
+
+                <notebook>
+                    <page string="Replenishment History">
+                        <div class="oe_form_box" style="padding: 0 20px;">
+                            <field name="replenishment_ids" readonly="1" >
+                                <tree default_order="date desc" string="Replenishment History">
+                                    <field name="date" />
+                                    <field name="quantity" />
+                                    <field name="notes" />
+                                </tree>
+                            </field>
+                        </div>
+                    </page>
+                </notebook>
             </form>
-            
-            <notebook>
-                <page string="Replenishment History">
-                    <div class="oe_form_box" style="padding: 0 20px;">
-                        <field name="replenishment_ids" readonly="1" >
-                            <tree default_order="date desc" string="Replenishment History">
-                                <field name="date" />
-                                <field name="quantity" />
-                                <field name="notes" />
-                            </tree>
-                        </field>
-                    </div>
-                </page>
-            </notebook>
         </field>
     </record>
 
