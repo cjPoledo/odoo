@@ -13,14 +13,14 @@
 
     <template id="report_rsmi">
         <t t-call="web.html_container">
+        <t t-set="data_report_margin_top" t-value="1"/>
         <t t-foreach="docs" t-as="doc">
-            <div class="page" style="font-family: Times New Roman; font-size: 12pt;">
+            <div class="page" style="font-family: Times New Roman; font-size: 12pt; padding-top: 2em;">
             <!-- Header Section -->
-            <div style="text-align: right;">
+            <div style="text-align: right; padding-bottom: 1em;">
                 <span style="font-style: italic; font-size: 18pt">Appendix 64</span>
             </div>
-            <h2 style="text-align: center; font-weight: bold; font-size: 14pt">REPORT OF SUPPLIES AND MATERIALS ISSUED</h2>
-            
+            <h2 style="text-align: center; font-weight: bold; font-size: 14pt; padding-bottom: 2em;">REPORT OF SUPPLIES AND MATERIALS ISSUED</h2>
             <table style="width: 100%; margin-bottom: 10px; font-size: 11pt;">
                 <tr>
                 <td><strong>Entity Name:</strong> <span t-esc="doc.entity_name"/></td>
