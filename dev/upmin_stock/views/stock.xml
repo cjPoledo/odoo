@@ -7,7 +7,12 @@
             <form string="Stock">
                 <header>
                     <div class="bg-light border rounded my-1 px-3 py-1" style="font-size: 1.1em;">
-                        <strong class="me-2 text-muted">Balance:</strong>
+                        <strong class="me-2 text-muted">Running Balance:</strong>
+                        <field name="initial_balance" readonly="1" class="me-1 fw-bold text-primary"/>
+                        <field name="unit" readonly="1" options="{'no_open': True}" class="text-primary"/>
+                    </div>
+                    <div class="bg-light border rounded my-1 px-3 py-1" style="font-size: 1.1em;">
+                        <strong class="me-2 text-muted">Current Balance:</strong>
                         <field name="balance" readonly="1" class="me-1 fw-bold text-primary"/>
                         <field name="unit" readonly="1" options="{'no_open': True}" class="text-primary"/>
                     </div>
@@ -29,6 +34,23 @@
                 </sheet>
 
                 <notebook>
+                    <page string="Related Issuances">
+                        <div class="oe_form_box" style="padding: 0 20px;">
+                            <field name="issuance_ids" readonly="1" >
+                                <tree string="Related Issuances">
+                                    <field name="seq_no" />
+                                    <field name="date_issued" />
+                                    <field name="requested_by" />
+                                    <field name="ris_no" />
+                                    <field name="rc_code" />
+                                    <field name="remarks" />
+                                    <field name="stock_no" />
+                                    <field name="quantity_requested" />
+                                    <field name="quantity_issued" />
+                                </tree>
+                            </field>
+                        </div>
+                    </page>
                     <page string="Replenishment History">
                         <div class="oe_form_box" style="padding: 0 20px;">
                             <field name="replenishment_ids" readonly="1" >

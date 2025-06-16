@@ -18,6 +18,9 @@ class Stock(models.Model):
         "stock_id",
         string="Replenishment Logs",
     )
+    issuance_ids = fields.One2many(
+        "upmin_stock.issuance", "stock_no", string="Related Issuances"
+    )
 
     balance = fields.Integer(string="Balance", compute="_compute_balance", store=False)
 
