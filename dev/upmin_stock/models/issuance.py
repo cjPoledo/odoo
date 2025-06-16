@@ -20,6 +20,19 @@ class Issuance(models.Model):
     quantity_requested = fields.Integer(string="Quantity Requested", required=True)
     quantity_issued = fields.Integer(string="Quantity Issued", required=True)
 
+    balance = fields.Integer(
+        string="Current Balance",
+        related="stock_no.balance",
+        store=False,
+        readonly=True,
+    )
+    unit = fields.Many2one(
+        related="stock_no.unit",
+        string="Unit",
+        store=False,
+        readonly=True,
+    )
+
     _sql_constraints = [
         (
             "seq_no_unique",
