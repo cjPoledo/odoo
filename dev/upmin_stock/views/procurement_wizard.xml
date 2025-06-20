@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="procurement_wizard_view_form" model="ir.ui.view">
+        <field name="name">procurement.view.form</field>
+        <field name="model">upmin_stock.procurement_wizard</field>
+        <field name="arch" type="xml">
+            <form string="Procurement">
+                <sheet>
+                    <group>
+                        <field name="date_time" />
+                        <field name="excel_file" filename="file_name" />
+                        <field name="file_name" invisible="1" />
+                        <field name="procurement_data" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="procurement_wizard_view_tree" model="ir.ui.view">
+        <field name="name">procurement.view.tree</field>
+        <field name="model">upmin_stock.procurement_wizard</field>
+        <field name="arch" type="xml">
+            <tree string="procurement">
+                <field name="date_time" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="procurement_wizard_action" model="ir.actions.act_window">
+        <field name="name">Procurement</field>
+        <field name="res_model">upmin_stock.procurement_wizard</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="procurement_wizard_menu"
+        name="Import Procurement Data"
+        action="procurement_wizard_action"
+        parent="configuration_menu"
+        sequence="3"/>
+
+</odoo>

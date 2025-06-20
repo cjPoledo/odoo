@@ -6,3 +6,5 @@ from . import measure_units
 from . import report
 from . import stock_replenishment
 from . import rsmi
+from . import procurement
+from . import procurement_wizard

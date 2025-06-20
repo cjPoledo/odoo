@@ -14,6 +14,8 @@
         "views/summary_report.xml",
         "views/replenishment_logs.xml",
         "views/rsmi.xml",
+        "views/procurement.xml",
+        "views/procurement_wizard.xml",
         "reports/rsmi.xml",
     ],
 }

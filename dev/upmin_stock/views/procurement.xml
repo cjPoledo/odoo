@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="procurement_view_form" model="ir.ui.view">
+        <field name="name">procurement.view.form</field>
+        <field name="model">upmin_stock.procurement</field>
+        <field name="arch" type="xml">
+            <form string="Procurement">
+                <sheet>
+                    <group>
+                        <group colspan="2" style="border-bottom: 1px solid #ccc; padding-bottom: 8px;">
+                            <field name="parent_id"/>
+                        </group>
+                        <group style="padding-top: 8px;">
+                            <field name="no"/>
+                            <field name="remarks"/>
+                            <field name="end_user"/>
+                            <field name="rc_code"/>
+                            <field name="ris_no"/>
+                            <field name="iar_no"/>
+                            <field name="date"/>
+                            <field name="fund_cluster"/>
+                            <field name="ics"/>
+                            <field name="hv_lv"/>
+                            <field name="stock_no"/>
+                            <field name="description"/>
+                            <field name="unit"/>
+                            <field name="quantity"/>
+                            <field name="unit_cost"/>
+                            <field name="amount"/>
+                        </group>
+                        <group>
+                            <field name="PO_no"/>
+                            <field name="date_signed"/>
+                            <field name="supplier"/>
+                            <field name="invoice_date"/>
+                            <field name="invoice_no"/>
+                            <field name="dr_no"/>
+                            <field name="invoice_remarks"/>
+                            <field name="delivery_schedule"/>
+                            <field name="no_days_delayed"/>
+                            <field name="with_extension"/>
+                            <field name="partial"/>
+                            <field name="waiver"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="procurement_view_tree" model="ir.ui.view">
+        <field name="name">procurement.view.tree</field>
+        <field name="model">upmin_stock.procurement</field>
+        <field name="arch" type="xml">
+            <tree string="procurement">
+                <field name="parent_id"/>
+                <field name="no"/>
+                <field name="remarks"/>
+                <field name="end_user"/>
+                <field name="rc_code"/>
+                <field name="ris_no"/>
+                <field name="iar_no"/>
+                <field name="date"/>
+                <field name="fund_cluster"/>
+                <field name="ics"/>
+                <field name="hv_lv"/>
+                <field name="stock_no"/>
+                <field name="description"/>
+                <field name="unit"/>
+                <field name="quantity"/>
+                <field name="unit_cost"/>
+                <field name="amount"/>
+                <field name="PO_no"/>
+                <field name="date_signed"/>
+                <field name="supplier"/>
+                <field name="invoice_date"/>
+                <field name="invoice_no"/>
+                <field name="dr_no"/>
+                <field name="invoice_remarks"/>
+                <field name="delivery_schedule"/>
+                <field name="no_days_delayed"/>
+                <field name="with_extension"/>
+                <field name="partial"/>
+                <field name="waiver"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="procurement_action" model="ir.actions.act_window">
+        <field name="name">Procurement</field>
+        <field name="res_model">upmin_stock.procurement</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="procurement_menu"
+        name="Procurement Data"
+        action="procurement_action"
+        parent="configuration_menu"
+        sequence="5"/>
+
+</odoo>
