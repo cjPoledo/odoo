@@ -87,7 +87,7 @@
     </record>
 
     <record id="procurement_action" model="ir.actions.act_window">
-        <field name="name">Procurement</field>
+        <field name="name">Procurement Data</field>
         <field name="res_model">upmin_stock.procurement</field>
         <field name="view_mode">tree,form</field>
     </record>

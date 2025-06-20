@@ -7,10 +7,23 @@
             <form string="Procurement">
                 <sheet>
                     <group>
-                        <field name="date_time" />
-                        <field name="excel_file" filename="file_name" />
-                        <field name="file_name" invisible="1" />
-                        <field name="procurement_data" />
+                        <group colspan="2">
+                            <field name="date_time" />
+                        </group>
+                        <group>
+                            <field name="excel_file" filename="file_name" attrs="{'invisible': [('procurement_data', '!=', [])]}" />
+                            <field name="file_name" invisible="1" />
+                        </group>
+                        <group>
+                        <button name="action_import_excel"
+                            type="object"
+                            string="Import Excel"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('excel_file','=',False)]}"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="procurement_data" attrs="{'invisible': [('procurement_data', '=', [])]}" />
+                        </group>
                     </group>
                 </sheet>
             </form>
@@ -28,7 +41,7 @@
     </record>
 
     <record id="procurement_wizard_action" model="ir.actions.act_window">
-        <field name="name">Procurement</field>
+        <field name="name">Procurement Import Wizard</field>
         <field name="res_model">upmin_stock.procurement_wizard</field>
         <field name="view_mode">tree,form</field>
     </record>

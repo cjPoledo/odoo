@@ -15,17 +15,13 @@ class ProcurementWizard(models.Model):
     procurement_data = fields.One2many(
         "upmin_stock.procurement", "parent_id", string="Procurement Data", readonly=True
     )
-    excel_file = fields.Binary(string="Upload Excel", store=False)  # Temporary storage
-    file_name = fields.Char(string="File Name", store=False)  # Temporary storage
+    excel_file = fields.Binary(string="Upload Excel", required=True)
+    file_name = fields.Char(string="File Name")
 
-    def _create(self, data_list):
-        self.import_excel()
-        return super()._create(data_list)
-
-    def import_excel(self):
+    def action_import_excel(self):
+        current_row = 1
         if not self.excel_file:
             return
-
         try:
             excel_data = base64.b64decode(self.excel_file)
             workbook = xlrd.open_workbook(file_contents=excel_data)
@@ -36,6 +32,21 @@ class ProcurementWizard(models.Model):
 
             # Process Excel rows
             for row in range(1, sheet.nrows):
+
+                def get_excel_date(cell_value):
+                    # xlrd returns float for Excel dates, otherwise string/empty
+                    if isinstance(cell_value, float):
+                        dt_tuple = xlrd.xldate_as_tuple(cell_value, workbook.datemode)
+                        # Only date part
+                        return "%04d-%02d-%02d" % (
+                            dt_tuple[0],
+                            dt_tuple[1],
+                            dt_tuple[2],
+                        )
+                    return cell_value or False
+                
+                current_row += 1
+
                 vals = {
                     "parent_id": self.id,
                     "no": sheet.cell(row, 0).value,
@@ -44,7 +55,7 @@ class ProcurementWizard(models.Model):
                     "rc_code": sheet.cell(row, 3).value,
                     "ris_no": sheet.cell(row, 4).value,
                     "iar_no": sheet.cell(row, 5).value,
-                    "date": sheet.cell(row, 6).value,
+                    "date": get_excel_date(sheet.cell(row, 6).value),
                     "fund_cluster": sheet.cell(row, 7).value,
                     "ics": sheet.cell(row, 8).value,
                     "hv_lv": sheet.cell(row, 9).value,
@@ -55,13 +66,13 @@ class ProcurementWizard(models.Model):
                     "unit_cost": sheet.cell(row, 14).value,
                     "amount": sheet.cell(row, 15).value,
                     "PO_no": sheet.cell(row, 16).value,
-                    "date_signed": sheet.cell(row, 17).value,
+                    "date_signed": get_excel_date(sheet.cell(row, 17).value),
                     "supplier": sheet.cell(row, 18).value,
-                    "invoice_date": sheet.cell(row, 19).value,
+                    "invoice_date": get_excel_date(sheet.cell(row, 19).value),
                     "invoice_no": sheet.cell(row, 20).value,
                     "dr_no": sheet.cell(row, 21).value,
                     "invoice_remarks": sheet.cell(row, 22).value,
-                    "delivery_schedule": sheet.cell(row, 23).value,
+                    "delivery_schedule": get_excel_date(sheet.cell(row, 23).value),
                     "no_days_delayed": sheet.cell(row, 24).value,
                     "with_extension": sheet.cell(row, 25).value,
                     "partial": sheet.cell(row, 26).value,
@@ -69,9 +80,8 @@ class ProcurementWizard(models.Model):
                 }
                 self.env["upmin_stock.procurement"].create(vals)
 
-            # Clear the temporary file data
-            self.excel_file = False
-            self.file_name = False
+            # Clear the temporary file data to free up storage
+            self.write({"excel_file": False, "file_name": False})
 
         except Exception as e:
-            raise UserError(_("Error processing Excel file: %s" % str(e)))
+            raise UserError(_("Error processing Excel file (row %d): %s" % (current_row, str(e))))
