@@ -9,7 +9,9 @@ class Stock(models.Model):
     stock_no = fields.Char(string="Stock No", required=True)
     description = fields.Char(string="Description", required=True)
     unit = fields.Many2one("upmin_stock.measure_units", string="Unit", required=True)
-    initial_balance = fields.Integer(string="Initial Balance", default=0)
+    initial_balance = fields.Integer(
+        string="Initial Balance", compute="_compute_total_replenished", store=False
+    )
     price = fields.Float(string="Price", default=0.0)
     psdbm_price = fields.Float(string="PSDBM Price", default=0.0)
     category = fields.Many2one("upmin_stock.category", string="Category")
@@ -28,15 +30,25 @@ class Stock(models.Model):
         ("stock_no_unique", "unique(stock_no)", "Stock No must be unique."),
     ]
 
+    def _compute_total_replenished(self):
+        for stock in self:
+            total_replenished = sum(
+                replenishment.quantity for replenishment in stock.replenishment_ids
+            )
+            stock.initial_balance = total_replenished
+
     def _compute_balance(self):
         for stock in self:
+            total_balance = sum(
+                replenishment.quantity for replenishment in stock.replenishment_ids
+            )
             total_issued = sum(
                 issuance.quantity_issued
                 for issuance in self.env["upmin_stock.issuance"].search(
                     [("stock_no", "=", stock.id)]
                 )
             )
-            stock.balance = stock.initial_balance - total_issued
+            stock.balance = total_balance - total_issued
 
     def action_replenish_stock(self):
         return {

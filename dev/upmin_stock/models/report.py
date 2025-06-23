@@ -19,9 +19,9 @@ class Report(models.Model):
                 CREATE or REPLACE VIEW upmin_stock_report AS (
                     SELECT
                         1 AS id,
-                        (SELECT COALESCE(SUM(initial_balance), 0) FROM upmin_stock_stock) AS total_quantity,
+                        (SELECT COALESCE(SUM(quantity), 0) FROM upmin_stock_replenishment) AS total_quantity,
                         (SELECT COALESCE(SUM(quantity_issued), 0) FROM upmin_stock_issuance) AS total_issued,
-                        (SELECT COALESCE(SUM(initial_balance), 0) FROM upmin_stock_stock) -
+                        (SELECT COALESCE(SUM(quantity), 0) FROM upmin_stock_replenishment) -
                         (SELECT COALESCE(SUM(quantity_issued), 0) FROM upmin_stock_issuance) AS total_balance
                 )
             """
