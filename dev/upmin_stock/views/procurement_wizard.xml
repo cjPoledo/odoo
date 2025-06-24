@@ -13,13 +13,23 @@
                         <group>
                             <field name="excel_file" filename="file_name" attrs="{'invisible': [('procurement_data', '!=', [])]}" />
                             <field name="file_name" invisible="1" />
+                            <button name="action_validate_apply"
+                                type="object"
+                                string="Validate Data"
+                                class="oe_highlight"
+                                attrs="{'invisible': [('procurement_data', '=', [])]}"/>
+                            <button name="action_apply_changes"
+                                type="object"
+                                string="Apply Changes"
+                                class="oe_highlight"
+                                attrs="{'invisible': [('procurement_data', '=', [])]}"/>
                         </group>
                         <group>
-                        <button name="action_import_excel"
-                            type="object"
-                            string="Import Excel"
-                            class="oe_highlight"
-                            attrs="{'invisible': [('excel_file','=',False)]}"/>
+                            <button name="action_import_excel"
+                                type="object"
+                                string="Import Excel"
+                                class="oe_highlight"
+                                attrs="{'invisible': [('excel_file','=',False)]}"/>
                         </group>
                         <group colspan="2">
                             <field name="procurement_data" attrs="{'invisible': [('procurement_data', '=', [])]}" />
