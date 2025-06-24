@@ -17,6 +17,7 @@ class ProcurementWizard(models.Model):
     )
     excel_file = fields.Binary(string="Upload Excel")
     file_name = fields.Char(string="File Name")
+    applied = fields.Boolean(string="Applied", default=False)
 
     def action_import_excel(self):
         current_row = 1
@@ -125,7 +126,7 @@ class ProcurementWizard(models.Model):
                 inconsistent_fields = []
                 if stock.description != line.description:
                     inconsistent_fields.append("description")
-                if stock.unit != line.unit:
+                if stock.unit.measure_unit != line.unit:
                     inconsistent_fields.append("unit")
                 if stock.price != line.unit_cost:
                     inconsistent_fields.append("unit_cost")
@@ -229,3 +230,5 @@ class ProcurementWizard(models.Model):
                         "notes": line.remarks,
                     }
                 )
+        # Mark the wizard as applied
+        self.applied = True

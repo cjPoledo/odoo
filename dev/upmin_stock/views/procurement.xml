@@ -92,11 +92,11 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem
+    <!-- <menuitem
         id="procurement_menu"
         name="Procurement Data"
         action="procurement_action"
         parent="configuration_menu"
-        sequence="5"/>
+        sequence="5"/> -->
 
 </odoo>
