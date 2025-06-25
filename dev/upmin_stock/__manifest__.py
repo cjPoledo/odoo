@@ -3,6 +3,9 @@
     "author": "Clent Japhet Poledo",
     "version": "1.0",
     "application": True,
+    "depends": [
+        "report_xlsx",
+    ],
     "data": [
         "security/ir.model.access.csv",
         "views/menu.xml",

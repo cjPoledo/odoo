@@ -4,70 +4,10 @@
     <record id="rsmi" model="ir.actions.report">
         <field name="name">Report of Supplies and Materials Issued</field>
         <field name="model">upmin_stock.rsmi</field>
-        <field name="report_type">qweb-pdf</field>
+        <field name="report_type">xlsx</field>
         <field name="report_name">upmin_stock.report_rsmi</field>
         <field name="report_file">upmin_stock.report_rsmi</field>
         <field name="binding_type">report</field>
-        <field name="binding_model_id" ref="upmin_stock.model_upmin_stock_rsmi"/>
     </record>
-
-    <template id="report_rsmi">
-        <t t-call="web.html_container">
-        <t t-set="data_report_margin_top" t-value="1"/>
-        <t t-foreach="docs" t-as="doc">
-            <div class="page" style="font-family: Times New Roman; font-size: 12pt; padding-top: 2em;">
-            <!-- Header Section -->
-            <div style="text-align: right; padding-bottom: 1em;">
-                <span style="font-style: italic; font-size: 18pt">Appendix 64</span>
-            </div>
-            <h2 style="text-align: center; font-weight: bold; font-size: 14pt; padding-bottom: 2em;">REPORT OF SUPPLIES AND MATERIALS ISSUED</h2>
-            <table style="width: 100%; margin-bottom: 10px; font-size: 11pt;">
-                <tr>
-                <td><strong>Entity Name:</strong> <span t-esc="doc.entity_name"/></td>
-                <td><strong>Serial No.:</strong> <span t-esc="doc.serial_no"/></td>
-                </tr>
-                <tr>
-                <td><strong>Fund Cluster:</strong> <span t-esc="doc.fund_cluster"/></td>
-                <td><strong>Date:</strong> <span t-esc="doc.date"/></td>
-                </tr>
-            </table>
-
-            <!-- Table Header -->
-            <table class="table table-sm" style="width: 100%; border: 1px solid black; border-collapse: collapse;">
-                <thead>
-                <tr style="text-align: center; font-style: italic; font-size: 11pt;">
-                    <td style="border: 1px solid black;" colspan="6">To be filled up by the Supply and/or Property Division/Unit</td>
-                    <td style="border: 1px solid black;" colspan="2">To be filled up by the Accounting Division/Unit</td>
-                </tr>
-                <tr style="text-align: center;">
-                    <th style="border: 1px solid black;">RIS No.</th>
-                    <th style="border: 1px solid black;">Responsibility Center Code</th>
-                    <th style="border: 1px solid black;">Stock No.</th>
-                    <th style="border: 1px solid black;">Item</th>
-                    <th style="border: 1px solid black;">Unit</th>
-                    <th style="border: 1px solid black;">Quantity Issued</th>
-                    <th style="border: 1px solid black;">Unit Cost</th>
-                    <th style="border: 1px solid black;">Amount</th>
-                </tr>
-                </thead>
-                <tbody>
-                <t t-foreach="doc.issuances" t-as="line">
-                    <tr>
-                    <td style="border-right: 1px solid black; text-align: center; padding: 0.25em 0.25em"><span t-esc="line.ris_no"/></td>
-                    <td style="border-right: 1px solid black; text-align: left; padding: 0.25em 0.25em"><span t-esc="line.rc_code.rc_code"/></td>
-                    <td style="border-right: 1px solid black; text-align: left; padding: 0.25em 0.25em"><span t-esc="line.stock_no.stock_no"/></td>
-                    <td style="border-right: 1px solid black; text-align: left; padding: 0.25em 0.25em"><span t-esc="line.stock_no.description"/></td>
-                    <td style="border-right: 1px solid black; text-align: center; padding: 0.25em 0.25em"><span t-esc="line.stock_no.unit.measure_unit"/></td>
-                    <td style="border-right: 1px solid black; text-align: center; padding: 0.25em 0.25em"><span t-esc="line.quantity_issued"/></td>
-                    <td style="border-right: 1px solid black; text-align: right; padding: 0.25em 0.25em"></td>
-                    <td style="border-right: 1px solid black; text-align: right; padding: 0.25em 0.25em"></td>
-                    </tr>
-                </t>
-                </tbody>
-            </table>
-            </div>
-        </t>
-        </t>
-    </template>
 
 </odoo>
