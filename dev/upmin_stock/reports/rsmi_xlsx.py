@@ -74,6 +74,73 @@ class RsmiXlsx(models.AbstractModel):
                 "right": 2,
             }
         )
+        entry_center_underline_caps = workbook.add_format(
+            {
+                "font_size": 12,
+                "font_name": font,
+                "align": "center",
+                "valign": "vtop",
+                "text_wrap": True,
+                "left": 2,
+                "right": 2,
+                "underline": 1,
+            }
+        )
+        entry_center_underline_caps_left_border = workbook.add_format(
+            {
+                "font_size": 12,
+                "font_name": font,
+                "align": "center",
+                "valign": "vtop",
+                "text_wrap": True,
+                "left": 2,
+                "underline": 1,
+            }
+        )
+        entry_top_border = workbook.add_format(
+            {
+                "font_size": 12,
+                "font_name": font,
+                "align": "left",
+                "valign": "vtop",
+                "text_wrap": True,
+                "top": 2,
+                "left": 2,
+                "right": 2,
+            }
+        )
+        entry_bottom_border = workbook.add_format(
+            {
+                "font_size": 12,
+                "font_name": font,
+                "align": "left",
+                "valign": "vtop",
+                "text_wrap": True,
+                "bottom": 2,
+                "left": 2,
+                "right": 2,
+            }
+        )
+        entry_left_border_only = workbook.add_format(
+            {
+                "font_size": 12,
+                "font_name": font,
+                "align": "center",
+                "valign": "vtop",
+                "text_wrap": True,
+                "left": 2,
+            }
+        )
+        entry_right_border_only = workbook.add_format(
+            {
+                "font_size": 12,
+                "font_name": font,
+                "align": "center",
+                "valign": "vtop",
+                "text_wrap": True,
+                "right": 2,
+            }
+        )
         date_format = workbook.add_format(
             {
                 "num_format": "mmmm d, yyyy",
@@ -142,3 +209,45 @@ class RsmiXlsx(models.AbstractModel):
             sheet.write(row, 6, "", entry)
             sheet.write(row, 7, "", entry)
             row += 1
+
+        # Footer
+        sheet.merge_range(f"A{row + 1}:E{row + 1}", "", entry_top_border)
+        sheet.merge_range(f"F{row + 1}:H{row + 1}", "Posted by:", entry_top_border)
+        sheet.merge_range(
+            f"A{row + 2}:E{row + 2}",
+            "         I hereby certify to the correctness of the above information.",
+            entry,
+        )
+        sheet.merge_range(f"F{row + 2}:H{row + 2}", "", entry)
+        sheet.merge_range(
+            f"A{row + 3}:E{row + 3}",
+            partners.supply_custodian,
+            entry_center_underline_caps,
+        )
+        sheet.merge_range(
+            f"F{row + 3}:G{row + 3}",
+            partners.accounting_staff,
+            entry_center_underline_caps_left_border,
+        )
+        sheet.write(f"H{row + 3}", "", entry_right_border_only)
+        sheet.merge_range(
+            f"A{row + 4}:E{row + 4}",
+            "Signature over Printed Name of Supply and/or Property Custodian",
+            entry_center,
+        )
+        sheet.merge_range(
+            f"F{row + 4}:G{row + 4}",
+            "Signature over Printed Name of Designated Accounting Staff",
+            entry_left_border_only,
+        )
+        sheet.write(f"H{row + 4}", "Date", entry_right_border_only)
+        sheet.merge_range(
+            f"A{row + 5}:E{row + 5}",
+            "",
+            entry_bottom_border,
+        )
+        sheet.merge_range(
+            f"F{row + 5}:H{row + 5}",
+            "",
+            entry_bottom_border,
+        )

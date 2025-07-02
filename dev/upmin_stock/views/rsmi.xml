@@ -13,6 +13,8 @@
                         <field name="fund_cluster" />
                         <field name="date" />
                         <field name="issuances" />
+                        <field name="supply_custodian" />
+                        <field name="accounting_staff" />
                     </group>
                 </sheet>
             </form>
@@ -29,7 +31,8 @@
                 <field name="fund_cluster" />
                 <field name="date" />
                 <field name="issuances" />
-                
+                <field name="supply_custodian" />
+                <field name="accounting_staff" />
             </tree>
         </field>
     </record>

@@ -8,6 +8,7 @@
         <field name="report_name">upmin_stock.report_rsmi</field>
         <field name="report_file">upmin_stock.report_rsmi</field>
         <field name="binding_type">report</field>
+        <field name="print_report_name">'rsmi_' + (object.serial_no or '')</field>
     </record>
 
 </odoo>
