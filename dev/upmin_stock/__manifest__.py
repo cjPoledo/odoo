@@ -19,6 +19,7 @@
         "views/rsmi.xml",
         "views/procurement.xml",
         "views/procurement_wizard.xml",
+        "views/ris.xml",
         "reports/rsmi.xml",
     ],
 }

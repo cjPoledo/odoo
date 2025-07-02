@@ -8,3 +8,5 @@ from . import stock_replenishment
 from . import rsmi
 from . import procurement
 from . import procurement_wizard
+from . import ris
+from . import ris_line

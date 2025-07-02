@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ris_view_tree" model="ir.ui.view">
+        <field name="name">ris.view.tree</field>
+        <field name="model">upmin_stock.ris</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="ris_no" />
+                <field name="entity_name" />
+                <field name="fund_cluster" />
+                <field name="division" />
+                <field name="rc_code" />
+                <field name="office" />
+                <field name="requested_by" />
+                <field name="approved_by" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="ris_view_form" model="ir.ui.view">
+        <field name="name">ris.view.form</field>
+        <field name="model">upmin_stock.ris</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="ris_no" />
+                        <field name="entity_name" />
+                        <field name="fund_cluster" />
+                        <field name="division" />
+                        <field name="rc_code" />
+                        <field name="office" />
+                        <field name="line_ids">
+                            <tree editable="bottom">
+                                <field name="stock_id"/>
+                                <field name="quantity"/>
+                            </tree>
+                        </field>
+                        <field name="requested_by" />
+                        <field name="approved_by" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ris" model="ir.actions.act_window">
+        <field name="name">Requisition and Issue Slip</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">upmin_stock.ris</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="ris_menu"
+        name="Requisition and Issue Slip"
+        action="action_ris"
+        parent="upmin_stock_menu"
+        sequence="30"/>
+</odoo>
