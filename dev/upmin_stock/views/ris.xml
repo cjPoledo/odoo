@@ -53,7 +53,7 @@
 
     <menuitem
         id="ris_menu"
-        name="Requisition and Issue Slip"
+        name="RIS (dev)"
         action="action_ris"
         parent="upmin_stock_menu"
         sequence="30"/>
