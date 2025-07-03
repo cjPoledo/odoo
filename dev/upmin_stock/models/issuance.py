@@ -6,7 +6,18 @@ class Issuance(models.Model):
     _description = "Issuance"
     _rec_name = "seq_no"
 
-    seq_no = fields.Char(string="Sequence Number", required=True)
+    seq_no = fields.Float(
+        string="Sequence Number",
+        default=lambda self: (
+            self.env["upmin_stock.issuance"]
+            .search([], order="seq_no desc", limit=1)
+            .seq_no
+            or 1.0
+        )
+        + 0.001,
+        digits=(12, 3),
+        required=True,
+    )
     date_issued = fields.Date(string="Date Issued", required=True)
     requested_by = fields.Many2one(
         "res.partner", string="Requested By", required=True
