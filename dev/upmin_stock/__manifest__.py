@@ -7,7 +7,8 @@
         "report_xlsx",
     ],
     "data": [
-        "security/ir.model.access.csv",
+        "security/security_groups.xml",
+        "security/access_control_list.xml",
         "views/menu.xml",
         "views/stock.xml",
         "views/issuances.xml",

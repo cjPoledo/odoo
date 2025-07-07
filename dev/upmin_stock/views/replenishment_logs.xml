@@ -25,6 +25,7 @@
         name="Replenishment Logs"
         action="replenishment_action"
         parent="logs_menu"
-        sequence="10"/>
+        sequence="10"
+        groups="upmin_stock.group_spmo_stock_custodian"/>
 
 </odoo>

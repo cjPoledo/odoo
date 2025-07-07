@@ -13,6 +13,17 @@ class Report(models.Model):
     total_balance = fields.Integer(string="Total Balance", readonly=True)
 
     def init(self):
+        # Ensure dependent tables exist before creating the view
+        self.env.cr.execute(
+            """
+            SELECT to_regclass('public.upmin_stock_replenishment'), to_regclass('public.upmin_stock_issuance')
+        """
+        )
+        result = self.env.cr.fetchone()
+        if not all(result):
+            # Skip view creation if tables do not exist
+            return
+
         tools.drop_view_if_exists(self.env.cr, self._table)
         self.env.cr.execute(
             """

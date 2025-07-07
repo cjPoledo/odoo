@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form string="Stock">
                 <header>
-                    <div class="bg-light border rounded my-1 px-3 py-1" style="font-size: 1.1em;">
+                    <div class="bg-light border rounded my-1 px-3 py-1" style="font-size: 1.1em;" groups="upmin_stock.group_spmo_stock_custodian">
                         <strong class="me-2 text-muted">Running Balance:</strong>
                         <field name="initial_balance" readonly="1" class="me-1 fw-bold text-primary"/>
                         <field name="unit" readonly="1" options="{'no_open': True}" class="text-primary"/>
@@ -20,7 +20,8 @@
                             type="object"
                             string="Replenish Stock"
                             class="btn-primary mx-2"
-                            icon="fa-plus-circle"/>
+                            icon="fa-plus-circle"
+                            groups="upmin_stock.group_spmo_stock_custodian"/>
                 </header>
                 <sheet>
                     <group>
@@ -33,7 +34,7 @@
                     </group>
                 </sheet>
 
-                <notebook>
+                <notebook groups="upmin_stock.group_spmo_stock_custodian">
                     <page string="Related Issuances">
                         <div class="oe_form_box" style="padding: 0 20px;">
                             <field name="issuance_ids" readonly="1" >

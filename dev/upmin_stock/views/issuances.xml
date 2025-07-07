@@ -67,5 +67,6 @@
         name="Issuances"
         parent="upmin_stock_menu"
         action="action_issuances"
-        sequence="25"/>
+        sequence="25"
+        groups="upmin_stock.group_spmo_stock_custodian"/>
 </odoo>
