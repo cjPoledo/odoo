@@ -98,7 +98,11 @@ class ProcurementWizard(models.Model):
             "unit_cost",
             "quantity",
         ]
-        missing_fields = [field for field in needed_fields if not line[field]]
+        missing_fields = [
+            field
+            for field in needed_fields
+            if line[field] in (None, "")  # treat 0 as valid, only None or "" is missing
+        ]
         return missing_fields
 
     def action_validate_apply(self):
