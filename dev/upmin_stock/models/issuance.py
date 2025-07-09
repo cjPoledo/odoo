@@ -12,19 +12,61 @@ class Issuance(models.Model):
             self.env["upmin_stock.issuance"]
             .search([], order="seq_no desc", limit=1)
             .seq_no
-            or 1.0
+            or 0.999
         )
         + 0.001,
         digits=(12, 3),
         required=True,
     )
-    date_issued = fields.Date(string="Date Issued", required=True)
+    date_issued = fields.Date(
+        string="Date Issued",
+        required=True,
+        default=lambda self: (
+            self.env["upmin_stock.issuance"]
+            .search([], order="id desc", limit=1)
+            .date_issued
+            or fields.Date.context_today(self)
+        ),
+    )
     requested_by = fields.Many2one(
-        "res.partner", string="Requested By", required=True
+        "res.partner",
+        string="Requested By",
+        required=True,
+        default=lambda self: (
+            self.env["upmin_stock.issuance"]
+            .search([], order="id desc", limit=1)
+            .requested_by.id
+            or False
+        ),
     )  # Assuming 'People' is linked to 'res.partner'
-    ris_no = fields.Char(string="RIS Number", required=True)
-    rc_code = fields.Many2one("upmin_stock.rc", string="RC Code", required=True)
-    remarks = fields.Text(string="Remarks")
+    ris_no = fields.Char(
+        string="RIS Number",
+        required=True,
+        default=lambda self: (
+            self.env["upmin_stock.issuance"].search([], order="id desc", limit=1).ris_no
+            or ""
+        ),
+    )
+    rc_code = fields.Many2one(
+        "upmin_stock.rc",
+        string="RC Code",
+        required=True,
+        default=lambda self: (
+            self.env["upmin_stock.issuance"]
+            .search([], order="id desc", limit=1)
+            .rc_code.id
+            or False
+        ),
+    )
+    remarks = fields.Text(
+        string="Remarks",
+        default=lambda self: (
+            self.env["upmin_stock.issuance"]
+            .search([], order="id desc", limit=1)
+            .remarks
+            or ""
+        ),
+    )
     stock_no = fields.Many2one(
         "upmin_stock.stock", string="Stock Number", required=True
     )
