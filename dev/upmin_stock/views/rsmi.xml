@@ -8,13 +8,23 @@
             <form string="rsmi">
                 <sheet>
                     <group>
-                        <field name="serial_no" />
-                        <field name="entity_name" />
-                        <field name="fund_cluster" />
-                        <field name="date" />
+                        <group>
+                            <field name="entity_name" />
+                            <field name="fund_cluster" />
+                        </group>
+                        <group>
+                            <field name="serial_no" />
+                            <field name="date" />
+                        </group>
                         <field name="issuances" />
-                        <field name="supply_custodian" />
-                        <field name="accounting_staff" />
+                    </group>
+                    <group>
+                        <group>
+                            <field name="supply_custodian" />
+                        </group>
+                        <group>
+                            <field name="accounting_staff" />
+                        </group>
                     </group>
                 </sheet>
             </form>

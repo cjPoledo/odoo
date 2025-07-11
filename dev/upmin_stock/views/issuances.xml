@@ -7,17 +7,22 @@
             <form string="">
                 <sheet>
                     <group>
-                        <field name="seq_no" />
-                        <field name="date_issued" />
-                        <field name="requested_by" />
-                        <field name="ris_no" />
-                        <field name="rc_code" />
+                        <group>
+                            <field name="seq_no" />
+                            <field name="date_issued" />
+                            <field name="requested_by" />
+                            <field name="ris_no" />
+                            <field name="rc_code" />
+                        </group>
+                        <group>
+                            <field name="stock_no"/>
+                            <field name="balance" readonly="1" attrs="{'invisible': [('stock_no', '=', False)]}" />
+                            <field name="unit" readonly="1" attrs="{'invisible': [('stock_no', '=', False)]}" />
+                            <field name="quantity_requested" />
+                            <field name="quantity_issued" />
+                        </group>
+                        <label for="remarks" class="fw-bold" />
                         <field name="remarks" />
-                        <field name="stock_no"/>
-                        <field name="balance" readonly="1" attrs="{'invisible': [('stock_no', '=', False)]}" />
-                        <field name="unit" readonly="1" attrs="{'invisible': [('stock_no', '=', False)]}" />
-                        <field name="quantity_requested" />
-                        <field name="quantity_issued" />
                     </group>
                 </sheet>
             </form>

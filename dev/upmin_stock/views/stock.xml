@@ -25,13 +25,26 @@
                 </header>
                 <sheet>
                     <group>
-                        <field name="stock_no" />
-                        <field name="description" />
-                        <field name="unit" />
-                        <field name="price" />
-                        <field name="psdbm_price" />
-                        <field name="category" />
+                        <label for="description" class="fw-bold"/>
+                        <field name="description" style="font-size:2em"/>
+                        <group>
+                            <field name="stock_no"/>
+                        </group>
                     </group>
+                    <notebook>
+                        <page string="Details">
+                            <group>
+                                <group>
+                                    <field name="unit"/>
+                                    <field name="category"/>
+                                </group>
+                                <group>`
+                                    <field name="price"/>
+                                    <field name="psdbm_price"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
 
                 <notebook groups="upmin_stock.group_spmo_stock_custodian">
@@ -75,6 +88,7 @@
             <form string="">
                 <sheet>
                     <group>
+                        <field name="date" readonly="1" />
                         <field name="quantity" />
                         <field name="notes" />
                     </group>
