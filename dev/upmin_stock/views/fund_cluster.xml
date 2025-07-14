@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fund_cluster_view_form" model="ir.ui.view">
+        <field name="name">fund_cluster.view.form</field>
+        <field name="model">upmin_stock.fund_cluster</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="fund_cluster_view_tree" model="ir.ui.view">
+        <field name="name">fund_cluster.view.tree</field>
+        <field name="model">upmin_stock.fund_cluster</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="fund_cluster_action" model="ir.actions.act_window">
+        <field name="name">Fund Clusters</field>
+        <field name="res_model">upmin_stock.fund_cluster</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="fund_cluster_menu"
+        name="Fund Cluster"
+        action="fund_cluster_action"
+        parent="configuration_menu"
+        sequence="15"/>
+
+</odoo>
