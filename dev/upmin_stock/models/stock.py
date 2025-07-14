@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class Stock(models.Model):
@@ -10,7 +10,7 @@ class Stock(models.Model):
     description = fields.Char(string="Description", required=True)
     unit = fields.Many2one("upmin_stock.measure_units", string="Unit", required=True)
     initial_balance = fields.Integer(
-        string="Initial Balance", compute="_compute_total_replenished", store=False
+        string="Initial Balance", compute="_compute_total_replenished", store=True
     )
     price = fields.Float(string="Price", default=0.0)
     psdbm_price = fields.Float(string="PSDBM Price", default=0.0)
@@ -24,12 +24,16 @@ class Stock(models.Model):
         "upmin_stock.issuance", "stock_no", string="Related Issuances"
     )
 
-    balance = fields.Integer(string="Balance", compute="_compute_balance", store=False)
+    balance = fields.Integer(string="Balance", compute="_compute_balance", store=True)
+    per_fund_balance = fields.One2many(
+        "upmin_stock.stock_fund_balance", "stock_id", string="Balance per Fund Cluster"
+    )
 
     _sql_constraints = [
         ("stock_no_unique", "unique(stock_no)", "Stock No must be unique."),
     ]
 
+    @api.depends("replenishment_ids.quantity")
     def _compute_total_replenished(self):
         for stock in self:
             total_replenished = sum(
@@ -37,18 +41,38 @@ class Stock(models.Model):
             )
             stock.initial_balance = total_replenished
 
+    @api.depends("replenishment_ids.quantity", "issuance_ids.quantity_issued")
     def _compute_balance(self):
         for stock in self:
             total_balance = sum(
                 replenishment.quantity for replenishment in stock.replenishment_ids
             )
             total_issued = sum(
-                issuance.quantity_issued
-                for issuance in self.env["upmin_stock.issuance"].search(
-                    [("stock_no", "=", stock.id)]
-                )
+                issuance.quantity_issued for issuance in stock.issuance_ids
             )
             stock.balance = total_balance - total_issued
+
+    def update_fund_cluster_balance(self):
+        for stock in self:
+            # clear old records
+            self.env["upmin_stock.stock_fund_balance"].search(
+                [("stock_id", "=", stock.id)]
+            ).unlink()
+
+            # recompute
+            grouped = {}
+            for r in stock.replenishment_ids:
+                fc_id = r.fund_cluster_id.id
+                grouped[fc_id] = grouped.get(fc_id, 0) + r.quantity
+
+            for fc_id, qty in grouped.items():
+                self.env["upmin_stock.stock_fund_balance"].create(
+                    {
+                        "stock_id": stock.id,
+                        "fund_cluster_id": fc_id,
+                        "balance": qty,
+                    }
+                )
 
     def action_replenish_stock(self):
         return {

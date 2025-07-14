@@ -23,6 +23,7 @@
                         </group>
                         <label for="remarks" class="fw-bold" />
                         <field name="remarks" />
+                        <field name="fund_cluster_id" />
                     </group>
                 </sheet>
             </form>

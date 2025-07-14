@@ -11,3 +11,4 @@ from . import procurement_wizard
 from . import ris
 from . import ris_line
 from . import fund_cluster
+from . import stock_fund_balance

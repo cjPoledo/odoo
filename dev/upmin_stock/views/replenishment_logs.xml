@@ -5,9 +5,10 @@
         <field name="name">replenishment.view.tree</field>
         <field name="model">upmin_stock.replenishment</field>
         <field name="arch" type="xml" >
-            <tree string="" create="false" delete="false" default_order="date desc" >
+            <tree string="" create="false" default_order="date desc" >
                 <field name="date" />
                 <field name="stock_id" />
+                <field name="fund_cluster_id" />
                 <field name="quantity" />
                 <field name="notes" />
             </tree>

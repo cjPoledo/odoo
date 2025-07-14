@@ -44,6 +44,14 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Balance per Fund Cluster">
+                            <field name="per_fund_balance" readonly="1">
+                                <tree string="Balance per Fund Cluster">
+                                    <field name="fund_cluster_id" />
+                                    <field name="balance" />
+                                </tree>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
 
@@ -70,6 +78,7 @@
                             <field name="replenishment_ids" readonly="1" >
                                 <tree default_order="date desc" string="Replenishment History">
                                     <field name="date" />
+                                    <field name="fund_cluster_id" />
                                     <field name="quantity" />
                                     <field name="notes" />
                                 </tree>
@@ -89,6 +98,7 @@
                 <sheet>
                     <group>
                         <field name="date" readonly="1" />
+                        <field name="fund_cluster_id" />
                         <field name="quantity" />
                         <field name="notes" />
                     </group>

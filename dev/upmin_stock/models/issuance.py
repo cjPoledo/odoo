@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class Issuance(models.Model):
@@ -72,6 +72,9 @@ class Issuance(models.Model):
     )
     quantity_requested = fields.Integer(string="Quantity Requested", required=True)
     quantity_issued = fields.Integer(string="Quantity Issued", required=True)
+    fund_cluster_id = fields.Many2one(
+        "upmin_stock.fund_cluster", string="Fund Cluster", required=True
+    )
 
     balance = fields.Integer(
         string="Current Balance",
@@ -97,7 +100,25 @@ class Issuance(models.Model):
             "CHECK (quantity_issued <= quantity_requested)",
             "Quantity Issued cannot exceed Quantity Requested.",
         ),
+        (
+            "quantity_issued_positive_check",
+            "CHECK (quantity_issued >= 0)",
+            "Quantity Issued must be positive.",
+        ),
+        (
+            "quantity_requested_positive_check",
+            "CHECK (quantity_requested >= 0)",
+            "Quantity Requested must be positive.",
+        ),
     ]
+
+    @api.constrains("quantity_issued")
+    def _check_quantity_issued(self):
+        for record in self:
+            if record.stock_no.balance < 0:
+                raise models.ValidationError(
+                    "Quantity Issued cannot exceed the current stock balance."
+                )
 
     def name_get(self):
         result = []

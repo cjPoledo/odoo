@@ -92,6 +92,7 @@ class ProcurementWizard(models.Model):
     def check_errors(self, line):
         # Ensure each required field is filled in procurement lines
         needed_fields = [
+            "fund_cluster",
             "stock_no",
             "description",
             "unit",
@@ -139,11 +140,11 @@ class ProcurementWizard(models.Model):
                         f"Stock No. {line.stock_no} exists but has inconsistent fields: {', '.join(inconsistent_fields)}"
                     )
                 changes.append(
-                    f"{line.quantity} {line.unit} will be added to {line.stock_no} - {line.description}."
+                    f"{line.quantity} {line.unit} ({line.fund_cluster}) will be added to {line.stock_no} - {line.description}."
                 )
             else:
                 changes.append(
-                    f"{line.stock_no} - {line.description} will be added to the database with intial stock of {line.quantity} {line.unit}."
+                    f"{line.stock_no} - {line.description} will be added to the database with intial stock of {line.quantity} {line.unit} ({line.fund_cluster})."
                 )
 
         user_error = []
@@ -196,6 +197,14 @@ class ProcurementWizard(models.Model):
             if not unit:
                 # Create new unit if it doesn't exist
                 unit = unit_obj.create({"measure_unit": line.unit})
+            # Check if fund cluster exists
+            fund_cluster_obj = self.env["upmin_stock.fund_cluster"]
+            fund_cluster = fund_cluster_obj.search(
+                [("name", "=", line.fund_cluster)], limit=1
+            )
+            if not fund_cluster:
+                # Create new fund cluster if it doesn't exist
+                fund_cluster = fund_cluster_obj.create({"name": line.fund_cluster})
 
             if stock:
                 # Update existing stock
@@ -211,6 +220,7 @@ class ProcurementWizard(models.Model):
                     {
                         "stock_id": stock.id,
                         "procurement_import_id": line.id,
+                        "fund_cluster_id": fund_cluster.id,
                         "quantity": line.quantity,
                         "notes": line.remarks,
                     }
@@ -230,6 +240,7 @@ class ProcurementWizard(models.Model):
                     {
                         "stock_id": new_stock.id,
                         "procurement_import_id": line.id,
+                        "fund_cluster_id": fund_cluster.id,
                         "quantity": line.quantity,
                         "notes": line.remarks,
                     }
