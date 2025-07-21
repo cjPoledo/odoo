@@ -30,3 +30,38 @@ class RISLine(models.Model):
                 limit=1,
             )
             line.stock_balance = stock_fund_balance.balance if stock_fund_balance else 0
+
+    _sql_constraints = [
+        (
+            "stock_no_quantity_check",
+            "CHECK (quantity_issued <= quantity_req)",
+            "Quantity Issued cannot exceed Quantity Requested.",
+        ),
+        (
+            "quantity_issued_positive_check",
+            "CHECK (quantity_issued >= 0)",
+            "Quantity Issued must be positive.",
+        ),
+        (
+            "quantity_requested_positive_check",
+            "CHECK (quantity_req >= 0)",
+            "Quantity Requested must be positive.",
+        ),
+    ]
+
+    @api.constrains("quantity_req", "quantity_issued")
+    def _check_quantity(self):
+        for record in self:
+            if record.stock_balance < record.quantity_req:
+                raise models.ValidationError(
+                    f"({record.stock_id.stock_no}) Quantity requested cannot exceed the current stock balance."
+                )
+            elif record.stock_balance < record.quantity_issued:
+                raise models.ValidationError(
+                    f"({record.stock_id.stock_no}) Quantity issued cannot exceed the current stock balance."
+                )
+
+    @api.onchange("stock_avail")
+    def _onchange_stock_avail(self):
+        if not self.stock_avail:
+            self.quantity_issued = 0

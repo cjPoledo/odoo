@@ -23,5 +23,6 @@
         "views/ris.xml",
         "views/fund_cluster.xml",
         "reports/rsmi.xml",
+        "reports/ris.xml"
     ],
 }

@@ -1,0 +1,241 @@
+<odoo>
+    <template id="report_ris_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="page" style="font-family:Arial, sans-serif; font-size:12px;">
+                    <h1 style="text-align: center;">REQUISITION AND ISSUE SLIP</h1>
+                    <table width="100%"
+                        style="border-collapse: collapse;text-align: center;">
+                        <tr>
+                            <td style="text-align: left;">
+                                <strong>Entity Name:</strong>
+                            </td>
+                            <td>
+                                <strong>
+                                    <t t-esc="doc.entity_name" />
+                                </strong>
+                            </td>
+                            <td style="text-align: left;">
+                                <strong>Fund Cluster:</strong>
+                            </td>
+                            <td>
+                                <strong>
+                                    <t t-esc="doc.fund_cluster.name" />
+                                </strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Division:</td>
+                            <td>
+                                <strong>
+                                    <t t-esc="doc.division" />
+                                </strong>
+                            </td>
+                            <td style="text-align: left;">Responsibility Center Code:</td>
+                            <td>
+                                <strong>
+                                    <t t-esc="doc.rc_code.rc_code" />
+                                </strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Office:</td>
+                            <td>
+                                <strong>
+                                    <t t-esc="doc.rc_code.rc_name" />
+                                </strong>
+                            </td>
+                            <td style="text-align: left;">RIS No.:</td>
+                            <td>
+                                <strong>
+                                    <t t-esc="doc.ris_no" />
+                                </strong>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table border="1" width="100%"
+                        style="border-collapse: collapse;text-align: center;">
+                        <thead>
+                            <tr>
+                                <th colspan="4">
+                                    <em>Requisition</em>
+                                </th>
+                                <th colspan="2">
+                                    <em>Stock Available?</em>
+                                </th>
+                                <th colspan="2">
+                                    <em>Issue</em>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>Stock No.</strong>
+                                </td>
+                                <td>
+                                    <strong>Unit</strong>
+                                </td>
+                                <td>
+                                    <strong>Description</strong>
+                                </td>
+                                <td>
+                                    <strong>Quantity</strong>
+                                </td>
+                                <td>
+                                    <strong>Yes</strong>
+                                </td>
+                                <td>
+                                    <strong>No</strong>
+                                </td>
+                                <td>
+                                    <strong>Quantity</strong>
+                                </td>
+                                <td>
+                                    <strong>Remarks</strong>
+                                </td>
+                            </tr>
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <tr>
+                                    <td>
+                                        <t t-esc="line.stock_id.stock_no or ''" />
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.stock_id.unit.measure_unit or ''" />
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.stock_id.description or ''" />
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.quantity_req or ''" />
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <t t-esc="line.quantity_issued or ''" />
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.remarks or ''" />
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr rowspan="2">
+                                <td colspan="8"
+                                    style="text-align: left; border-right: none; padding: 1em 0.5em;">
+                                    <strong>PURPOSE: </strong>
+                                    <t t-esc="doc.purpose" />
+                                </td>
+                            </tr>
+                            <tr style="text-align: left;">
+                                <td colspan="2"></td>
+                                <td>
+                                    <strong>Requested by:</strong>
+                                </td>
+                                <td colspan="2">
+                                    <strong>Approved by:</strong>
+                                </td>
+                                <td colspan="2">
+                                    <strong>Issued by:</strong>
+                                </td>
+                                <td>
+                                    <strong>Received by:</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left;">Signature :</td>
+                                <td></td>
+                                <td colspan="2"></td>
+                                <td colspan="2"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left;">
+                                    Printed Name :
+                                </td>
+                                <td>
+                                    <strong>
+                                        <t t-esc="doc.requested_by.name" />
+                                    </strong>
+                                </td>
+                                <td colspan="2">
+                                    <strong>
+                                        <t t-esc="doc.approved_by" />
+                                    </strong>
+                                </td>
+                                <td colspan="2">
+                                    <strong>
+                                        <t t-esc="doc.issued_by" />
+                                    </strong>
+                                </td>
+                                <td>
+                                    <strong>
+                                        <t t-esc="doc.received_by" />
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left;">
+                                    Designation :
+                                </td>
+                                <td>
+                                    <strong>
+                                        <t t-esc="doc.requester_designation" />
+                                    </strong>
+                                </td>
+                                <td colspan="2">
+                                    <strong>
+                                        <t t-esc="doc.approver_designation" />
+                                    </strong>
+                                </td>
+                                <td colspan="2">
+                                    <strong>
+                                        <t t-esc="doc.issuer_designation" />
+                                    </strong>
+                                </td>
+                                <td>
+                                    <strong>
+                                        <t t-esc="doc.receiver_designation" />
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left;">Date :</td>
+                                <td>
+                                    <strong>
+                                        <t t-esc="doc.request_date" />
+                                    </strong>
+                                </td>
+                                <td colspan="2">
+                                    <strong>
+                                        <t t-esc="doc.approve_date" />
+                                    </strong>
+                                </td>
+                                <td colspan="2">
+                                    <strong>
+                                        <t t-esc="doc.issue_date" />
+                                    </strong>
+                                </td>
+                                <td>
+                                    <strong>
+                                        <t t-esc="doc.receive_date" />
+                                    </strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_ris"
+        model="upmin_stock.ris"
+        string="Print RIS"
+        report_type="qweb-pdf"
+        name="upmin_stock.report_ris_document"
+        file="upmin_stock.report_ris_document"
+        print_report_name="'RIS - %s' % (object.ris_no)"
+    />
+</odoo>

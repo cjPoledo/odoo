@@ -15,6 +15,7 @@
         id="configuration_menu"
         name="Configuration"
         parent="upmin_stock_menu"
+        groups="upmin_stock.group_spmo_stock_custodian"
         sequence="55"/>
 
     <menuitem

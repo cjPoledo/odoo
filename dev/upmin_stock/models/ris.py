@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from datetime import datetime
 
 
 class RIS(models.Model):
@@ -26,10 +25,35 @@ class RIS(models.Model):
     )
     line_ids = fields.One2many("upmin_stock.ris_line", "ris_id", string="Stocks")
     purpose = fields.Text(string="Purpose")
-    requested_by = fields.Char(string="Requested By", required=True)
+    requested_by = fields.Many2one("res.partner", string="Requested By", required=True)
+    requester_designation = fields.Char(string="Designation")
+    request_date = fields.Date(string="Date")
     approved_by = fields.Char(string="Approved By")
-    issued_by = fields.Char(string="Issued By")
+    approver_designation = fields.Char(string="Designation")
+    approve_date = fields.Date(string="Date")
+    issued_by = fields.Many2one("res.partner", string="Issued By")
+    issuer_designation = fields.Char(string="Designation")
+    issue_date = fields.Date(string="Date")
     received_by = fields.Char(string="Received By")
+    receiver_designation = fields.Char(string="Designation")
+    receive_date = fields.Date(string="Date")
+    status = fields.Selection(
+        [
+            ("draft", "Draft"),
+            ("issuance", "For Issuance"),
+            ("receiving", "For Receiving"),
+            ("received", "Received"),
+        ],
+        string="Status",
+        default="draft",
+        readonly=True,
+    )
+
+    user_has_permission = fields.Boolean(
+        string="User Has Special Permission",
+        compute="_compute_user_permission",
+        store=False,
+    )
 
     _sql_constraints = [
         ("ris_no_uniq", "unique(ris_no)", "The RIS No. must be unique!"),
@@ -66,3 +90,8 @@ class RIS(models.Model):
             vals["ris_no"] = sequence.sudo().next_by_code(code)
 
         return super().create(vals)
+
+    def _compute_user_permission(self):
+        special_group = self.env.ref("upmin_stock.group_spmo_stock_custodian")
+        for record in self:
+            record.user_has_permission = special_group in self.env.user.groups_id

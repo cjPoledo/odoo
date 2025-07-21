@@ -5,160 +5,196 @@
 
         <record id="access_upmin_stock_stock_general" model="ir.model.access">
             <field name="name">access_upmin_stock_stock_general</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_stock"/>
-            <field name="group_id" ref="base.group_user"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="0"/>
-            <field name="perm_create" eval="0"/>
-            <field name="perm_unlink" eval="0"/>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_stock" />
+            <field name="group_id" ref="base.group_user" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="0" />
+            <field name="perm_create" eval="0" />
+            <field name="perm_unlink" eval="0" />
         </record>
         <record id="access_upmin_stock_replenishment_general" model="ir.model.access">
             <field name="name">access_upmin_stock_replenishment_general</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_replenishment"/>
-            <field name="group_id" ref="base.group_user"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="0"/>
-            <field name="perm_create" eval="0"/>
-            <field name="perm_unlink" eval="0"/>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_replenishment" />
+            <field name="group_id" ref="base.group_user" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="0" />
+            <field name="perm_create" eval="0" />
+            <field name="perm_unlink" eval="0" />
         </record>
         <record id="access_upmin_stock_issuance_general" model="ir.model.access">
             <field name="name">access_upmin_stock_issuance_general</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_issuance"/>
-            <field name="group_id" ref="base.group_user"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="0"/>
-            <field name="perm_create" eval="0"/>
-            <field name="perm_unlink" eval="0"/>
-        </record>
-        
-        <record id="access_upmin_stock_issuance" model="ir.model.access">
-            <field name="name">access_upmin_stock_issuance</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_issuance"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
-        </record>
-        <record id="access_upmin_stock_stock" model="ir.model.access">
-            <field name="name">access_upmin_stock_stock</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_stock"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
-        </record>
-        <record id="access_upmin_stock_rc" model="ir.model.access">
-            <field name="name">access_upmin_stock_rc</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_rc"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
-        </record>
-        <record id="access_upmin_stock_category" model="ir.model.access">
-            <field name="name">access_upmin_stock_category</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_category"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
-        </record>
-        <record id="access_upmin_stock_measure_units" model="ir.model.access">
-            <field name="name">access_upmin_stock_measure_units</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_measure_units"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
-        </record>
-        <record id="access_upmin_stock_report" model="ir.model.access">
-            <field name="name">access_upmin_stock_report</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_report"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
-        </record>
-        <record id="access_upmin_stock_replenishment" model="ir.model.access">
-            <field name="name">access_upmin_stock_replenishment</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_replenishment"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
-        </record>
-        <record id="access_upmin_stock_rsmi" model="ir.model.access">
-            <field name="name">access_upmin_stock_rsmi</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_rsmi"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
-        </record>
-        <record id="access_upmin_stock_procurement" model="ir.model.access">
-            <field name="name">access_upmin_stock_procurement</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_procurement"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
-        </record>
-        <record id="access_upmin_stock_procurement_wizard" model="ir.model.access">
-            <field name="name">access_upmin_stock_procurement_wizard</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_procurement_wizard"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_issuance" />
+            <field name="group_id" ref="base.group_user" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="0" />
+            <field name="perm_create" eval="0" />
+            <field name="perm_unlink" eval="0" />
         </record>
         <record id="access_upmin_stock_ris" model="ir.model.access">
             <field name="name">access_upmin_stock_ris</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_ris"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_ris" />
+            <field name="group_id" ref="base.group_user" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
         </record>
         <record id="access_upmin_stock_ris_line" model="ir.model.access">
             <field name="name">access_upmin_stock_ris_line</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_ris_line"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_ris_line" />
+            <field name="group_id" ref="base.group_user" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
+        </record>
+        <record id="access_upmin_stock_stock_fund_balance_general" model="ir.model.access">
+            <field name="name">access_upmin_stock_stock_fund_balance_general</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_stock_fund_balance" />
+            <field name="group_id" ref="base.group_user" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="0" />
+            <field name="perm_create" eval="0" />
+            <field name="perm_unlink" eval="0" />
+        </record>
+        <record id="access_upmin_stock_fund_cluster_general" model="ir.model.access">
+            <field name="name">access_upmin_stock_fund_cluster_general</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_fund_cluster" />
+            <field name="group_id" ref="base.group_user" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="0" />
+            <field name="perm_create" eval="0" />
+            <field name="perm_unlink" eval="0" />
+        </record>
+        <record id="access_upmin_stock_rc_general" model="ir.model.access">
+            <field name="name">access_upmin_stock_rc_general</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_rc" />
+            <field name="group_id" ref="base.group_user" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="0" />
+            <field name="perm_create" eval="0" />
+            <field name="perm_unlink" eval="0" />
+        </record>
+        <record id="access_upmin_stock_measure_units_general" model="ir.model.access">
+            <field name="name">access_upmin_stock_measure_units_general</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_measure_units" />
+            <field name="group_id" ref="base.group_user" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="0" />
+            <field name="perm_create" eval="0" />
+            <field name="perm_unlink" eval="0" />
+        </record>
+
+        <record id="access_upmin_stock_issuance" model="ir.model.access">
+            <field name="name">access_upmin_stock_issuance</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_issuance" />
+            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
+        </record>
+        <record id="access_upmin_stock_stock" model="ir.model.access">
+            <field name="name">access_upmin_stock_stock</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_stock" />
+            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
+        </record>
+        <record id="access_upmin_stock_rc" model="ir.model.access">
+            <field name="name">access_upmin_stock_rc</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_rc" />
+            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
+        </record>
+        <record id="access_upmin_stock_category" model="ir.model.access">
+            <field name="name">access_upmin_stock_category</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_category" />
+            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
+        </record>
+        <record id="access_upmin_stock_measure_units" model="ir.model.access">
+            <field name="name">access_upmin_stock_measure_units</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_measure_units" />
+            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
+        </record>
+        <record id="access_upmin_stock_report" model="ir.model.access">
+            <field name="name">access_upmin_stock_report</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_report" />
+            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
+        </record>
+        <record id="access_upmin_stock_replenishment" model="ir.model.access">
+            <field name="name">access_upmin_stock_replenishment</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_replenishment" />
+            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
+        </record>
+        <record id="access_upmin_stock_rsmi" model="ir.model.access">
+            <field name="name">access_upmin_stock_rsmi</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_rsmi" />
+            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
+        </record>
+        <record id="access_upmin_stock_procurement" model="ir.model.access">
+            <field name="name">access_upmin_stock_procurement</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_procurement" />
+            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
+        </record>
+        <record id="access_upmin_stock_procurement_wizard" model="ir.model.access">
+            <field name="name">access_upmin_stock_procurement_wizard</field>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_procurement_wizard" />
+            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
         </record>
         <record id="access_upmin_stock_fund_cluster" model="ir.model.access">
             <field name="name">access_upmin_stock_fund_cluster</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_fund_cluster"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_fund_cluster" />
+            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
         </record>
         <record id="access_upmin_stock_stock_fund_balance" model="ir.model.access">
             <field name="name">access_upmin_stock_stock_fund_balance</field>
-            <field name="model_id" ref="upmin_stock.model_upmin_stock_stock_fund_balance"/>
-            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian"/>
-            <field name="perm_read" eval="1"/>
-            <field name="perm_write" eval="1"/>
-            <field name="perm_create" eval="1"/>
-            <field name="perm_unlink" eval="1"/>
+            <field name="model_id" ref="upmin_stock.model_upmin_stock_stock_fund_balance" />
+            <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
+            <field name="perm_read" eval="1" />
+            <field name="perm_write" eval="1" />
+            <field name="perm_create" eval="1" />
+            <field name="perm_unlink" eval="1" />
         </record>
-    
+
     </data>
-    
+
 
 </odoo>
