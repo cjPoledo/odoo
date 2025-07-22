@@ -41,18 +41,20 @@
                         <field name="line_ids">
                             <tree editable="bottom">
                                 <field name="status" invisible="1" />
-                                <field name="stock_id" />
-                                <field name="stock_balance" readonly="1" />
-                                <field name="quantity_req" />
+                                <field name="stock_id"
+                                    attrs="{'readonly': [('status', '!=', 'draft')]}" />
+                                <field name="stock_balance" readonly="1" string="Current Balance" />
+                                <field name="quantity_req"
+                                    attrs="{'readonly': [('status', '!=', 'draft')]}" />
                                 <field name="stock_avail"
                                     groups="upmin_stock.group_spmo_stock_custodian"
-                                    attrs="{'invisible': [('status', '=', 'draft')]}" />
+                                    attrs="{'invisible': [('status', '=', 'draft')], 'readonly': [('status','!=', 'issuance')]}" />
                                 <field name="quantity_issued"
                                     groups="upmin_stock.group_spmo_stock_custodian"
-                                    attrs="{'readonly': [('stock_avail','=',False)], 'invisible': [('status', '=', 'draft')]}" />
+                                    attrs="{'readonly': ['|', ('stock_avail','=', False), ('status', '!=', 'issuance')], 'invisible': [('status', '=', 'draft')]}" />
                                 <field name="remarks"
                                     groups="upmin_stock.group_spmo_stock_custodian"
-                                    attrs="{'invisible': [('status', '=', 'draft')]}" />
+                                    attrs="{'invisible': [('status', '=', 'draft')], 'readonly': [('status','!=', 'issuance')]}" />
                             </tree>
                         </field>
                         <label for="purpose" class="fw-bold" />
