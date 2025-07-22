@@ -91,6 +91,22 @@ class RIS(models.Model):
 
         return super().create(vals)
 
+    def action_proceed_next_step(self):
+        if self.status == "draft":
+            self.status = "issuance"
+        elif self.status == "issuance":
+            self.status = "receiving"
+        elif self.status == "receiving":
+            self.status = "received"
+
+    def action_return_last_step(self):
+        if self.status == "issuance":
+            self.status = "draft"
+        elif self.status == "receiving":
+            self.status = "issuance"
+        elif self.status == "received":
+            self.status = "receiving"
+
     def _compute_user_permission(self):
         special_group = self.env.ref("upmin_stock.group_spmo_stock_custodian")
         for record in self:

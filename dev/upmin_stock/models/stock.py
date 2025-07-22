@@ -41,14 +41,14 @@ class Stock(models.Model):
             )
             stock.initial_balance = total_replenished
 
-    @api.depends("replenishment_ids.quantity", "issuance_ids.quantity_issued")
+    @api.depends("replenishment_ids.quantity", "issuance_ids.ris_line.quantity_issued")
     def _compute_balance(self):
         for stock in self:
             total_balance = sum(
                 replenishment.quantity for replenishment in stock.replenishment_ids
             )
             total_issued = sum(
-                issuance.quantity_issued for issuance in stock.issuance_ids
+                issuance.ris_line.quantity_issued for issuance in stock.issuance_ids
             )
             stock.balance = total_balance - total_issued
 
@@ -64,6 +64,10 @@ class Stock(models.Model):
             for r in stock.replenishment_ids:
                 fc_id = r.fund_cluster_id.id
                 grouped[fc_id] = grouped.get(fc_id, 0) + r.quantity
+
+            for i in stock.issuance_ids:
+                fc_id = i.ris_line.ris_id.fund_cluster.id
+                grouped[fc_id] = grouped.get(fc_id, 0) - i.ris_line.quantity_issued
 
             for fc_id, qty in grouped.items():
                 self.env["upmin_stock.stock_fund_balance"].create(

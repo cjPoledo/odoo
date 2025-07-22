@@ -10,14 +10,26 @@ class RISLine(models.Model):
     )
     stock_id = fields.Many2one("upmin_stock.stock", string="Stock", required=True)
     stock_balance = fields.Integer(
-        string="Balance", compute="_compute_stock_balance", readonly=True, store=False
+        string="Balance", compute="_compute_stock_balance", readonly=True
     )
     quantity_req = fields.Integer(string="Quantity Requested", required=True)
     stock_avail = fields.Boolean(string="Stock Available?", default=False)
     quantity_issued = fields.Integer(string="Quantity Issued", default=0)
     remarks = fields.Text(string="Remarks")
 
-    @api.depends("stock_id", "ris_id.fund_cluster")
+    status = fields.Selection(
+        [
+            ("draft", "Draft"),
+            ("issuance", "For Issuance"),
+            ("receiving", "For Receiving"),
+            ("received", "Received"),
+        ],
+        string="Status",
+        related="ris_id.status",
+        readonly=True,
+    )
+
+    @api.depends("stock_id", "ris_id.fund_cluster", "quantity_issued")
     def _compute_stock_balance(self):
         for line in self:
             # Find stock_fund_balance with matching stock_id and fund_cluster
@@ -56,12 +68,31 @@ class RISLine(models.Model):
                 raise models.ValidationError(
                     f"({record.stock_id.stock_no}) Quantity requested cannot exceed the current stock balance."
                 )
-            elif record.stock_balance < record.quantity_issued:
+            elif record.quantity_req < record.quantity_issued:
                 raise models.ValidationError(
-                    f"({record.stock_id.stock_no}) Quantity issued cannot exceed the current stock balance."
+                    f"({record.stock_id.stock_no}) Quantity issued cannot exceed quantity requested."
                 )
 
     @api.onchange("stock_avail")
     def _onchange_stock_avail(self):
         if not self.stock_avail:
             self.quantity_issued = 0
+
+    def create(self, vals):
+        res = super().create(vals)
+        for rec in res:
+            rec.stock_id.update_fund_cluster_balance()
+        return res
+
+    def write(self, vals):
+        res = super().write(vals)
+        for rec in self:
+            rec.stock_id.update_fund_cluster_balance()
+        return res
+
+    def unlink(self):
+        stocks = self.mapped("stock_id")
+        res = super().unlink()
+        for stock in stocks:
+            stock.update_fund_cluster_balance()
+        return res

@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields
 
 
 class Issuance(models.Model):
@@ -18,71 +18,53 @@ class Issuance(models.Model):
         digits=(12, 3),
         required=True,
     )
-    date_issued = fields.Date(string="Date Issued", required=True)
-    requested_by = fields.Many2one(
-        "res.partner", string="Requested By", required=True
-    )  # Assuming 'People' is linked to 'res.partner'
-    ris_no = fields.Many2one(
-        "upmin_stock.ris", string="RIS No.", required=True, ondelete="cascade"
-    )
-    rc_code = fields.Many2one("upmin_stock.rc", string="RC Code", required=True)
-    remarks = fields.Text(string="Remarks")
-    stock_no = fields.Many2one(
-        "upmin_stock.stock", string="Stock Number", required=True
-    )
-    quantity_requested = fields.Integer(string="Quantity Requested", required=True)
-    quantity_issued = fields.Integer(string="Quantity Issued", required=True)
-    fund_cluster_id = fields.Many2one(
-        "upmin_stock.fund_cluster", string="Fund Cluster", required=True
+    ris_line = fields.Many2one(
+        "upmin_stock.ris_line", string="RIS Line", required=True, ondelete="cascade"
     )
 
-    balance = fields.Integer(
-        string="Current Balance",
-        related="stock_no.balance",
-        store=False,
-        readonly=True,
+    date_issued = fields.Date(
+        string="Date Issued", related="ris_line.ris_id.issue_date", store=False
     )
-    unit = fields.Many2one(
-        related="stock_no.unit",
-        string="Unit",
+    requested_by = fields.Many2one(
+        "res.partner",
+        string="Requested By",
+        related="ris_line.ris_id.requested_by",
         store=False,
-        readonly=True,
     )
+    ris_no = fields.Char(
+        string="RIS No.", related="ris_line.ris_id.ris_no", store=False
+    )
+    rc_code = fields.Many2one(
+        "upmin_stock.rc",
+        string="RC Code",
+        related="ris_line.ris_id.rc_code",
+        store=False,
+    )
+    stock_no = fields.Many2one(
+        "upmin_stock.stock",
+        string="Stock No.",
+        related="ris_line.stock_id",
+        store=False,
+    )
+    quantity_requested = fields.Integer(
+        string="Quantity Requested", related="ris_line.quantity_req", store=False
+    )
+    quantity_issued = fields.Integer(
+        string="Quantity Issued", related="ris_line.quantity_issued", store=False
+    )
+    remarks = fields.Text(string="Remarks", related="ris_line.remarks", store=False)
 
     _sql_constraints = [
         (
             "seq_no_unique",
             "unique(seq_no)",
             "Sequence Number must be unique.",
-        ),
-        (
-            "stock_no_quantity_check",
-            "CHECK (quantity_issued <= quantity_requested)",
-            "Quantity Issued cannot exceed Quantity Requested.",
-        ),
-        (
-            "quantity_issued_positive_check",
-            "CHECK (quantity_issued >= 0)",
-            "Quantity Issued must be positive.",
-        ),
-        (
-            "quantity_requested_positive_check",
-            "CHECK (quantity_requested >= 0)",
-            "Quantity Requested must be positive.",
-        ),
+        )
     ]
-
-    @api.constrains("quantity_issued")
-    def _check_quantity_issued(self):
-        for record in self:
-            if record.stock_no.balance < 0:
-                raise models.ValidationError(
-                    "Quantity Issued cannot exceed the current stock balance."
-                )
 
     def name_get(self):
         result = []
         for record in self:
-            name = f"{record.seq_no} - {record.rc_code.rc_code} - {record.stock_no.description}"
+            name = f"{record.seq_no} - {record.ris_line.ris_id.ris_no} - {record.ris_line.stock_id.description}"
             result.append((record.id, name))
         return result

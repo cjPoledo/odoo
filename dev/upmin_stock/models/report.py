@@ -31,9 +31,9 @@ class Report(models.Model):
                     SELECT
                         1 AS id,
                         (SELECT COALESCE(SUM(quantity), 0) FROM upmin_stock_replenishment) AS total_quantity,
-                        (SELECT COALESCE(SUM(quantity_issued), 0) FROM upmin_stock_issuance) AS total_issued,
+                        (SELECT COALESCE(SUM(quantity_issued), 0) FROM upmin_stock_ris_line) AS total_issued,
                         (SELECT COALESCE(SUM(quantity), 0) FROM upmin_stock_replenishment) -
-                        (SELECT COALESCE(SUM(quantity_issued), 0) FROM upmin_stock_issuance) AS total_balance
+                        (SELECT COALESCE(SUM(quantity_issued), 0) FROM upmin_stock_ris_line) AS total_balance
                 )
             """
         )

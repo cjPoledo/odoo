@@ -40,16 +40,19 @@
                         </group>
                         <field name="line_ids">
                             <tree editable="bottom">
+                                <field name="status" invisible="1" />
                                 <field name="stock_id" />
                                 <field name="stock_balance" readonly="1" />
                                 <field name="quantity_req" />
                                 <field name="stock_avail"
-                                    groups="upmin_stock.group_spmo_stock_custodian" />
+                                    groups="upmin_stock.group_spmo_stock_custodian"
+                                    attrs="{'invisible': [('status', '=', 'draft')]}" />
                                 <field name="quantity_issued"
                                     groups="upmin_stock.group_spmo_stock_custodian"
-                                    attrs="{'readonly': [('stock_avail','=',False)]}" />
+                                    attrs="{'readonly': [('stock_avail','=',False)], 'invisible': [('status', '=', 'draft')]}" />
                                 <field name="remarks"
-                                    groups="upmin_stock.group_spmo_stock_custodian" />
+                                    groups="upmin_stock.group_spmo_stock_custodian"
+                                    attrs="{'invisible': [('status', '=', 'draft')]}" />
                             </tree>
                         </field>
                         <label for="purpose" class="fw-bold" />
@@ -64,7 +67,7 @@
                             <field name="approver_designation" />
                             <field name="approve_date" />
                         </group>
-                        <group>
+                        <group attrs="{'invisible': [('status', '=', 'draft')]}">
                             <field name="user_has_permission" invisible="1" />
                             <field name="issued_by"
                                 attrs="{'readonly': [('user_has_permission', '=', False)]}" />
@@ -73,7 +76,8 @@
                             <field name="issue_date"
                                 attrs="{'readonly': [('user_has_permission', '=', False)]}" />
                         </group>
-                        <group>
+                        <group
+                            attrs="{'invisible': ['|', ('status', '=', 'draft'), ('status', '=', 'issuance')]}">
                             <field name="received_by"
                                 attrs="{'readonly': [('issued_by', '=', False)]}" />
                             <field name="receiver_designation"
@@ -82,6 +86,23 @@
                                 attrs="{'readonly': [('issued_by', '=', False)]}" />
                         </group>
                     </group>
+
+                    <div class="oe_button_box"
+                        name="bottom_buttons"
+                        style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+
+                        <button name="action_return_last_step"
+                            type="object"
+                            string="Return to Last Step"
+                            class="btn btn-primary"
+                            attrs="{'invisible': [('status', '=', 'draft')]}" />
+
+                        <button name="action_proceed_next_step"
+                            type="object"
+                            string="Proceed to Next Step"
+                            class="btn btn-primary"
+                            attrs="{'invisible': [('status', '=', 'received')]}" />
+                    </div>
                 </sheet>
             </form>
         </field>
