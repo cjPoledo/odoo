@@ -20,25 +20,49 @@
         <field name="model">upmin_stock.ris</field>
         <field name="arch" type="xml">
             <form string="">
+                <header>
+                    <div class="oe_button_box">
+                        <button name="action_return_last_step"
+                            type="object"
+                            string="Return to Unit"
+                            class="btn btn-secondary"
+                            groups="upmin_stock.group_spmo_stock_custodian"
+                            attrs="{'invisible': [('status', '!=', 'issuance')]}" />
+
+                        <button name="action_proceed_next_step"
+                            type="object"
+                            string="Submit for Receiving"
+                            class="btn btn-secondary"
+                            groups="upmin_stock.group_spmo_stock_custodian"
+                            attrs="{'invisible': [('status', '!=', 'issuance')]}" />
+
+                        <button name="action_proceed_next_step"
+                            type="object"
+                            string="Submit"
+                            class="btn btn-secondary"
+                            attrs="{'invisible': [('status', '=', 'issuance')]}" />
+                    </div>
+                    <field name="status" widget="statusbar"
+                        statusbar_visible="draft,issuance,receiving,received" />
+                </header>
                 <sheet>
                     <group>
+                        <label for="ris_no" class="fw-bold"
+                            attrs="{'invisible': [('ris_no','=',False)]}" />
+                        <field name="ris_no" style="font-size:2em"
+                            attrs="{'invisible': [('ris_no','=',False)]}" required="0" />
                         <group>
-                            <field name="ris_no" style="font-size:2em"
-                                attrs="{'invisible': [('ris_no','=',False)]}" required="0" />
+                            <field name="entity_name"
+                                attrs="{'readonly': [('status', '!=', 'draft')]}" />
+                            <field name="division"
+                                attrs="{'readonly': [('status', '!=', 'draft')]}" />
                         </group>
                         <group>
-                            <field name="status" style="font-size:1.5em"
-                                attrs="{'invisible': [('ris_no','=',False)]}" />
+                            <field name="fund_cluster"
+                                attrs="{'readonly': [('status', '!=', 'draft')]}" />
+                            <field name="rc_code" attrs="{'readonly': [('status', '!=', 'draft')]}" />
                         </group>
-                        <group>
-                            <field name="entity_name" />
-                            <field name="division" />
-                        </group>
-                        <group>
-                            <field name="fund_cluster" />
-                            <field name="rc_code" />
-                        </group>
-                        <field name="line_ids">
+                        <field name="line_ids" attrs="{'invisible': [('status', '!=', 'draft')]}">
                             <tree editable="bottom">
                                 <field name="status" invisible="1" />
                                 <field name="stock_id"
@@ -47,64 +71,67 @@
                                 <field name="quantity_req"
                                     attrs="{'readonly': [('status', '!=', 'draft')]}" />
                                 <field name="stock_avail"
-                                    groups="upmin_stock.group_spmo_stock_custodian"
                                     attrs="{'invisible': [('status', '=', 'draft')], 'readonly': [('status','!=', 'issuance')]}" />
                                 <field name="quantity_issued"
-                                    groups="upmin_stock.group_spmo_stock_custodian"
                                     attrs="{'readonly': ['|', ('stock_avail','=', False), ('status', '!=', 'issuance')], 'invisible': [('status', '=', 'draft')]}" />
                                 <field name="remarks"
-                                    groups="upmin_stock.group_spmo_stock_custodian"
+                                    attrs="{'readonly': [('status','!=', 'issuance')]}" />
+                            </tree>
+                        </field>
+                        <field name="line_ids_no_add_delete"
+                            attrs="{'invisible': [('status', '==', 'draft')]}">
+                            <tree editable="bottom" create="false" delete="false">
+                                <field name="status" invisible="1" />
+                                <field name="stock_id"
+                                    attrs="{'readonly': [('status', '!=', 'draft')]}" />
+                                <field name="stock_balance" readonly="1" string="Current Balance" />
+                                <field name="quantity_req"
+                                    attrs="{'readonly': [('status', '!=', 'draft')]}" />
+                                <field name="stock_avail"
                                     attrs="{'invisible': [('status', '=', 'draft')], 'readonly': [('status','!=', 'issuance')]}" />
+                                <field name="quantity_issued"
+                                    attrs="{'readonly': ['|', ('stock_avail','=', False), ('status', '!=', 'issuance')], 'invisible': [('status', '=', 'draft')]}" />
+                                <field name="remarks"
+                                    attrs="{'readonly': [('status','!=', 'issuance')]}" />
                             </tree>
                         </field>
                         <label for="purpose" class="fw-bold" />
-                        <field name="purpose" />
+                        <field name="purpose" attrs="{'readonly': [('status', '!=', 'draft')]}" />
                         <group>
-                            <field name="requested_by" />
-                            <field name="requester_designation" />
-                            <field name="request_date" />
+                            <field name="requested_by"
+                                attrs="{'readonly': [('status', '!=', 'draft')]}" />
+                            <field name="requester_designation"
+                                attrs="{'readonly': [('status', '!=', 'draft')]}" />
+                            <field name="request_date"
+                                attrs="{'readonly': [('status', '!=', 'draft')]}" />
                         </group>
                         <group>
-                            <field name="approved_by" />
-                            <field name="approver_designation" />
-                            <field name="approve_date" />
+                            <field name="approved_by"
+                                attrs="{'readonly': [('status', '!=', 'draft')]}" />
+                            <field name="approver_designation"
+                                attrs="{'readonly': [('status', '!=', 'draft')]}" />
+                            <field name="approve_date"
+                                attrs="{'readonly': [('status', '!=', 'draft')]}" />
                         </group>
                         <group attrs="{'invisible': [('status', '=', 'draft')]}">
                             <field name="user_has_permission" invisible="1" />
                             <field name="issued_by"
-                                attrs="{'readonly': [('user_has_permission', '=', False)]}" />
+                                attrs="{'readonly': ['|', ('user_has_permission', '=', False), ('status', '!=', 'issuance')]}" />
                             <field name="issuer_designation"
-                                attrs="{'readonly': [('user_has_permission', '=', False)]}" />
+                                attrs="{'readonly': ['|', ('user_has_permission', '=', False), ('status', '!=', 'issuance')]}" />
                             <field name="issue_date"
-                                attrs="{'readonly': [('user_has_permission', '=', False)]}" />
+                                attrs="{'readonly': ['|', ('user_has_permission', '=', False), ('status', '!=', 'issuance')]}" />
                         </group>
                         <group
                             attrs="{'invisible': ['|', ('status', '=', 'draft'), ('status', '=', 'issuance')]}">
                             <field name="received_by"
-                                attrs="{'readonly': [('issued_by', '=', False)]}" />
+                                attrs="{'readonly': [('status', '!=', 'receiving')]}" />
                             <field name="receiver_designation"
-                                attrs="{'readonly': [('issued_by', '=', False)]}" />
+                                attrs="{'readonly': [('status', '!=', 'receiving')]}" />
                             <field name="receive_date"
-                                attrs="{'readonly': [('issued_by', '=', False)]}" />
+                                attrs="{'readonly': [('status', '!=', 'receiving')]}" />
                         </group>
                     </group>
-
-                    <div class="oe_button_box"
-                        name="bottom_buttons"
-                        style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
-
-                        <button name="action_return_last_step"
-                            type="object"
-                            string="Return to Last Step"
-                            class="btn btn-primary"
-                            attrs="{'invisible': [('status', '=', 'draft')]}" />
-
-                        <button name="action_proceed_next_step"
-                            type="object"
-                            string="Proceed to Next Step"
-                            class="btn btn-primary"
-                            attrs="{'invisible': [('status', '=', 'received')]}" />
-                    </div>
                 </sheet>
             </form>
         </field>

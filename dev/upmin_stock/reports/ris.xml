@@ -110,8 +110,18 @@
                                     <td>
                                         <t t-esc="line.quantity_req or ''" />
                                     </td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>
+                                        <t
+                                            t-if="doc.status != 'draft' and doc.status != 'issuance' and line.stock_avail">
+                                            /
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t
+                                            t-if="doc.status != 'draft' and doc.status != 'issuance' and not line.stock_avail">
+                                            /
+                                        </t>
+                                    </td>
                                     <td>
                                         <t t-esc="line.quantity_issued or ''" />
                                     </td>
@@ -165,7 +175,7 @@
                                 </td>
                                 <td colspan="2">
                                     <strong>
-                                        <t t-esc="doc.issued_by" />
+                                        <t t-esc="doc.issued_by.name" />
                                     </strong>
                                 </td>
                                 <td>

@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class RIS(models.Model):
@@ -24,13 +25,18 @@ class RIS(models.Model):
         "upmin_stock.rc", string="Responsibility Center Code", required=True
     )
     line_ids = fields.One2many("upmin_stock.ris_line", "ris_id", string="Stocks")
+    line_ids_no_add_delete = fields.One2many(
+        "upmin_stock.ris_line", "ris_id", string="Stocks"
+    )
     purpose = fields.Text(string="Purpose")
     requested_by = fields.Many2one("res.partner", string="Requested By", required=True)
-    requester_designation = fields.Char(string="Designation")
-    request_date = fields.Date(string="Date")
-    approved_by = fields.Char(string="Approved By")
-    approver_designation = fields.Char(string="Designation")
-    approve_date = fields.Date(string="Date")
+    requester_designation = fields.Char(string="Designation", required=True)
+    request_date = fields.Date(
+        string="Date", required=True, default=fields.Date.context_today
+    )
+    approved_by = fields.Char(string="Approved By", required=True)
+    approver_designation = fields.Char(string="Designation", required=True)
+    approve_date = fields.Date(string="Date", required=True)
     issued_by = fields.Many2one("res.partner", string="Issued By")
     issuer_designation = fields.Char(string="Designation")
     issue_date = fields.Date(string="Date")
@@ -91,6 +97,32 @@ class RIS(models.Model):
 
         return super().create(vals)
 
+    @api.constrains("status")
+    def _check_approval_fields(self):
+        for record in self:
+            if record.status == "receiving":
+                if (
+                    not record.issued_by
+                    or not record.issuer_designation
+                    or not record.issue_date
+                ):
+                    raise ValidationError(
+                        "All issuance fields must be filled when the status is 'For Issuance'."
+                    )
+
+    @api.constrains("status")
+    def _check_receiving_fields(self):
+        for record in self:
+            if record.status == "received":
+                if (
+                    not record.received_by
+                    or not record.receiver_designation
+                    or not record.receive_date
+                ):
+                    raise ValidationError(
+                        "All receiving fields must be filled when the status is 'For Receiving'."
+                    )
+
     def action_proceed_next_step(self):
         if self.status == "draft":
             self.status = "issuance"
@@ -101,8 +133,16 @@ class RIS(models.Model):
 
     def action_return_last_step(self):
         if self.status == "issuance":
+            self.issued_by = False
+            self.issue_date = False
+            self.issuer_designation = False
+            self.line_ids.stock_avail = False
+            self.line_ids.quantity_issued = 0
             self.status = "draft"
         elif self.status == "receiving":
+            self.received_by = False
+            self.receive_date = False
+            self.receiver_designation = False
             self.status = "issuance"
         elif self.status == "received":
             self.status = "receiving"
