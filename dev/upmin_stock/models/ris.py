@@ -140,6 +140,12 @@ class RIS(models.Model):
             self.status = "issuance"
         elif self.status == "issuance":
             self.status = "receiving"
+            for line in self.line_ids:
+                self.env["upmin_stock.issuance"].create(
+                    {
+                        "ris_line": line.id,
+                    }
+                )
         elif self.status == "receiving":
             self.status = "received"
 
