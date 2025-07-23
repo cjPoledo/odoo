@@ -5,4 +5,8 @@
         <field name="name">SPMO Stock Custodian</field>
     </record>
 
+    <record id="group_spmo_stock_user" model="res.groups">
+        <field name="name">SPMO Stock User</field>
+    </record>
+
 </odoo>

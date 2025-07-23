@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from odoo.osv import expression
 
 
 class RIS(models.Model):
@@ -36,7 +37,7 @@ class RIS(models.Model):
     )
     approved_by = fields.Char(string="Approved By", required=True)
     approver_designation = fields.Char(string="Designation", required=True)
-    approve_date = fields.Date(string="Date", required=True)
+    approve_date = fields.Date(string="Date")
     issued_by = fields.Many2one("res.partner", string="Issued By")
     issuer_designation = fields.Char(string="Designation")
     issue_date = fields.Date(string="Date")
@@ -97,6 +98,21 @@ class RIS(models.Model):
 
         return super().create(vals)
 
+    @api.model
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        if self.env.user.has_group("upmin_stock.group_spmo_stock_custodian"):
+            domain = [
+                "|",
+                ("create_uid", "=", self.env.user.id),
+                ("status", "!=", "draft"),
+            ]
+        else:
+            domain = [("create_uid", "=", self.env.user.id)]
+        args = expression.AND([args, domain])
+        return super().search(
+            args, offset=offset, limit=limit, order=order, count=count
+        )
+
     @api.constrains("status")
     def _check_approval_fields(self):
         for record in self:
@@ -109,11 +125,7 @@ class RIS(models.Model):
                     raise ValidationError(
                         "All issuance fields must be filled when the status is 'For Issuance'."
                     )
-
-    @api.constrains("status")
-    def _check_receiving_fields(self):
-        for record in self:
-            if record.status == "received":
+            elif record.status == "received":
                 if (
                     not record.received_by
                     or not record.receiver_designation
