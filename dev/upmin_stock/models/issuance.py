@@ -68,3 +68,22 @@ class Issuance(models.Model):
             name = f"{record.seq_no} - {record.ris_line.ris_id.ris_no} - {record.ris_line.stock_id.description}"
             result.append((record.id, name))
         return result
+
+    def create(self, vals):
+        res = super().create(vals)
+        for rec in res:
+            rec.ris_line.stock_id.update_fund_cluster_balance()
+        return res
+
+    def write(self, vals):
+        res = super().write(vals)
+        for rec in self:
+            rec.ris_line.stock_id.update_fund_cluster_balance()
+        return res
+
+    def unlink(self):
+        stocks = self.mapped("ris_line.stock_id")
+        res = super().unlink()
+        for stock in stocks:
+            stock.update_fund_cluster_balance()
+        return res
