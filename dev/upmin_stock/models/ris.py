@@ -7,6 +7,7 @@ class RIS(models.Model):
     _name = "upmin_stock.ris"
     _description = "Requisition and Issue Slip"
     _rec_name = "ris_no"
+    _order = "create_date desc"
 
     ris_no = fields.Char(
         string="RIS No.",
