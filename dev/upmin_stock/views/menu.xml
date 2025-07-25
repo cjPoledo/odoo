@@ -3,25 +3,25 @@
     <menuitem
         id="upmin_stock_menu"
         name="SPMO Inventory"
-        sequence="10"/>
+        sequence="10" />
 
     <menuitem
         id="upmin_stock_report"
         name="Report"
         parent="upmin_stock_menu"
-        sequence="50"/>
-    
+        sequence="50" />
+
     <menuitem
         id="configuration_menu"
         name="Configuration"
         parent="upmin_stock_menu"
         groups="upmin_stock.group_spmo_stock_custodian"
-        sequence="55"/>
+        sequence="55" />
 
     <menuitem
         id="logs_menu"
         name="Logs"
         parent="upmin_stock_menu"
         groups="upmin_stock.group_spmo_stock_custodian"
-        sequence="60"/>
+        sequence="60" />
 </odoo>
