@@ -173,7 +173,7 @@ class RsmiXlsx(models.AbstractModel):
         sheet.write("G6", "Serial No.:", bold)
         sheet.write("H6", partners.serial_no, bold)
         sheet.write("A7", "Fund Cluster:", bold)
-        sheet.merge_range("B7:E7", partners.fund_cluster, bold)
+        sheet.merge_range("B7:E7", partners.fund_cluster.name, bold)
         sheet.write("G7", "Date:", bold)
         sheet.write("H7", partners.date, date_format)
 
@@ -205,7 +205,58 @@ class RsmiXlsx(models.AbstractModel):
             sheet.write(
                 row, 4, issuance.stock_no.unit.measure_unit or "-", entry_center
             )
-            sheet.write(row, 5, issuance.quantity_issued or "-", entry_center)
+            sheet.write(row, 5, issuance.quantity_issued or 0, entry_center)
+            sheet.write(row, 6, "", entry)
+            sheet.write(row, 7, "", entry)
+            row += 1
+
+        # 5 line spaces
+        for _ in range(5):
+            sheet.write(row, 0, "", entry_center)
+            sheet.write(row, 1, "", entry)
+            sheet.write(row, 2, "", entry)
+            sheet.write(row, 3, "", entry)
+            sheet.write(row, 4, "", entry_center)
+            sheet.write(row, 5, "", entry_center)
+            sheet.write(row, 6, "", entry)
+            sheet.write(row, 7, "", entry)
+            row += 1
+
+        # Recapitulation
+        sheet.write(row, 0, "", entry_center)
+        sheet.merge_range(f"B{row + 1}:C{row + 1}", "Recapitulation:", center_bold)
+        sheet.write(row, 3, "", entry)
+        sheet.write(row, 4, "", entry_center)
+        sheet.merge_range(f"F{row + 1}:H{row + 1}", "Recapitulation:", center_bold)
+        row += 1
+        sheet.write(row, 0, "", entry_center)
+        sheet.write(row, 1, "Stock No.", center_bold)
+        sheet.write(row, 2, "Quantity", center_bold)
+        sheet.write(row, 3, "", entry)
+        sheet.write(row, 4, "", entry_center)
+        sheet.write(row, 5, "Unit Cost", center_bold)
+        sheet.write(row, 6, "Total Cost", center_bold)
+        sheet.write(row, 7, "UACS Object Code", center_bold)
+        row += 1
+        for issuance in partners.issuances:
+            sheet.write(row, 0, "", entry_center)
+            sheet.write(row, 1, issuance.stock_no.stock_no or "-", entry)
+            sheet.write(row, 2, issuance.quantity_issued or 0, entry_center)
+            sheet.write(row, 3, "", entry)
+            sheet.write(row, 4, "", entry_center)
+            sheet.write(row, 5, "", entry)
+            sheet.write(row, 6, "", entry)
+            sheet.write(row, 7, "", entry)
+            row += 1
+
+        # 5 line spaces
+        for _ in range(5):
+            sheet.write(row, 0, "", entry_center)
+            sheet.write(row, 1, "", entry)
+            sheet.write(row, 2, "", entry)
+            sheet.write(row, 3, "", entry)
+            sheet.write(row, 4, "", entry_center)
+            sheet.write(row, 5, "", entry_center)
             sheet.write(row, 6, "", entry)
             sheet.write(row, 7, "", entry)
             row += 1
@@ -221,7 +272,7 @@ class RsmiXlsx(models.AbstractModel):
         sheet.merge_range(f"F{row + 2}:H{row + 2}", "", entry)
         sheet.merge_range(
             f"A{row + 3}:E{row + 3}",
-            partners.supply_custodian,
+            partners.supply_custodian.name,
             entry_center_underline_caps,
         )
         sheet.merge_range(

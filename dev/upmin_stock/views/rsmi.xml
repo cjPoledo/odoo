@@ -48,7 +48,7 @@
     </record>
 
     <record id="rsmi_action" model="ir.actions.act_window">
-        <field name="name">RSMI</field>
+        <field name="name">Report of Supplies and Materials Issued</field>
         <field name="res_model">upmin_stock.rsmi</field>
         <field name="view_mode">tree,form</field>
     </record>
@@ -58,6 +58,6 @@
         name="RSMI"
         action="rsmi_action"
         parent="upmin_stock_report"
-        sequence="15"/>
+        sequence="15" />
 
 </odoo>

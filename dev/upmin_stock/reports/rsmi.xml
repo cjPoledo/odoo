@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="rsmi" model="ir.actions.report">
-        <field name="name">Report of Supplies and Materials Issued</field>
+        <field name="name">Print RSMI</field>
         <field name="model">upmin_stock.rsmi</field>
         <field name="report_type">xlsx</field>
         <field name="report_name">upmin_stock.report_rsmi</field>
