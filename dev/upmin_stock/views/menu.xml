@@ -22,5 +22,6 @@
         id="logs_menu"
         name="Logs"
         parent="upmin_stock_menu"
+        groups="upmin_stock.group_spmo_stock_custodian"
         sequence="60"/>
 </odoo>

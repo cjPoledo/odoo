@@ -22,7 +22,8 @@
         "views/procurement_wizard.xml",
         "views/ris.xml",
         "views/fund_cluster.xml",
+        "views/stock_fund_balance.xml",
         "reports/rsmi.xml",
-        "reports/ris.xml"
+        "reports/ris.xml",
     ],
 }

@@ -4,8 +4,8 @@
     <record id="replenishment_view_tree" model="ir.ui.view">
         <field name="name">replenishment.view.tree</field>
         <field name="model">upmin_stock.replenishment</field>
-        <field name="arch" type="xml" >
-            <tree string="" create="false" default_order="date desc" >
+        <field name="arch" type="xml">
+            <tree string="" create="false" delete="false" edit="false" default_order="date desc">
                 <field name="date" />
                 <field name="stock_id" />
                 <field name="fund_cluster_id" />
@@ -27,6 +27,6 @@
         action="replenishment_action"
         parent="logs_menu"
         sequence="10"
-        groups="upmin_stock.group_spmo_stock_custodian"/>
+        groups="upmin_stock.group_spmo_stock_custodian" />
 
 </odoo>
