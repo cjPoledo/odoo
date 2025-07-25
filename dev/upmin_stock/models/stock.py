@@ -103,3 +103,10 @@ class Stock(models.Model):
             name = f"{record.stock_no} - {record.description}"
             result.append((record.id, name))
         return result
+
+    def _name_search(self, name="", args=None, operator="ilike", limit=100):
+        args = list(args or [])
+        domain = ["|", ("stock_no", operator, name), ("description", operator, name)]
+        if not (name == "" and operator == "ilike"):
+            args += domain
+        return self._search(args, limit=limit)
