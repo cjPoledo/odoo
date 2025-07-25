@@ -5,6 +5,13 @@
         <field name="model">upmin_stock.procurement_wizard</field>
         <field name="arch" type="xml">
             <form string="Procurement">
+                <header>
+                    <button name="action_download_template"
+                        type="object"
+                        class="btn-secondary"
+                        string="Procurement Data Import Template"
+                        icon="fa-download" />
+                </header>
                 <sheet>
                     <group>
                         <group colspan="2">

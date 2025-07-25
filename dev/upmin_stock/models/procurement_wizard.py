@@ -15,7 +15,10 @@ class ProcurementWizard(models.Model):
     procurement_data = fields.One2many(
         "upmin_stock.procurement", "parent_id", string="Procurement Data", readonly=True
     )
-    excel_file = fields.Binary(string="Upload Excel")
+    excel_file = fields.Binary(
+        string="Upload Excel",
+        help="Upload an Excel file with procurement data. Use the provided template.",
+    )
     file_name = fields.Char(string="File Name")
     applied = fields.Boolean(string="Applied", default=False)
 
@@ -247,3 +250,10 @@ class ProcurementWizard(models.Model):
                 )
         # Mark the wizard as applied
         self.applied = True
+
+    def action_download_template(self):
+        return {
+            "type": "ir.actions.act_url",
+            "url": "/upmin_stock/static/template/procurement_data_import_template.xlsx",
+            "target": "new",
+        }
