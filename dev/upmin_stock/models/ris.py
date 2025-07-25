@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError, UserError
 from odoo.osv import expression
+from collections import Counter
 
 
 class RIS(models.Model):
@@ -8,6 +9,7 @@ class RIS(models.Model):
     _description = "Requisition and Issue Slip"
     _rec_name = "ris_no"
     _order = "create_date desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     ris_no = fields.Char(
         string="RIS No.",
@@ -60,6 +62,7 @@ class RIS(models.Model):
         string="Status",
         default="draft",
         readonly=True,
+        tracking=True,
     )
 
     user_has_permission = fields.Boolean(
@@ -145,6 +148,21 @@ class RIS(models.Model):
                     raise ValidationError(
                         "All receiving fields must be filled when the status is 'For Receiving'."
                     )
+
+    @api.constrains("line_ids")
+    def _check_unique_stock_id(self):
+        for rec in self:
+            stock_ids = [line.stock_id for line in rec.line_ids if line.stock_id]
+            counts = Counter(stock_ids)
+            duplicates = [
+                stock.display_name for stock, count in counts.items() if count > 1
+            ]
+
+            if duplicates:
+                dup_str = ", ".join(duplicates)
+                raise ValidationError(
+                    f"The following stock(s) are duplicated: {dup_str}"
+                )
 
     def action_proceed_next_step(self):
         if self.status == "draft":
