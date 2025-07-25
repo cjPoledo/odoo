@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.osv import expression
 
 
@@ -31,7 +31,12 @@ class RIS(models.Model):
         "upmin_stock.ris_line", "ris_id", string="Stocks"
     )
     purpose = fields.Text(string="Purpose")
-    requested_by = fields.Many2one("res.partner", string="Requested By", required=True)
+    requested_by = fields.Many2one(
+        "res.partner",
+        string="Requested By",
+        required=True,
+        default=lambda self: self.env.user.partner_id.id,
+    )
     requester_designation = fields.Char(string="Designation", required=True)
     request_date = fields.Date(
         string="Date", required=True, default=fields.Date.context_today
@@ -60,6 +65,11 @@ class RIS(models.Model):
     user_has_permission = fields.Boolean(
         string="User Has Special Permission",
         compute="_compute_user_permission",
+        store=False,
+    )
+    is_creator = fields.Boolean(
+        string="Is Creator",
+        compute="_compute_is_creator",
         store=False,
     )
 
@@ -171,9 +181,18 @@ class RIS(models.Model):
         for record in self:
             record.user_has_permission = special_group in self.env.user.groups_id
 
+    @api.depends("create_uid")
+    def _compute_is_creator(self):
+        current_user = self.env.uid
+        for rec in self:
+            rec.is_creator = rec.create_uid.id == current_user
+
     def unlink(self):
+        for rec in self:
+            if rec.status in ["receiving", "received"]:
+                raise UserError("Deletion is blocked for issued records.")
+
         stocks = self.mapped("line_ids.stock_id")
-        res = super().unlink()
         for stock in stocks:
             stock.update_fund_cluster_balance()
-        return res
+        return super().unlink()

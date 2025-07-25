@@ -36,11 +36,12 @@
                             groups="upmin_stock.group_spmo_stock_custodian"
                             attrs="{'invisible': [('status', '!=', 'issuance')]}" />
 
+                        <field name="is_creator" invisible="1" />
                         <button name="action_proceed_next_step"
                             type="object"
                             string="Submit"
                             class="btn btn-secondary"
-                            attrs="{'invisible': [('status', '=', 'issuance')]}" />
+                            attrs="{'invisible': ['|', ('status', '=', 'issuance'), ('is_creator', '=', False)]}" />
                     </div>
                     <field name="status" widget="statusbar"
                         statusbar_visible="draft,issuance,receiving,received" />
