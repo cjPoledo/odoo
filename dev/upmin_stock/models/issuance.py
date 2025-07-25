@@ -34,20 +34,29 @@ class Issuance(models.Model):
     ris_no = fields.Char(
         string="RIS No.", related="ris_line.ris_id.ris_no", store=False
     )
+    office = fields.Char(related="ris_line.ris_id.rc_code.rc_name", store=False)
     rc_code = fields.Many2one(
         "upmin_stock.rc",
         string="RC Code",
         related="ris_line.ris_id.rc_code",
         store=False,
     )
-    stock_no = fields.Many2one(
-        "upmin_stock.stock",
+    stock_no = fields.Char(
         string="Stock No.",
-        related="ris_line.stock_id",
+        related="ris_line.stock_id.stock_no",
         store=False,
     )
+    stock_desc = fields.Char(
+        string="Stock Description",
+        related="ris_line.stock_id.description",
+        store=False,
+    )
+    unit = fields.Char(string="Unit", related="ris_line.stock_id.unit.measure_unit", store=False)
     quantity_requested = fields.Integer(
         string="Quantity Requested", related="ris_line.quantity_req", store=False
+    )
+    balance = fields.Integer(
+        string="Balance", related="ris_line.stock_balance", store=False
     )
     quantity_issued = fields.Integer(
         string="Quantity Issued", related="ris_line.quantity_issued", store=False
