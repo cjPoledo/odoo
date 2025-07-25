@@ -169,3 +169,10 @@ class RIS(models.Model):
         special_group = self.env.ref("upmin_stock.group_spmo_stock_custodian")
         for record in self:
             record.user_has_permission = special_group in self.env.user.groups_id
+
+    def unlink(self):
+        stocks = self.mapped("line_ids.stock_id")
+        res = super().unlink()
+        for stock in stocks:
+            stock.update_fund_cluster_balance()
+        return res

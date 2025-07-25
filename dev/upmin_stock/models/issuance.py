@@ -41,7 +41,13 @@ class Issuance(models.Model):
         related="ris_line.ris_id.rc_code",
         store=False,
     )
-    stock_no = fields.Char(
+    stock_no = fields.Many2one(
+        "upmin_stock.stock",
+        string="Stock No.",
+        related="ris_line.stock_id",
+        store=False,
+    )
+    stock_no_id = fields.Char(
         string="Stock No.",
         related="ris_line.stock_id.stock_no",
         store=False,
@@ -51,7 +57,9 @@ class Issuance(models.Model):
         related="ris_line.stock_id.description",
         store=False,
     )
-    unit = fields.Char(string="Unit", related="ris_line.stock_id.unit.measure_unit", store=False)
+    unit = fields.Char(
+        string="Unit", related="ris_line.stock_id.unit.measure_unit", store=False
+    )
     quantity_requested = fields.Integer(
         string="Quantity Requested", related="ris_line.quantity_req", store=False
     )
@@ -62,6 +70,9 @@ class Issuance(models.Model):
         string="Quantity Issued", related="ris_line.quantity_issued", store=False
     )
     remarks = fields.Text(string="Remarks", related="ris_line.remarks", store=False)
+    fund_cluster = fields.Char(
+        string="Fund Cluster", related="ris_line.ris_id.fund_cluster.name", store=False
+    )
 
     _sql_constraints = [
         (

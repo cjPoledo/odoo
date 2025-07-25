@@ -41,7 +41,11 @@ class Stock(models.Model):
             )
             stock.initial_balance = total_replenished
 
-    @api.depends("replenishment_ids.quantity", "issuance_ids.ris_line.quantity_issued")
+    @api.depends(
+        "replenishment_ids.quantity",
+        "issuance_ids.ris_line.quantity_issued",
+        "per_fund_balance.balance",
+    )
     def _compute_balance(self):
         for stock in self:
             total_balance = sum(

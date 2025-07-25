@@ -12,12 +12,13 @@
                 <field name="office" string="Office/Dept" />
                 <field name="rc_code" />
                 <field name="remarks" />
-                <field name="stock_no" />
+                <field name="stock_no_id" />
                 <field name="stock_desc" string="Description" />
                 <field name="unit" />
                 <field name="quantity_requested" string="Qty Requested" />
                 <field name="balance" />
                 <field name="quantity_issued" string="Qty Issued" />
+                <field name="fund_cluster" />
             </tree>
         </field>
     </record>

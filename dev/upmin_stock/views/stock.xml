@@ -6,41 +6,43 @@
         <field name="arch" type="xml">
             <form string="Stock">
                 <header>
-                    <div class="bg-light border rounded my-1 px-3 py-1" style="font-size: 1.1em;" groups="upmin_stock.group_spmo_stock_custodian">
+                    <div class="bg-light border rounded my-1 px-3 py-1" style="font-size: 1.1em;"
+                        groups="upmin_stock.group_spmo_stock_custodian">
                         <strong class="me-2 text-muted">Running Balance:</strong>
-                        <field name="initial_balance" readonly="1" class="me-1 fw-bold text-primary"/>
-                        <field name="unit" readonly="1" options="{'no_open': True}" class="text-primary"/>
+                        <field name="initial_balance" readonly="1" class="me-1 fw-bold text-primary" />
+                        <field name="unit" readonly="1" options="{'no_open': True}"
+                            class="text-primary" />
                     </div>
                     <div class="bg-light border rounded my-1 px-3 py-1" style="font-size: 1.1em;">
                         <strong class="me-2 text-muted">Current Balance:</strong>
-                        <field name="balance" readonly="1" class="me-1 fw-bold text-primary"/>
-                        <field name="unit" readonly="1" options="{'no_open': True}" class="text-primary"/>
+                        <field name="balance" readonly="1" class="me-1 fw-bold text-primary" />
+                        <field name="unit" readonly="1" options="{'no_open': True}"
+                            class="text-primary" />
                     </div>
                     <button name="action_replenish_stock"
-                            type="object"
-                            string="Replenish Stock"
-                            class="btn-primary mx-2"
-                            icon="fa-plus-circle"
-                            groups="upmin_stock.group_spmo_stock_custodian"/>
+                        type="object"
+                        string="Replenish Stock"
+                        class="btn-primary mx-2"
+                        icon="fa-plus-circle"
+                        groups="upmin_stock.group_spmo_stock_custodian" />
                 </header>
                 <sheet>
                     <group>
-                        <label for="description" class="fw-bold"/>
-                        <field name="description" style="font-size:2em"/>
+                        <label for="description" class="fw-bold" />
+                        <field name="description" style="font-size:2em" />
                         <group>
-                            <field name="stock_no"/>
+                            <field name="stock_no" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Details">
                             <group>
                                 <group>
-                                    <field name="unit"/>
-                                    <field name="category"/>
+                                    <field name="unit" />
+                                    <field name="category" />
                                 </group>
-                                <group>`
-                                    <field name="price"/>
-                                    <field name="psdbm_price"/>
+                                <group>` <field name="price" />
+                                    <field name="psdbm_price" />
                                 </group>
                             </group>
                         </page>
@@ -58,24 +60,29 @@
                 <notebook groups="upmin_stock.group_spmo_stock_custodian">
                     <page string="Related Issuances">
                         <div class="oe_form_box" style="padding: 0 20px;">
-                            <field name="issuance_ids" readonly="1" >
+                            <field name="issuance_ids" readonly="1">
                                 <tree string="Related Issuances">
-                                    <field name="seq_no" />
+                                    <field name="seq_no" string="Seq.no" />
                                     <field name="date_issued" />
                                     <field name="requested_by" />
-                                    <field name="ris_no" />
+                                    <field name="ris_no" string="RIS#" />
+                                    <field name="office" string="Office/Dept" />
                                     <field name="rc_code" />
                                     <field name="remarks" />
-                                    <field name="stock_no" />
-                                    <field name="quantity_requested" />
-                                    <field name="quantity_issued" />
+                                    <field name="stock_no_id" />
+                                    <field name="stock_desc" string="Description" />
+                                    <field name="unit" />
+                                    <field name="quantity_requested" string="Qty Requested" />
+                                    <field name="balance" />
+                                    <field name="quantity_issued" string="Qty Issued" />
+                                    <field name="fund_cluster" />
                                 </tree>
                             </field>
                         </div>
                     </page>
                     <page string="Replenishment History">
                         <div class="oe_form_box" style="padding: 0 20px;">
-                            <field name="replenishment_ids" readonly="1" >
+                            <field name="replenishment_ids" readonly="1">
                                 <tree default_order="date desc" string="Replenishment History">
                                     <field name="date" />
                                     <field name="fund_cluster_id" />
@@ -135,14 +142,10 @@
                             <strong>
                                 <field name="description" />
                             </strong>
-                            <div>
-                                [<field name="stock_no" />]
+                            <div> [<field name="stock_no" />] </div>
+                            <div> Price: <field name="price" />
                             </div>
-                            <div>
-                                Price: <field name="price" />
-                            </div>
-                            <div>
-                                Balance: <field name="balance" /> <field name="unit" />
+                            <div> Balance: <field name="balance" /> <field name="unit" />
                             </div>
                         </div>
                     </t>
@@ -173,5 +176,5 @@
         name="Stock"
         parent="upmin_stock_menu"
         action="action_stock"
-        sequence="20"/>
+        sequence="20" />
 </odoo>
