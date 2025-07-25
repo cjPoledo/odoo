@@ -119,3 +119,10 @@ class Stock(models.Model):
         if not (name == "" and operator == "ilike"):
             args += domain
         return self._search(args, limit=limit)
+
+    def unlink(self):
+        self.env["upmin_stock.stock_fund_balance"].search(
+            [("stock_id", "=", self.id)]
+        ).unlink()
+
+        return super().unlink()

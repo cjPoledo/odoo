@@ -9,7 +9,7 @@ class StockReplenishment(models.Model):
         "upmin_stock.stock", string="Stock", required=True, ondelete="cascade"
     )
     procurement_import_id = fields.Many2one(
-        "upmin_stock.procurement", string="Procurement", ondelete="cascade"
+        "upmin_stock.procurement", string="Procurement"
     )
     fund_cluster_id = fields.Many2one(
         "upmin_stock.fund_cluster",

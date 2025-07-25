@@ -6,7 +6,11 @@ class Procurement(models.Model):
     _description = "Procurement"
     _rec_name = "no"
 
-    parent_id = fields.Many2one("upmin_stock.procurement_wizard", string="Parent Wizard", ondelete="cascade", required=True)
+    parent_id = fields.Many2one(
+        "upmin_stock.procurement_wizard",
+        string="Parent Wizard",
+        required=True,
+    )
     no = fields.Integer(string="No.")
     remarks = fields.Text(string="Remarks")
     end_user = fields.Char(string="End User")
@@ -35,3 +39,15 @@ class Procurement(models.Model):
     with_extension = fields.Boolean(string="With Extension", default=False)
     partial = fields.Boolean(string="Partial", default=False)
     waiver = fields.Boolean(string="Waiver", default=False)
+
+    replenishment_ids = fields.One2many(
+        "upmin_stock.replenishment",
+        "procurement_import_id",
+        string="Replenishment Logs",
+    )
+
+    def unlink(self):
+        for item in self.replenishment_ids:
+            item.unlink()
+
+        return super().unlink()

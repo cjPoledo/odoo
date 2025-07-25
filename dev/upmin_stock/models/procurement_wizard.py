@@ -257,3 +257,9 @@ class ProcurementWizard(models.Model):
             "url": "/upmin_stock/static/template/procurement_data_import_template.xlsx",
             "target": "new",
         }
+
+    def unlink(self):
+        for item in self.procurement_data:
+            item.unlink()
+
+        return super().unlink()
