@@ -123,6 +123,7 @@
                 <field name="description" />
                 <field name="unit" />
                 <field name="initial_balance" />
+                <field name="issued" />
                 <field name="balance" />
                 <field name="price" />
                 <field name="psdbm_price" />

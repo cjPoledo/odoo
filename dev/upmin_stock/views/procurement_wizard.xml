@@ -11,29 +11,31 @@
                             <field name="date_time" />
                         </group>
                         <group>
-                            <field name="excel_file" filename="file_name" attrs="{'invisible': [('procurement_data', '!=', [])]}" />
+                            <field name="excel_file" filename="file_name"
+                                attrs="{'invisible': [('procurement_data', '!=', [])]}" />
                             <field name="file_name" invisible="1" />
                             <field name="applied" readonly="1" />
                             <button name="action_validate_apply"
                                 type="object"
                                 string="Validate Data"
                                 class="oe_highlight"
-                                attrs="{'invisible': ['|', ('procurement_data', '=', []), ('applied', '=', True)]}"/>
+                                attrs="{'invisible': ['|', ('procurement_data', '=', []), ('applied', '=', True)]}" />
                             <button name="action_apply_changes"
                                 type="object"
                                 string="Apply Changes"
                                 class="oe_highlight"
-                                attrs="{'invisible': ['|', ('procurement_data', '=', []), ('applied', '=', True)]}"/>
+                                attrs="{'invisible': ['|', ('procurement_data', '=', []), ('applied', '=', True)]}" />
                         </group>
                         <group>
                             <button name="action_import_excel"
                                 type="object"
                                 string="Import Excel"
                                 class="oe_highlight"
-                                attrs="{'invisible': [('excel_file','=',False)]}"/>
+                                attrs="{'invisible': [('excel_file','=',False)]}" />
                         </group>
                         <group colspan="2">
-                            <field name="procurement_data" attrs="{'invisible': [('procurement_data', '=', [])]}" />
+                            <field name="procurement_data"
+                                attrs="{'invisible': [('procurement_data', '=', [])]}" />
                         </group>
                     </group>
                 </sheet>
@@ -47,7 +49,20 @@
         <field name="arch" type="xml">
             <tree string="procurement">
                 <field name="date_time" />
+                <field name="applied" />
+                <field name="procurement_data" />
             </tree>
+        </field>
+    </record>
+
+    <record id="procurement_wizard_view_search" model="ir.ui.view">
+        <field name="name">procurement_wizard.view.search</field>
+        <field name="model">upmin_stock.procurement_wizard</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <filter name="not_applied" string="Not Applied" domain="[('applied', '=', False)]" />
+                <filter name="applied" string="Applied" domain="[('applied', '=', True)]" />
+            </search>
         </field>
     </record>
 
@@ -55,6 +70,7 @@
         <field name="name">Procurement Import Wizard</field>
         <field name="res_model">upmin_stock.procurement_wizard</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_not_applied': 1}</field>
     </record>
 
     <menuitem
@@ -62,6 +78,6 @@
         name="Import Procurement Data"
         action="procurement_wizard_action"
         parent="upmin_stock_menu"
-        sequence="53"/>
+        sequence="53" />
 
 </odoo>

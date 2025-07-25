@@ -5,6 +5,7 @@ class Issuance(models.Model):
     _name = "upmin_stock.issuance"
     _description = "Issuance"
     _rec_name = "seq_no"
+    _order = "seq_no asc"
 
     seq_no = fields.Float(
         string="Sequence Number",
@@ -31,8 +32,8 @@ class Issuance(models.Model):
         related="ris_line.ris_id.requested_by",
         store=False,
     )
-    ris_no = fields.Char(
-        string="RIS No.", related="ris_line.ris_id.ris_no", store=False
+    ris_no = fields.Many2one(
+        "upmin_stock.ris", string="RIS No.", related="ris_line.ris_id", store=False
     )
     office = fields.Char(related="ris_line.ris_id.rc_code.rc_name", store=False)
     rc_code = fields.Many2one(

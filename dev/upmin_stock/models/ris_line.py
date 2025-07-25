@@ -4,6 +4,7 @@ from odoo import models, fields, api
 class RISLine(models.Model):
     _name = "upmin_stock.ris_line"
     _description = "RIS Line"
+    _rec_name = "stock_id"
 
     ris_id = fields.Many2one(
         "upmin_stock.ris", string="RIS", required=True, ondelete="cascade"
@@ -77,6 +78,13 @@ class RISLine(models.Model):
     def _onchange_stock_avail(self):
         if not self.stock_avail:
             self.quantity_issued = 0
+
+    def name_get(self):
+        result = []
+        for record in self:
+            name = f"{record.ris_id.ris_no} - {record.stock_id.stock_no}"
+            result.append((record.id, name))
+        return result
 
     def create(self, vals):
         res = super().create(vals)

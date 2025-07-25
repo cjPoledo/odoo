@@ -25,6 +25,7 @@ class Stock(models.Model):
     )
 
     balance = fields.Integer(string="Balance", compute="_compute_balance", store=True)
+    issued = fields.Integer(string="Issued", compute="_compute_issued", store=True)
     per_fund_balance = fields.One2many(
         "upmin_stock.stock_fund_balance", "stock_id", string="Balance per Fund Cluster"
     )
@@ -55,6 +56,14 @@ class Stock(models.Model):
                 issuance.ris_line.quantity_issued for issuance in stock.issuance_ids
             )
             stock.balance = total_balance - total_issued
+
+    @api.depends("issuance_ids.ris_line.quantity_issued")
+    def _compute_issued(self):
+        for stock in self:
+            total_issued = sum(
+                issuance.ris_line.quantity_issued for issuance in stock.issuance_ids
+            )
+            stock.issued = total_issued
 
     def update_fund_cluster_balance(self):
         for stock in self:
