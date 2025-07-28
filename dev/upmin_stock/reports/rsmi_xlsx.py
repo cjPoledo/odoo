@@ -198,7 +198,7 @@ class RsmiXlsx(models.AbstractModel):
         # Data Rows
         row = 11
         for issuance in partners.issuances:
-            sheet.write(row, 0, issuance.ris_no or "-", entry_center)
+            sheet.write(row, 0, issuance.ris_no.ris_no or "-", entry_center)
             sheet.write(row, 1, issuance.rc_code.rc_code or "-", entry)
             sheet.write(row, 2, issuance.stock_no.stock_no or "-", entry)
             sheet.write(row, 3, issuance.stock_no.description or "-", entry)
