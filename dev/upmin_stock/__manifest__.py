@@ -26,5 +26,5 @@
         "reports/rsmi.xml",
         "reports/ris.xml",
     ],
-    "icon": "upmin_stock/static/description/icon.svg",
+    "icon": "upmin_stock/static/description/logo.jpeg",
 }

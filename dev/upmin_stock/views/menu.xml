@@ -3,7 +3,9 @@
     <menuitem
         id="upmin_stock_menu"
         name="SPMO Inventory"
-        sequence="10" />
+        sequence="10"
+        groups="upmin_stock.group_spmo_stock_user"
+        web_icon="upmin_stock,static/description/icon.svg" />
 
     <menuitem
         id="upmin_stock_report"
