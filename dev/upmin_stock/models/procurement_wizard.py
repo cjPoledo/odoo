@@ -122,8 +122,9 @@ class ProcurementWizard(models.Model):
         for idx, line in enumerate(self.procurement_data, start=2):
             missing_fields = self.check_errors(line)
             if missing_fields:
+                missing = ",".join(missing_fields)
                 errors.append(
-                    f"Procurement No. {line.no} (Row {idx}) is missing required fields: {",".join(missing_fields)}"
+                    f"Procurement No. {line.no} (Row {idx}) is missing required fields: {missing}"
                 )
                 continue
 
@@ -182,8 +183,9 @@ class ProcurementWizard(models.Model):
         for idx, line in enumerate(self.procurement_data, start=2):
             missing_fields = self.check_errors(line)
             if missing_fields:
+                missing = ",".join(missing_fields)
                 errors.append(
-                    f"Procurement No. {line.no} (Row {idx}) is missing required fields: {",".join(missing_fields)}"
+                    f"Procurement No. {line.no} (Row {idx}) is missing required fields: {missing}"
                 )
         if errors:
             raise UserError(
