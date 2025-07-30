@@ -27,4 +27,5 @@
         "reports/ris.xml",
     ],
     "icon": "upmin_stock/static/description/logo.jpeg",
+    "license": "Other proprietary",
 }

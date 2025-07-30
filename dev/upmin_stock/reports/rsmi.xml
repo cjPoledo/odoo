@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <report
-        id="rsmi"
-        model="upmin_stock.rsmi"
-        string="Print RSMI"
-        report_type="xlsx"
-        name="upmin_stock.report_rsmi"
-        file="upmin_stock.report_rsmi"
-        print_report_name="'rsmi_' + (object.serial_no or '')"
-    />
+    <record id="rsmi" model="ir.actions.report">
+        <field name="name">Print RSMI</field>
+        <field name="model">upmin_stock.rsmi</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">upmin_stock.report_rsmi</field>
+        <field name="report_file">upmin_stock.report_rsmi</field>
+        <field name="print_report_name">'rsmi_' + (object.serial_no or '')</field>
+    </record>
 
 </odoo>

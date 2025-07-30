@@ -44,7 +44,7 @@ class Issuance(models.Model):
     )
     stock_no = fields.Many2one(
         "upmin_stock.stock",
-        string="Stock No.",
+        string="Stock No. ",
         related="ris_line.stock_id",
         store=False,
     )

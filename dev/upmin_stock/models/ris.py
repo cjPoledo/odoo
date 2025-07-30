@@ -28,7 +28,7 @@ class RIS(models.Model):
     rc_code = fields.Many2one(
         "upmin_stock.rc", string="Responsibility Center Code", required=True
     )
-    line_ids = fields.One2many("upmin_stock.ris_line", "ris_id", string="Stocks")
+    line_ids = fields.One2many("upmin_stock.ris_line", "ris_id", string="Add Stocks")
     line_ids_no_add_delete = fields.One2many(
         "upmin_stock.ris_line", "ris_id", string="Stocks"
     )
@@ -39,19 +39,19 @@ class RIS(models.Model):
         required=True,
         default=lambda self: self.env.user.partner_id.id,
     )
-    requester_designation = fields.Char(string="Designation", required=True)
+    requester_designation = fields.Char(string="Requester Designation", required=True)
     request_date = fields.Date(
-        string="Date", required=True, default=fields.Date.context_today
+        string="Request Date", required=True, default=fields.Date.context_today
     )
     approved_by = fields.Char(string="Approved By", required=True)
-    approver_designation = fields.Char(string="Designation", required=True)
-    approve_date = fields.Date(string="Date")
+    approver_designation = fields.Char(string="Approver Designation", required=True)
+    approve_date = fields.Date(string="Approve Date")
     issued_by = fields.Many2one("res.partner", string="Issued By")
-    issuer_designation = fields.Char(string="Designation")
-    issue_date = fields.Date(string="Date")
+    issuer_designation = fields.Char(string="Issuer Designation")
+    issue_date = fields.Date(string="Issue Date")
     received_by = fields.Char(string="Received By")
-    receiver_designation = fields.Char(string="Designation")
-    receive_date = fields.Date(string="Date")
+    receiver_designation = fields.Char(string="Receiver Designation")
+    receive_date = fields.Date(string="Receive Date")
     status = fields.Selection(
         [
             ("draft", "Draft"),
@@ -80,37 +80,40 @@ class RIS(models.Model):
         ("ris_no_uniq", "unique(ris_no)", "The RIS No. must be unique!"),
     ]
 
-    @api.model
-    def create(self, vals):
-        if not vals.get("ris_no"):
-            today = fields.Date.context_today(self)
-            year = today.strftime("%Y")
-            month = today.strftime("%m")
-            code = f"stock.ref.sr.{year}.{month}"
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get("ris_no"):
+                today = fields.Date.context_today(self)
+                year = today.strftime("%Y")
+                month = today.strftime("%m")
+                code = f"stock.ref.sr.{year}.{month}"
 
-            # find or create sequence
-            sequence = (
-                self.env["ir.sequence"].sudo().search([("code", "=", code)], limit=1)
-            )
-            if not sequence:
+                # find or create sequence
                 sequence = (
                     self.env["ir.sequence"]
                     .sudo()
-                    .create(
-                        {
-                            "name": f"Stock Reference SR {year}-{month}",
-                            "code": code,
-                            "prefix": f"SR{year}-{month}-",
-                            "padding": 3,
-                            "number_next": 1,
-                            "number_increment": 1,
-                        }
-                    )
+                    .search([("code", "=", code)], limit=1)
                 )
+                if not sequence:
+                    sequence = (
+                        self.env["ir.sequence"]
+                        .sudo()
+                        .create(
+                            {
+                                "name": f"Stock Reference SR {year}-{month}",
+                                "code": code,
+                                "prefix": f"SR{year}-{month}-",
+                                "padding": 3,
+                                "number_next": 1,
+                                "number_increment": 1,
+                            }
+                        )
+                    )
 
-            vals["ris_no"] = sequence.sudo().next_by_code(code)
+                vals["ris_no"] = sequence.sudo().next_by_code(code)
 
-        return super().create(vals)
+        return super().create(vals_list)
 
     @api.model
     def search(self, args, offset=0, limit=None, order=None, count=False):

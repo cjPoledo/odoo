@@ -19,12 +19,6 @@ class RISLine(models.Model):
     remarks = fields.Text(string="Remarks")
 
     status = fields.Selection(
-        [
-            ("draft", "Draft"),
-            ("issuance", "For Issuance"),
-            ("receiving", "For Receiving"),
-            ("received", "Received"),
-        ],
         string="Status",
         related="ris_id.status",
         readonly=True,

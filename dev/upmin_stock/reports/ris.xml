@@ -239,13 +239,12 @@
         </t>
     </template>
 
-    <report
-        id="action_report_ris"
-        model="upmin_stock.ris"
-        string="Print RIS"
-        report_type="qweb-pdf"
-        name="upmin_stock.report_ris_document"
-        file="upmin_stock.report_ris_document"
-        print_report_name="'RIS - %s' % (object.ris_no)"
-    />
+    <record id="action_report_ris" model="ir.actions.report">
+        <field name="name">Print RIS</field>
+        <field name="model">upmin_stock.ris</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">upmin_stock.report_ris_document</field>
+        <field name="report_file">upmin_stock.report_ris_document</field>
+        <field name="print_report_name">'RIS - %s' % (object.ris_no)</field>
+    </record>
 </odoo>

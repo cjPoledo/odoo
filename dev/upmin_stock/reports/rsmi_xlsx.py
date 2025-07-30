@@ -4,6 +4,7 @@ from odoo import models
 class RsmiXlsx(models.AbstractModel):
     _name = "report.upmin_stock.report_rsmi"
     _inherit = "report.report_xlsx.abstract"
+    _description = "Report of Supplies and Materials Issued"
 
     def generate_xlsx_report(self, workbook, data, partners):
         font = "Times New Roman"
