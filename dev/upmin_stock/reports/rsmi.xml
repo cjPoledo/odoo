@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="rsmi" model="ir.actions.report">
+    <record id="action_report_rsmi" model="ir.actions.report">
         <field name="name">Print RSMI</field>
         <field name="model">upmin_stock.rsmi</field>
         <field name="report_type">xlsx</field>

@@ -170,7 +170,7 @@
                                 </td>
                                 <td colspan="2">
                                     <strong>
-                                        <t t-esc="doc.approved_by" />
+                                        <t t-esc="doc.approved_by.name" />
                                     </strong>
                                 </td>
                                 <td colspan="2">
@@ -180,7 +180,7 @@
                                 </td>
                                 <td>
                                     <strong>
-                                        <t t-esc="doc.received_by" />
+                                        <t t-esc="doc.received_by.name" />
                                     </strong>
                                 </td>
                             </tr>

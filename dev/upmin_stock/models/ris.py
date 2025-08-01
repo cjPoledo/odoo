@@ -43,13 +43,13 @@ class RIS(models.Model):
     request_date = fields.Date(
         string="Request Date", required=True, default=fields.Date.context_today
     )
-    approved_by = fields.Char(string="Approved By", required=True)
+    approved_by = fields.Many2one("res.partner", string="Approved By", required=True)
     approver_designation = fields.Char(string="Approver Designation", required=True)
     approve_date = fields.Date(string="Approve Date")
     issued_by = fields.Many2one("res.partner", string="Issued By")
     issuer_designation = fields.Char(string="Issuer Designation")
     issue_date = fields.Date(string="Issue Date")
-    received_by = fields.Char(string="Received By")
+    received_by = fields.Many2one("res.partner", string="Received By")
     receiver_designation = fields.Char(string="Receiver Designation")
     receive_date = fields.Date(string="Receive Date")
     status = fields.Selection(

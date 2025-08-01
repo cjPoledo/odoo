@@ -6,6 +6,13 @@
         <field name="model">upmin_stock.rsmi</field>
         <field name="arch" type="xml">
             <form string="rsmi">
+                <header>
+                    <div class="oe_button_box">
+                        <button name="%(action_report_rsmi)d" type="action"
+                            string="Print"
+                            class="btn-secondary" />
+                    </div>
+                </header>
                 <sheet>
                     <group>
                         <group>
