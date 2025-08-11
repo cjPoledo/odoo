@@ -84,8 +84,8 @@ class ProcurementWizard(models.Model):
                 }
                 self.env["upmin_stock.procurement"].create(vals)
 
-            # Clear the temporary file data to free up storage
-            self.write({"excel_file": False, "file_name": False})
+            # # Clear the temporary file data to free up storage
+            # self.write({"excel_file": False, "file_name": False})
 
         except Exception as e:
             raise UserError(

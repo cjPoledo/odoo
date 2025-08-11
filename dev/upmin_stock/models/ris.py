@@ -194,6 +194,11 @@ class RIS(models.Model):
             self.receive_date = False
             self.receiver_designation = False
             self.status = "issuance"
+            for line in self.line_ids:
+                issuances = self.env["upmin_stock.issuance"].search(
+                    [("ris_line", "=", line.id)]
+                )
+                issuances.unlink()
         elif self.status == "received":
             self.status = "receiving"
 
@@ -210,10 +215,12 @@ class RIS(models.Model):
 
     def unlink(self):
         for rec in self:
-            if rec.status in ["receiving", "received"]:
-                raise UserError("Deletion is blocked for issued records.")
+            if not self.env.user.has_group("upmin_stock.group_spmo_stock_custodian"):
+                if rec.status in ["receiving", "received"]:
+                    raise UserError("Deletion is blocked for issued records. Please contact the SPMO Custodian.")
 
         stocks = self.mapped("line_ids.stock_id")
+        unlink = super().unlink()
         for stock in stocks:
             stock.update_fund_cluster_balance()
-        return super().unlink()
+        return unlink

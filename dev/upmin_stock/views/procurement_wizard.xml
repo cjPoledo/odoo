@@ -19,7 +19,7 @@
                         </group>
                         <group>
                             <field name="excel_file" filename="file_name"
-                                attrs="{'invisible': [('procurement_data', '!=', [])]}" />
+                                attrs="{'readonly': [('procurement_data', '!=', [])]}" />
                             <field name="file_name" invisible="1" />
                             <field name="applied" readonly="1" />
                             <button name="action_validate_apply"
@@ -38,7 +38,7 @@
                                 type="object"
                                 string="Import Excel"
                                 class="oe_highlight"
-                                attrs="{'invisible': [('excel_file','=',False)]}" />
+                                attrs="{'invisible': [('procurement_data', '!=', [])]}" />
                         </group>
                         <group colspan="2">
                             <field name="procurement_data"

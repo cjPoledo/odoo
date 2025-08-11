@@ -34,6 +34,13 @@
                             groups="upmin_stock.group_spmo_stock_custodian"
                             attrs="{'invisible': [('status', '!=', 'issuance')]}" />
 
+                        <button name="action_return_last_step"
+                            type="object"
+                            string="Undo Issuance"
+                            class="btn btn-secondary"
+                            groups="upmin_stock.group_spmo_stock_custodian"
+                            attrs="{'invisible': [('status', '!=', 'receiving')]}" />
+
                         <button name="action_proceed_next_step"
                             type="object"
                             string="Submit for Receiving"

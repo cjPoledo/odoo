@@ -53,7 +53,6 @@
         <field name="model">upmin_stock.procurement</field>
         <field name="arch" type="xml">
             <tree string="procurement">
-                <field name="parent_id"/>
                 <field name="no"/>
                 <field name="remarks"/>
                 <field name="end_user"/>

@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class StockReplenishment(models.Model):
@@ -21,6 +21,7 @@ class StockReplenishment(models.Model):
     date = fields.Datetime(string="Date", default=fields.Datetime.now)
     notes = fields.Text(string="Notes")
 
+    @api.model_create_multi
     def create(self, vals):
         res = super().create(vals)
         for rec in res:
@@ -34,6 +35,11 @@ class StockReplenishment(models.Model):
         return res
 
     def unlink(self):
+        procurement_imports = self.mapped("procurement_import_id")
+        if any(procurement_imports):
+            raise models.ValidationError(
+                f"Cannot delete replenishment linked to a procurement import. Delete the procurement import ({procurement_imports[0].parent_id.date_time}) instead."
+            )
         stocks = self.mapped("stock_id")
         res = super().unlink()
         for stock in stocks:
