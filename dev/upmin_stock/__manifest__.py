@@ -1,7 +1,8 @@
 {
-    "name": "UPMin Inventory",
+    "name": "SPMO Inventory",
     "author": "Clent Japhet Poledo",
     "version": "1.0",
+    "description": "SPMO Inventory Management System",
     "application": True,
     "depends": [
         "report_xlsx",
