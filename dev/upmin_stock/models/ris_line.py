@@ -59,13 +59,16 @@ class RISLine(models.Model):
     @api.constrains("quantity_req", "quantity_issued")
     def _check_quantity(self):
         for record in self:
-            if record.stock_balance < record.quantity_req:
+            if record.status == "draft" and record.stock_balance < record.quantity_req:
                 raise models.ValidationError(
                     f"({record.stock_id.stock_no}) Quantity requested cannot exceed the current stock balance."
                 )
-            elif record.quantity_req < record.quantity_issued:
+            elif (
+                record.status == "issuance"
+                and record.stock_balance < record.quantity_issued
+            ):
                 raise models.ValidationError(
-                    f"({record.stock_id.stock_no}) Quantity issued cannot exceed quantity requested."
+                    f"({record.stock_id.stock_no}) Quantity issued cannot exceed stock balance."
                 )
 
     @api.onchange("stock_avail")
