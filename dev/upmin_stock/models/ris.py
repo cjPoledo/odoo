@@ -26,7 +26,10 @@ class RIS(models.Model):
     )
     division = fields.Char(string="Division", required=True)
     rc_code = fields.Many2one(
-        "upmin_stock.rc", string="Responsibility Center Code", required=True
+        "upmin_stock.rc",
+        string="Responsibility Center Code",
+        required=True,
+        help="For missing responsibility center, please contact the SPMO custodian.",
     )
     line_ids = fields.One2many("upmin_stock.ris_line", "ris_id", string="Add Stocks")
     line_ids_no_add_delete = fields.One2many(
@@ -217,7 +220,9 @@ class RIS(models.Model):
         for rec in self:
             if not self.env.user.has_group("upmin_stock.group_spmo_stock_custodian"):
                 if rec.status in ["receiving", "received"]:
-                    raise UserError("Deletion is blocked for issued records. Please contact the SPMO Custodian.")
+                    raise UserError(
+                        "Deletion is blocked for issued records. Please contact the SPMO Custodian."
+                    )
 
         stocks = self.mapped("line_ids.stock_id")
         unlink = super().unlink()
