@@ -9,6 +9,8 @@
     "data": [
         "security/security_groups.xml",
         "security/access_control_list.xml",
+        "reports/rsmi.xml",
+        "reports/ris.xml",
         "views/menu.xml",
         "views/stock.xml",
         "views/issuances.xml",
@@ -23,8 +25,6 @@
         "views/ris.xml",
         "views/fund_cluster.xml",
         "views/stock_fund_balance.xml",
-        "reports/rsmi.xml",
-        "reports/ris.xml",
     ],
     "icon": "upmin_stock/static/description/logo.jpeg",
     "license": "Other proprietary",
