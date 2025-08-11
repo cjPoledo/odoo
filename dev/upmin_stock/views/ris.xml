@@ -10,6 +10,7 @@
                 <field name="entity_name" />
                 <field name="fund_cluster" />
                 <field name="rc_code" />
+                <field name="line_ids_no_add_delete" />
                 <field name="requested_by" />
             </tree>
         </field>

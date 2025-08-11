@@ -5,6 +5,7 @@ class Stock(models.Model):
     _name = "upmin_stock.stock"
     _description = "Stock"
     _rec_name = "description"
+    _order = "description"
 
     stock_no = fields.Char(string="Stock No", required=True)
     description = fields.Char(string="Description", required=True)

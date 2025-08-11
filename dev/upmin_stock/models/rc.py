@@ -5,6 +5,7 @@ class RC(models.Model):
     _name = "upmin_stock.rc"
     _description = "Responsibility Center"
     _rec_name = "rc_code"
+    _order = "rc_code"
 
     rc_code = fields.Char(string="RC Code", required=True)
     rc_name = fields.Char(string="RC Name", required=True)

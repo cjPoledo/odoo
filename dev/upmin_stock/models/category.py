@@ -5,6 +5,7 @@ class Category(models.Model):
     _name = "upmin_stock.category"
     _description = "Category"
     _rec_name = "category"
+    _order = "category"
 
     category = fields.Char(string="Category", required=True)
 
