@@ -2,7 +2,7 @@
     "name": "SPMO Inventory",
     "author": "Clent Japhet Poledo",
     "version": "1.0",
-    "description": "SPMO Inventory Management System",
+    "summary": "Manage SPMO Stock and Reports",
     "application": True,
     "depends": [
         "report_xlsx",
