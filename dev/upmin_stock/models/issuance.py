@@ -68,7 +68,7 @@ class Issuance(models.Model):
         string="Balance", related="ris_line.stock_balance", store=False
     )
     quantity_issued = fields.Integer(
-        string="Quantity Issued", related="ris_line.quantity_issued", store=False
+        string="Quantity Issued", related="ris_line.quantity_issued", store=True
     )
     remarks = fields.Text(string="Remarks", related="ris_line.remarks", store=False)
     fund_cluster = fields.Char(
