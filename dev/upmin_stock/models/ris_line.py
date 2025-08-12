@@ -17,6 +17,11 @@ class RISLine(models.Model):
     stock_avail = fields.Boolean(string="Stock Available?", default=False)
     quantity_issued = fields.Integer(string="Quantity Issued", default=0)
     remarks = fields.Text(string="Remarks")
+    user_has_permission = fields.Boolean(
+        string="User Has Special Permission",
+        related="ris_id.user_has_permission",
+        store=False,
+    )
 
     status = fields.Selection(
         string="Status",

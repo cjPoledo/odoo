@@ -78,34 +78,36 @@
                         <field name="line_ids" attrs="{'invisible': [('status', '!=', 'draft')]}">
                             <tree editable="bottom">
                                 <field name="status" invisible="1" />
+                                <field name="user_has_permission" invisible="1" />
                                 <field name="stock_id"
                                     attrs="{'readonly': [('status', '!=', 'draft')]}" />
                                 <field name="stock_balance" readonly="1" string="Current Balance" />
                                 <field name="quantity_req"
                                     attrs="{'readonly': [('status', '!=', 'draft')]}" />
                                 <field name="stock_avail"
-                                    attrs="{'invisible': [('status', '=', 'draft')], 'readonly': [('status','!=', 'issuance')]}" />
+                                    attrs="{'invisible': [('status', '=', 'draft')], 'readonly': ['|', ('status','!=', 'issuance'), ('user_has_permission', '=', False)]}" />
                                 <field name="quantity_issued"
-                                    attrs="{'readonly': ['|', ('stock_avail','=', False), ('status', '!=', 'issuance')], 'invisible': [('status', '=', 'draft')]}" />
+                                    attrs="{'readonly': ['|', '|', ('stock_avail','=', False), ('status', '!=', 'issuance'), ('user_has_permission', '=', False)], 'invisible': [('status', '=', 'draft')]}" />
                                 <field name="remarks"
-                                    attrs="{'readonly': [('status','!=', 'issuance')]}" />
+                                    attrs="{'readonly': ['|', ('status','!=', 'issuance'), ('user_has_permission', '=', False)]}" />
                             </tree>
                         </field>
                         <field name="line_ids_no_add_delete"
                             attrs="{'invisible': [('status', '==', 'draft')]}">
                             <tree editable="bottom" create="false" delete="false">
                                 <field name="status" invisible="1" />
+                                <field name="user_has_permission" invisible="1" />
                                 <field name="stock_id"
                                     attrs="{'readonly': [('status', '!=', 'draft')]}" />
                                 <field name="stock_balance" readonly="1" string="Current Balance" />
                                 <field name="quantity_req"
                                     attrs="{'readonly': [('status', '!=', 'draft')]}" />
                                 <field name="stock_avail"
-                                    attrs="{'invisible': [('status', '=', 'draft')], 'readonly': [('status','!=', 'issuance')]}" />
+                                    attrs="{'invisible': [('status', '=', 'draft')], 'readonly': ['|', ('status','!=', 'issuance'), ('user_has_permission', '=', False)]}" />
                                 <field name="quantity_issued"
-                                    attrs="{'readonly': ['|', ('stock_avail','=', False), ('status', '!=', 'issuance')], 'invisible': [('status', '=', 'draft')]}" />
+                                    attrs="{'readonly': ['|', '|', ('stock_avail','=', False), ('status', '!=', 'issuance'), ('user_has_permission', '=', False)], 'invisible': [('status', '=', 'draft')]}" />
                                 <field name="remarks"
-                                    attrs="{'readonly': [('status','!=', 'issuance')]}" />
+                                    attrs="{'readonly': ['|', ('status','!=', 'issuance'), ('user_has_permission', '=', False)]}" />
                             </tree>
                         </field>
                         <label for="purpose" class="fw-bold" />
