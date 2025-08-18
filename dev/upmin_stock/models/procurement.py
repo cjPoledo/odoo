@@ -48,6 +48,6 @@ class Procurement(models.Model):
 
     def unlink(self):
         for item in self.replenishment_ids:
-            item.unlink()
+            item.unlink(force_delete=True)
 
         return super().unlink()

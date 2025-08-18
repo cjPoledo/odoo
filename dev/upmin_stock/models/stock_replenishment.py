@@ -34,9 +34,9 @@ class StockReplenishment(models.Model):
             rec.stock_id.update_fund_cluster_balance()
         return res
 
-    def unlink(self):
+    def unlink(self, force_delete=False):
         procurement_imports = self.mapped("procurement_import_id")
-        if any(procurement_imports):
+        if not force_delete and any(procurement_imports):
             raise models.ValidationError(
                 f"Cannot delete replenishment linked to a procurement import. Delete the procurement import ({procurement_imports[0].parent_id.date_time}) instead."
             )
