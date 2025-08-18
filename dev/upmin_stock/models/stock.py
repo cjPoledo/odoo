@@ -122,8 +122,8 @@ class Stock(models.Model):
         return self._search(args, limit=limit)
 
     def unlink(self):
-        self.env["upmin_stock.stock_fund_balance"].search(
-            [("stock_id", "=", self.id)]
-        ).unlink()
-
+        for stock in self:
+            self.env["upmin_stock.stock_fund_balance"].search(
+                [("stock_id", "=", stock.id)]
+            ).unlink()
         return super().unlink()
