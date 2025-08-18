@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ppmp_view_tree" model="ir.ui.view">
+        <field name="name">ppmp.view.tree</field>
+        <field name="model">upmin_stock.ppmp</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="rc" />
+                <field name="fund_cluster_id" />
+                <field name="ppmp_balance_lines" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="ppmp_view_form" model="ir.ui.view">
+        <field name="name">ppmp.view.form</field>
+        <field name="model">upmin_stock.ppmp</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="rc" />
+                        </group>
+                        <group>
+                            <field name="fund_cluster_id" />
+                        </group>
+                        <field name="ppmp_balance_lines">
+                            <tree editable="bottom">
+                                <field name="stock_id" />
+                                <field name="balance" />
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ppmp_action" model="ir.actions.act_window">
+        <field name="name">PPMP</field>
+        <field name="res_model">upmin_stock.ppmp</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="ppmp_menu"
+        name="PPMP"
+        action="ppmp_action"
+        parent="upmin_stock_menu"
+        groups="upmin_stock.group_spmo_stock_custodian"
+        sequence="54" />
+
+</odoo>
