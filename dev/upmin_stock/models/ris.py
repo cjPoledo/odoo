@@ -78,6 +78,9 @@ class RIS(models.Model):
         compute="_compute_is_creator",
         store=False,
     )
+    ppmp_id = fields.Many2one(
+        "upmin_stock.ppmp", string="PPMP", compute="_compute_ppmp_id", store=True
+    )
 
     _sql_constraints = [
         ("ris_no_uniq", "unique(ris_no)", "The RIS No. must be unique!"),
@@ -215,6 +218,17 @@ class RIS(models.Model):
         current_user = self.env.uid
         for rec in self:
             rec.is_creator = rec.create_uid.id == current_user
+
+    @api.depends("rc_code", "fund_cluster")
+    def _compute_ppmp_id(self):
+        for rec in self:
+            rec.ppmp_id = self.env["upmin_stock.ppmp"].search(
+                [
+                    ("rc", "=", rec.rc_code.id),
+                    ("fund_cluster_id", "=", rec.fund_cluster.id),
+                ],
+                limit=1,
+            )
 
     def unlink(self):
         for rec in self:

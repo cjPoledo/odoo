@@ -13,6 +13,9 @@ class RISLine(models.Model):
     stock_balance = fields.Integer(
         string="Balance", compute="_compute_stock_balance", readonly=True
     )
+    ppmp_balance = fields.Integer(
+        string="PPMP Balance", compute="_compute_ppmp_balance", readonly=True
+    )
     quantity_req = fields.Integer(string="Quantity Requested", required=True)
     stock_avail = fields.Boolean(string="Stock Available?", default=False)
     quantity_issued = fields.Integer(string="Quantity Issued", default=0)
@@ -42,6 +45,18 @@ class RISLine(models.Model):
                 limit=1,
             )
             line.stock_balance = stock_fund_balance.balance if stock_fund_balance else 0
+
+    @api.depends(
+        "stock_id",
+        "ris_id.ppmp_id",
+        "quantity_issued",
+        "ris_id.ppmp_id.ppmp_balance_lines.balance",
+    )
+    def _compute_ppmp_balance(self):
+        for line in self:
+            line.ppmp_balance = line.ris_id.ppmp_id.ppmp_balance_lines.filtered(
+                lambda l: l.stock_id == line.stock_id
+            )[:1].balance
 
     _sql_constraints = [
         (

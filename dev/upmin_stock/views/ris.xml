@@ -81,7 +81,8 @@
                                 <field name="user_has_permission" invisible="1" />
                                 <field name="stock_id"
                                     attrs="{'readonly': [('status', '!=', 'draft')]}" />
-                                <field name="stock_balance" readonly="1" string="Current Balance" />
+                                <field name="stock_balance" readonly="1" string="SPMO Balance" />
+                                <field name="ppmp_balance" readonly="1" string="PPMP Balance" />
                                 <field name="quantity_req"
                                     attrs="{'readonly': [('status', '!=', 'draft')]}" />
                                 <field name="stock_avail"
@@ -99,7 +100,8 @@
                                 <field name="user_has_permission" invisible="1" />
                                 <field name="stock_id"
                                     attrs="{'readonly': [('status', '!=', 'draft')]}" />
-                                <field name="stock_balance" readonly="1" string="Current Balance" />
+                                <field name="stock_balance" readonly="1" string="SPMO Balance" />
+                                <field name="ppmp_balance" readonly="1" string="PPMP Balance" />
                                 <field name="quantity_req"
                                     attrs="{'readonly': [('status', '!=', 'draft')]}" />
                                 <field name="stock_avail"
