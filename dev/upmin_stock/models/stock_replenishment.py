@@ -4,6 +4,7 @@ from odoo import models, fields, api
 class StockReplenishment(models.Model):
     _name = "upmin_stock.replenishment"
     _description = "Stock Replenishment Log"
+    _rec_name = "stock_id"
 
     stock_id = fields.Many2one(
         "upmin_stock.stock", string="Stock", required=True, ondelete="cascade"

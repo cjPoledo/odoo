@@ -4,6 +4,7 @@ from odoo import models, fields
 class StockFundBalance(models.Model):
     _name = "upmin_stock.stock_fund_balance"
     _description = "Stock Balance per Fund Cluster"
+    _rec_name = "stock_id"
 
     stock_id = fields.Many2one(
         "upmin_stock.stock", string="Stock", required=True, ondelete="cascade"
