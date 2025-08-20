@@ -30,6 +30,8 @@
                             <tree editable="bottom">
                                 <field name="stock_id" />
                                 <field name="spmo_balance" />
+                                <field name="initial_balance" />
+                                <field name="total_issued" />
                                 <field name="ppmp_balance" />
                             </tree>
                         </field>

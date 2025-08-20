@@ -15,7 +15,27 @@ class PPMPBalance(models.Model):
         readonly=True,
         store=True,
     )
-    ppmp_balance = fields.Integer(string="PPMP Balance", default=0)
+    initial_balance = fields.Integer(string="Initial Balance", default=0)
+
+    related_issuances = fields.One2many(
+        "upmin_stock.issuance",
+        string="Related Issuances",
+        related="ppmp.related_issuances",
+    )
+    total_issued = fields.Integer(
+        string="Total Issued",
+        default=0,
+        compute="_compute_total_issued",
+        store=True,
+        readonly=True,
+    )
+    ppmp_balance = fields.Integer(
+        string="PPMP Balance",
+        default=0,
+        compute="_compute_ppmp_balance",
+        store=True,
+        readonly=True,
+    )
 
     @api.depends("stock_id", "stock_id.balance", "ppmp.fund_cluster_id")
     def _compute_spmo_balance(self):
@@ -30,3 +50,17 @@ class PPMPBalance(models.Model):
                 limit=1,
             )
             line.spmo_balance = stock_fund_balance.balance if stock_fund_balance else 0
+
+    @api.depends("related_issuances", "related_issuances.quantity_issued")
+    def _compute_total_issued(self):
+        for line in self:
+            line.total_issued = sum(
+                issuance.quantity_issued
+                for issuance in line.related_issuances
+                if issuance.stock_no.id == line.stock_id.id
+            )
+
+    @api.depends("initial_balance", "total_issued")
+    def _compute_ppmp_balance(self):
+        for line in self:
+            line.ppmp_balance = line.initial_balance - line.total_issued
