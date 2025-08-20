@@ -76,6 +76,12 @@ class Issuance(models.Model):
     fund_cluster = fields.Char(
         string="Fund Cluster", related="ris_line.ris_id.fund_cluster.name", store=False
     )
+    ppmp_id = fields.Many2one(
+        "upmin_stock.ppmp",
+        string="PPMP",
+        related="ris_line.ppmp",
+        store=False,
+    )
 
     _sql_constraints = [
         (
@@ -88,7 +94,7 @@ class Issuance(models.Model):
     def name_get(self):
         result = []
         for record in self:
-            name = f"{record.seq_no} - {record.ris_line.ris_id.ris_no} - {record.ris_line.stock_id.description}"
+            name = f"{record.seq_no} - {record.ris_line.ris_id.ris_no} - {record.ris_line.ppmp_balance_id.stock_id.description}"
             result.append((record.id, name))
         return result
 

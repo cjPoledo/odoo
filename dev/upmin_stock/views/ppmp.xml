@@ -35,6 +35,31 @@
                         </field>
                     </group>
                 </sheet>
+
+                <notebook>
+                    <page string="Related Issuances">
+                        <div class="oe_form_box" style="padding: 0 20px;">
+                            <field name="related_issuances" readonly="1">
+                                <tree string="Related Issuances">
+                                    <field name="seq_no" string="Seq.no" />
+                                    <field name="date_issued" />
+                                    <field name="requested_by" />
+                                    <field name="ris_no" string="RIS#" />
+                                    <field name="office" string="Office/Dept" />
+                                    <field name="rc_code" />
+                                    <field name="remarks" />
+                                    <field name="stock_no_id" />
+                                    <field name="stock_desc" string="Description" />
+                                    <field name="unit" />
+                                    <field name="quantity_requested" string="Qty Requested" />
+                                    <field name="balance" />
+                                    <field name="quantity_issued" string="Qty Issued" />
+                                    <field name="fund_cluster" />
+                                </tree>
+                            </field>
+                        </div>
+                    </page>
+                </notebook>
             </form>
         </field>
     </record>

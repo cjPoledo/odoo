@@ -17,6 +17,9 @@ class PPMP(models.Model):
     ppmp_balance_lines = fields.One2many(
         "upmin_stock.ppmp_balance", "ppmp", string="PPMP Balances"
     )
+    related_issuances = fields.One2many(
+        "upmin_stock.issuance", "ppmp_id", string="Related Issuances"
+    )
 
     _sql_constraints = [
         (
