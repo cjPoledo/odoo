@@ -99,13 +99,14 @@
                             <t t-foreach="doc.line_ids" t-as="line">
                                 <tr>
                                     <td>
-                                        <t t-esc="line.stock_id.stock_no or ''" />
+                                        <t t-esc="line.ppmp_balance_id.stock_id.stock_no or ''" />
                                     </td>
                                     <td>
-                                        <t t-esc="line.stock_id.unit.measure_unit or ''" />
+                                        <t
+                                            t-esc="line.ppmp_balance_id.stock_id.unit.measure_unit or ''" />
                                     </td>
                                     <td>
-                                        <t t-esc="line.stock_id.description or ''" />
+                                        <t t-esc="line.ppmp_balance_id.stock_id.description or ''" />
                                     </td>
                                     <td>
                                         <t t-esc="line.quantity_req or ''" />
