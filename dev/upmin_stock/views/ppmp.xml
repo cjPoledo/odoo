@@ -21,10 +21,11 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="rc" />
+                            <field name="rc" attrs="{'readonly': [('id', '!=', False)]}" />
                         </group>
                         <group>
-                            <field name="fund_cluster_id" />
+                            <field name="fund_cluster_id"
+                                attrs="{'readonly': [('id', '!=', False)]}" />
                         </group>
                         <field name="ppmp_balance_lines">
                             <tree editable="bottom">
