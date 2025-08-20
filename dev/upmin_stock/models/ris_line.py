@@ -4,17 +4,23 @@ from odoo import models, fields, api
 class RISLine(models.Model):
     _name = "upmin_stock.ris_line"
     _description = "RIS Line"
-    _rec_name = "stock_id"
+    _rec_name = "ppmp_balance_id"
 
     ris_id = fields.Many2one(
         "upmin_stock.ris", string="RIS", required=True, ondelete="cascade"
     )
-    stock_id = fields.Many2one("upmin_stock.stock", string="Stock", required=True)
+    ppmp = fields.Many2one("upmin_stock.ppmp", string="PPMP", related="ris_id.ppmp_id")
+    ppmp_balance_id = fields.Many2one(
+        "upmin_stock.ppmp_balance",
+        string="Stock",
+        required=True,
+        domain="[('ppmp', '=', ppmp)]",
+    )
     stock_balance = fields.Integer(
-        string="Balance", compute="_compute_stock_balance", readonly=True
+        string="SPMO Balance", related="ppmp_balance_id.spmo_balance", readonly=True
     )
     ppmp_balance = fields.Integer(
-        string="PPMP Balance", compute="_compute_ppmp_balance", readonly=True
+        string="PPMP Balance", related="ppmp_balance_id.ppmp_balance", readonly=True
     )
     quantity_req = fields.Integer(string="Quantity Requested", required=True)
     stock_avail = fields.Boolean(string="Stock Available?", default=False)
@@ -31,32 +37,6 @@ class RISLine(models.Model):
         related="ris_id.status",
         readonly=True,
     )
-
-    @api.depends("stock_id", "ris_id.fund_cluster", "quantity_issued")
-    def _compute_stock_balance(self):
-        for line in self:
-            # Find stock_fund_balance with matching stock_id and fund_cluster
-            fund_cluster = line.ris_id.fund_cluster
-            stock_fund_balance = self.env["upmin_stock.stock_fund_balance"].search(
-                [
-                    ("stock_id", "=", line.stock_id.id),
-                    ("fund_cluster_id", "=", fund_cluster.id),
-                ],
-                limit=1,
-            )
-            line.stock_balance = stock_fund_balance.balance if stock_fund_balance else 0
-
-    @api.depends(
-        "stock_id",
-        "ris_id.ppmp_id",
-        "quantity_issued",
-        "ris_id.ppmp_id.ppmp_balance_lines.balance",
-    )
-    def _compute_ppmp_balance(self):
-        for line in self:
-            line.ppmp_balance = line.ris_id.ppmp_id.ppmp_balance_lines.filtered(
-                lambda l: l.stock_id == line.stock_id
-            )[:1].balance
 
     _sql_constraints = [
         (
@@ -82,11 +62,11 @@ class RISLine(models.Model):
             min_balance = min(record.stock_balance, record.ppmp_balance)
             if record.status == "draft" and min_balance < record.quantity_req:
                 raise models.ValidationError(
-                    f"({record.stock_id.stock_no}) Quantity requested cannot exceed the stock and PPMP balance."
+                    f"({record.ppmp_balance_id.stock_id.stock_no}) Quantity requested cannot exceed the stock and PPMP balance."
                 )
             elif record.status == "issuance" and min_balance < record.quantity_issued:
                 raise models.ValidationError(
-                    f"({record.stock_id.stock_no}) Quantity issued cannot exceed the stock and PPMP balance."
+                    f"({record.ppmp_balance_id.stock_id.stock_no}) Quantity issued cannot exceed the stock and PPMP balance."
                 )
 
     @api.onchange("stock_avail")
@@ -97,24 +77,26 @@ class RISLine(models.Model):
     def name_get(self):
         result = []
         for record in self:
-            name = f"{record.ris_id.ris_no} - {record.stock_id.stock_no}"
+            name = (
+                f"{record.ris_id.ris_no} - {record.ppmp_balance_id.stock_id.stock_no}"
+            )
             result.append((record.id, name))
         return result
 
     def create(self, vals):
         res = super().create(vals)
         for rec in res:
-            rec.stock_id.update_fund_cluster_balance()
+            rec.ppmp_balance_id.stock_id.update_fund_cluster_balance()
         return res
 
     def write(self, vals):
         res = super().write(vals)
         for rec in self:
-            rec.stock_id.update_fund_cluster_balance()
+            rec.ppmp_balance_id.stock_id.update_fund_cluster_balance()
         return res
 
     def unlink(self):
-        stocks = self.mapped("stock_id")
+        stocks = self.mapped("ppmp_balance_id.stock_id")
         res = super().unlink()
         for stock in stocks:
             stock.update_fund_cluster_balance()

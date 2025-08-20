@@ -29,7 +29,8 @@
                         <field name="ppmp_balance_lines">
                             <tree editable="bottom">
                                 <field name="stock_id" />
-                                <field name="balance" />
+                                <field name="spmo_balance" />
+                                <field name="ppmp_balance" />
                             </tree>
                         </field>
                     </group>

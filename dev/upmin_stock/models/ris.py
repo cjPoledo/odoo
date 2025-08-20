@@ -161,7 +161,11 @@ class RIS(models.Model):
     @api.constrains("line_ids")
     def _check_unique_stock_id(self):
         for rec in self:
-            stock_ids = [line.stock_id for line in rec.line_ids if line.stock_id]
+            stock_ids = [
+                line.ppmp_balance_id.stock_id
+                for line in rec.line_ids
+                if line.ppmp_balance_id
+            ]
             counts = Counter(stock_ids)
             duplicates = [
                 stock.display_name for stock, count in counts.items() if count > 1

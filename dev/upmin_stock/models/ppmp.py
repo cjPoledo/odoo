@@ -26,6 +26,13 @@ class PPMP(models.Model):
         ),
     ]
 
+    def name_get(self):
+        result = []
+        for record in self:
+            name = f"{record.rc.rc_code} - {record.fund_cluster_id.name}"
+            result.append((record.id, name))
+        return result
+
     @api.constrains("ppmp_balance_lines")
     def _check_unique_stock_id(self):
         for rec in self:

@@ -45,21 +45,23 @@ class Issuance(models.Model):
     stock_no = fields.Many2one(
         "upmin_stock.stock",
         string="Stock No. ",
-        related="ris_line.stock_id",
+        related="ris_line.ppmp_balance_id.stock_id",
         store=False,
     )
     stock_no_id = fields.Char(
         string="Stock No.",
-        related="ris_line.stock_id.stock_no",
+        related="ris_line.ppmp_balance_id.stock_id.stock_no",
         store=False,
     )
     stock_desc = fields.Char(
         string="Stock Description",
-        related="ris_line.stock_id.description",
+        related="ris_line.ppmp_balance_id.stock_id.description",
         store=False,
     )
     unit = fields.Char(
-        string="Unit", related="ris_line.stock_id.unit.measure_unit", store=False
+        string="Unit",
+        related="ris_line.ppmp_balance_id.stock_id.unit.measure_unit",
+        store=False,
     )
     quantity_requested = fields.Integer(
         string="Quantity Requested", related="ris_line.quantity_req", store=False
@@ -93,17 +95,17 @@ class Issuance(models.Model):
     def create(self, vals):
         res = super().create(vals)
         for rec in res:
-            rec.ris_line.stock_id.update_fund_cluster_balance()
+            rec.ris_line.ppmp_balance_id.stock_id.update_fund_cluster_balance()
         return res
 
     def write(self, vals):
         res = super().write(vals)
         for rec in self:
-            rec.ris_line.stock_id.update_fund_cluster_balance()
+            rec.ris_line.ppmp_balance_id.stock_id.update_fund_cluster_balance()
         return res
 
     def unlink(self):
-        stocks = self.mapped("ris_line.stock_id")
+        stocks = self.mapped("ris_line.ppmp_balance_id.stock_id")
         res = super().unlink()
         for stock in stocks:
             stock.update_fund_cluster_balance()
