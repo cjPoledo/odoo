@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="ppmp_balance_view_form" model="ir.ui.view">
+        <field name="name">ppmp_balance.view.form</field>
+        <field name="model">upmin_stock.ppmp_balance</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="stock_id" />
+                        <field name="spmo_balance" />
+                        <field name="initial_balance" />
+                        <field name="total_issued" />
+                        <field name="ppmp_balance" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record id="ppmp_view_tree" model="ir.ui.view">
         <field name="name">ppmp.view.tree</field>
         <field name="model">upmin_stock.ppmp</field>
@@ -39,7 +57,7 @@
                     </group>
                 </sheet>
 
-                <notebook>
+                <notebook groups="upmin_stock.group_spmo_stock_custodian">
                     <page string="Related Issuances">
                         <div class="oe_form_box" style="padding: 0 20px;">
                             <field name="related_issuances" readonly="1">
@@ -68,7 +86,7 @@
     </record>
 
     <record id="ppmp_action" model="ir.actions.act_window">
-        <field name="name">PPMP</field>
+        <field name="name">Project Procurement Management Plan</field>
         <field name="res_model">upmin_stock.ppmp</field>
         <field name="view_mode">tree,form</field>
     </record>
@@ -78,7 +96,6 @@
         name="PPMP"
         action="ppmp_action"
         parent="upmin_stock_menu"
-        groups="upmin_stock.group_spmo_stock_custodian"
         sequence="54" />
 
 </odoo>

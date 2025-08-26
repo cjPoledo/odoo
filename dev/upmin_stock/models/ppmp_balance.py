@@ -15,7 +15,7 @@ class PPMPBalance(models.Model):
         readonly=True,
         store=True,
     )
-    initial_balance = fields.Integer(string="Initial Balance", default=0)
+    initial_balance = fields.Integer(string="Initial PPMP Balance", default=0)
 
     related_issuances = fields.One2many(
         "upmin_stock.issuance",
