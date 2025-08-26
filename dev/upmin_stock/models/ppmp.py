@@ -7,6 +7,8 @@ class PPMP(models.Model):
     _name = "upmin_stock.ppmp"
     _description = "Project Procurement Management Plan"
     _rec_name = "rc"
+    _order = "rc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     rc = fields.Many2one(
         "upmin_stock.rc", string="Responsibility Center", required=True
