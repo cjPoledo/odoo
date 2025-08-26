@@ -74,7 +74,7 @@ class Issuance(models.Model):
     )
     remarks = fields.Text(string="Remarks", related="ris_line.remarks", store=False)
     fund_cluster = fields.Char(
-        string="Fund Cluster", related="ris_line.ris_id.fund_cluster.name", store=False
+        string="Fund Cluster", related="ris_line.ris_id.fund_cluster.name", store=True
     )
     ppmp_id = fields.Many2one(
         "upmin_stock.ppmp",
