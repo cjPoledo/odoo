@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+import io, base64
+import xlsxwriter
 
 
 class Stock(models.Model):
@@ -105,6 +107,78 @@ class Stock(models.Model):
                 "default_quantity": 0,
                 "default_notes": "",
             },
+        }
+
+    def action_download_report_global(self):
+        active_ids = self.env.context.get("active_ids", [])
+        selected_items = self.browse(active_ids)
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {"in_memory": True})
+        worksheet = workbook.add_worksheet("Stocks")
+
+        fund_clusters = self.env["upmin_stock.fund_cluster"].search([])
+
+        headers = ["Stock No", "Description", "Unit"]
+        for fc in fund_clusters:
+            headers.append(f"Initial Balance ({fc.name})")
+            headers.append(f"Issued ({fc.name})")
+            headers.append(f"Balance ({fc.name})")
+        headers.extend(["Price", "PSDBM Price", "Category"])
+
+        for col, header in enumerate(headers):
+            worksheet.write(0, col, header)
+
+        for row, data in enumerate(selected_items):
+            worksheet.write(row + 1, 0, data.stock_no)
+            worksheet.write(row + 1, 1, data.description)
+            worksheet.write(row + 1, 2, data.unit.measure_unit)
+            col = 2
+            for fc in fund_clusters:
+                col += 1
+                init_balance = sum(
+                    r.quantity
+                    for r in data.replenishment_ids
+                    if r.fund_cluster_id.id == fc.id
+                )
+                worksheet.write(row + 1, col, init_balance)
+                col += 1
+                issued = sum(
+                    i.quantity_issued
+                    for i in data.issuance_ids
+                    if i.fund_cluster == fc.name
+                )
+                worksheet.write(row + 1, col, issued)
+                col += 1
+                balance = (
+                    data.per_fund_balance.filtered(
+                        lambda l: l.fund_cluster_id.id == fc.id
+                    )[:1].balance
+                    or 0
+                )
+                worksheet.write(row + 1, col, balance)
+            worksheet.write(row + 1, col + 1, data.price)
+            worksheet.write(row + 1, col + 2, data.psdbm_price)
+            worksheet.write(row + 1, col + 3, data.category.category or "")
+
+        workbook.close()
+        output.seek(0)
+
+        file_content = base64.b64encode(output.read())
+        attachment = self.env["ir.attachment"].create(
+            {
+                "name": "stocks_report.xlsx",
+                "type": "binary",
+                "datas": file_content,
+                "res_model": "upmin_stock.stock",
+                "res_id": 0,
+                "mimetype": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            }
+        )
+
+        return {
+            "type": "ir.actions.act_url",
+            "url": "/web/content/%s?download=true" % attachment.id,
+            "target": "self",
         }
 
     def name_get(self):
