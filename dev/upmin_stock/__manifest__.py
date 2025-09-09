@@ -27,6 +27,7 @@
         "views/fund_cluster.xml",
         "views/stock_fund_balance.xml",
         "views/ppmp.xml",
+        "views/reset_wizard.xml",
     ],
     "icon": "upmin_stock/static/description/logo.jpeg",
     "license": "Other proprietary",

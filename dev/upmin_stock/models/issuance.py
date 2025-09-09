@@ -116,3 +116,17 @@ class Issuance(models.Model):
         for stock in stocks:
             stock.update_fund_cluster_balance()
         return res
+
+    def wizard_unlink(self):
+        ppmp_balance_line = self.mapped("ris_line.ppmp_balance_id")
+        quantity_issued = self.quantity_issued
+        res = super().unlink()
+        for line in ppmp_balance_line:
+            initial_balance = line.initial_balance or 0
+            line.initial_balance -= quantity_issued
+            line.ppmp.message_post(
+                body=f"[RESET DATA] Adjusted initial balance of {line.stock_id.stock_no} from {initial_balance} to {line.initial_balance}"
+            )
+            line.stock_id.update_fund_cluster_balance()
+            ppmp_balance_line._compute_total_issued()
+        return res

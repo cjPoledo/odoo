@@ -84,7 +84,7 @@
         id="procurement_wizard_menu"
         name="Import Procurement Data"
         action="procurement_wizard_action"
-        parent="upmin_stock_menu"
-        sequence="53" />
+        parent="configuration_menu"
+        sequence="5" />
 
 </odoo>

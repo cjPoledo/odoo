@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_reset_wizard_form" model="ir.ui.view">
+        <field name="name">reset.wizard.form</field>
+        <field name="model">upmin_stock.reset_wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reset Balances" create="false" edit="false" delete="false">
+                <sheet>
+                    <div style="display:flex; justify-content:center; margin:40px 0;">
+                        <button name="reset_data"
+                            type="object"
+                            string="RESET BALANCES"
+                            class="btn btn-danger btn-lg"
+                            style="width:60%; height:200px; font-size:30px;" />
+                    </div>
+                </sheet>
+                <footer></footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_reset_wizard" model="ir.actions.act_window">
+        <field name="name">Reset Data</field>
+        <field name="res_model">upmin_stock.reset_wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field> <!-- use "new" for popup OR "current" for full page -->
+    </record>
+
+    <menuitem id="menu_reset_wizard"
+        name="Reset Data"
+        parent="upmin_stock.configuration_menu"
+        action="action_reset_wizard"
+        sequence="50" />
+
+
+</odoo>
