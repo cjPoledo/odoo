@@ -234,7 +234,7 @@
             <field name="model_id" ref="upmin_stock.model_upmin_stock_reset_wizard" />
             <field name="group_id" ref="upmin_stock.group_spmo_stock_custodian" />
             <field name="perm_read" eval="1" />
-            <field name="perm_write" eval="0" />
+            <field name="perm_write" eval="1" />
             <field name="perm_create" eval="1" />
             <field name="perm_unlink" eval="0" />
         </record>

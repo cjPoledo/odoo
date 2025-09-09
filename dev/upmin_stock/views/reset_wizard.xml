@@ -6,30 +6,36 @@
         <field name="model">upmin_stock.reset_wizard</field>
         <field name="arch" type="xml">
             <form string="Reset Balances" create="false" edit="false" delete="false">
-                <sheet>
-                    <div style="display:flex; justify-content:center; margin:40px 0;">
-                        <button name="reset_data"
-                            type="object"
-                            string="RESET BALANCES"
-                            class="btn btn-danger btn-lg"
-                            style="width:60%; height:200px; font-size:30px;" />
-                    </div>
-                </sheet>
-                <footer></footer>
+                <form string="Reset Issuances">
+                    <sheet>
+                        <h3>It is recommended to backup your stock and issuance data before
+                            performing this action.</h3>
+                        <br />
+                        <div class="o_row" style="justify-content: center;">
+                            <label for="confirm_reset" class="fw-bold" />
+                            <field name="confirm_reset" widget="boolean_toggle" />
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button name="reset_data" type="object" string="RESET" class="btn-danger" />
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+
             </form>
         </field>
     </record>
 
 
     <record id="action_reset_wizard" model="ir.actions.act_window">
-        <field name="name">Reset Data</field>
+        <field name="name">Reset Balance and Issuance</field>
         <field name="res_model">upmin_stock.reset_wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field> <!-- use "new" for popup OR "current" for full page -->
     </record>
 
     <menuitem id="menu_reset_wizard"
-        name="Reset Data"
+        name="Reset Balance and Issuance"
         parent="upmin_stock.configuration_menu"
         action="action_reset_wizard"
         sequence="50" />
