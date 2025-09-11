@@ -233,8 +233,8 @@ class RIS(models.Model):
                         "Deletion is blocked for issued records. Please contact the SPMO Custodian."
                     )
 
-        stocks = self.mapped("line_ids.stock_id")
+        ppmp_balance = self.mapped("line_ids.ppmp_balance_id")
         unlink = super().unlink()
-        for stock in stocks:
+        for stock in ppmp_balance.mapped("stock_id"):
             stock.update_fund_cluster_balance()
         return unlink
