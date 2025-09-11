@@ -1,6 +1,5 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError, UserError
-from odoo.osv import expression
 from collections import Counter
 
 
@@ -121,20 +120,20 @@ class RIS(models.Model):
 
         return super().create(vals_list)
 
-    @api.model
-    def search(self, args, offset=0, limit=None, order=None, count=False):
-        if self.env.user.has_group("upmin_stock.group_spmo_stock_custodian"):
-            domain = [
-                "|",
-                ("create_uid", "=", self.env.user.id),
-                ("status", "!=", "draft"),
-            ]
-        else:
-            domain = [("create_uid", "=", self.env.user.id)]
-        args = expression.AND([args, domain])
-        return super().search(
-            args, offset=offset, limit=limit, order=order, count=count
-        )
+    # @api.model
+    # def search(self, args, offset=0, limit=None, order=None, count=False):
+    #     if self.env.user.has_group("upmin_stock.group_spmo_stock_custodian"):
+    #         domain = [
+    #             "|",
+    #             ("create_uid", "=", self.env.user.id),
+    #             ("status", "!=", "draft"),
+    #         ]
+    #     else:
+    #         domain = [("create_uid", "=", self.env.user.id)]
+    #     args = expression.AND([args, domain])
+    #     return super().search(
+    #         args, offset=offset, limit=limit, order=order, count=count
+    #     )
 
     @api.constrains("status")
     def _check_approval_fields(self):
@@ -199,6 +198,9 @@ class RIS(models.Model):
             self.line_ids.stock_avail = False
             self.line_ids.quantity_issued = 0
             self.status = "draft"
+            action = self.env.ref("upmin_stock.action_ris")
+            return action.read()[0]
+
         elif self.status == "receiving":
             self.received_by = False
             self.receive_date = False
