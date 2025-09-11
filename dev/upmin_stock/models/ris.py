@@ -28,6 +28,7 @@ class RIS(models.Model):
         "upmin_stock.rc",
         string="Responsibility Center Code",
         required=True,
+        domain=lambda self: [("members", "in", self.env.user.partner_id.id)],
         help="For missing responsibility center, please contact the SPMO custodian.",
     )
     line_ids = fields.One2many("upmin_stock.ris_line", "ris_id", string="Add Stocks")
