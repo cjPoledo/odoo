@@ -120,20 +120,9 @@ class RIS(models.Model):
 
         return super().create(vals_list)
 
-    # @api.model
-    # def search(self, args, offset=0, limit=None, order=None, count=False):
-    #     if self.env.user.has_group("upmin_stock.group_spmo_stock_custodian"):
-    #         domain = [
-    #             "|",
-    #             ("create_uid", "=", self.env.user.id),
-    #             ("status", "!=", "draft"),
-    #         ]
-    #     else:
-    #         domain = [("create_uid", "=", self.env.user.id)]
-    #     args = expression.AND([args, domain])
-    #     return super().search(
-    #         args, offset=offset, limit=limit, order=order, count=count
-    #     )
+    @api.onchange("rc_code", "fund_cluster")
+    def _onchange_rc_code_fund_cluster(self):
+        self.line_ids = [(5, 0, 0)]
 
     @api.constrains("status")
     def _check_approval_fields(self):
