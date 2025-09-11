@@ -10,6 +10,7 @@
     "data": [
         "security/security_groups.xml",
         "security/access_control_list.xml",
+        "security/record_rules.xml",
         "reports/rsmi.xml",
         "reports/ris.xml",
         "views/menu.xml",

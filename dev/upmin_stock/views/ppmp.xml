@@ -101,7 +101,7 @@
         name="PPMP"
         action="ppmp_action"
         parent="upmin_stock_menu"
-        groups="upmin_stock.group_spmo_stock_custodian"
+        groups="upmin_stock.group_spmo_stock_user"
         sequence="54" />
 
 </odoo>

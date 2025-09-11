@@ -9,6 +9,7 @@ class RC(models.Model):
 
     rc_code = fields.Char(string="RC Code", required=True)
     rc_name = fields.Char(string="RC Name", required=True)
+    members = fields.Many2many("res.partner", string="Members")
 
     _sql_constraints = [
         ("rc_code_unique", "unique(rc_code)", "RC Code must be unique."),
