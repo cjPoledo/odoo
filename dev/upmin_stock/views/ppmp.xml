@@ -57,7 +57,7 @@
                     </group>
                 </sheet>
 
-                <notebook groups="upmin_stock.group_spmo_stock_custodian">
+                <notebook>
                     <page string="Related Issuances">
                         <div class="oe_form_box" style="padding: 0 20px;">
                             <field name="related_issuances" readonly="1">
