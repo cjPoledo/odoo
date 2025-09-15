@@ -74,13 +74,13 @@ class PPMPBalance(models.Model):
         for rec in records:
             if rec.ppmp:
                 rec.ppmp.message_post(
-                    body=f"Added {rec.stock_id.stock_no} ({rec.initial_balance})"
+                    body=f"Added {rec.stock_id.description}[{rec.stock_id.stock_no}] ({rec.initial_balance})"
                 )
         return records
 
     def write(self, vals):
         for rec in self:
-            changes = [f"{rec.stock_id.stock_no}"]
+            changes = [f"{rec.stock_id.description}[{rec.stock_id.stock_no}]"]
             if "stock_id" in vals:
                 old = rec.stock_id.stock_no
                 new_stock = self.env["upmin_stock.stock"].browse(vals["stock_id"])
@@ -92,12 +92,14 @@ class PPMPBalance(models.Model):
                 new = vals["initial_balance"]
                 if old != new:
                     changes.append(f"{old} → {new}")
-            if changes and rec.ppmp:
+            if len(changes) > 1 and rec.ppmp:
                 rec.ppmp.message_post(body=": ".join(changes))
         return super().write(vals)
 
     def unlink(self):
         for rec in self:
             if rec.ppmp:
-                rec.ppmp.message_post(body=f"Removed {rec.stock_id.stock_no}")
+                rec.ppmp.message_post(
+                    body=f"Removed {rec.stock_id.description}[{rec.stock_id.stock_no}]"
+                )
         return super().unlink()

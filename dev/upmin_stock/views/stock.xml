@@ -118,15 +118,15 @@
         <field name="name">stock.view.tree</field>
         <field name="model">upmin_stock.stock</field>
         <field name="arch" type="xml">
-            <header>
-                <button name="action_download_report_global"
-                    type="object"
-                    string="Download Report"
-                    class="btn-primary mx-2"
-                    icon="fa-download"
-                    groups="upmin_stock.group_spmo_stock_custodian" />
-            </header>
             <tree string="">
+                <header>
+                    <button name="action_download_report_global"
+                        type="object"
+                        string="Download Report"
+                        class="btn-primary mx-2"
+                        icon="fa-download"
+                        groups="upmin_stock.group_spmo_stock_custodian" />
+                </header>
                 <field name="stock_no" />
                 <field name="description" />
                 <field name="unit" />
