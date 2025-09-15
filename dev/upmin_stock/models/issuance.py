@@ -22,6 +22,7 @@ class Issuance(models.Model):
     ris_line = fields.Many2one(
         "upmin_stock.ris_line", string="RIS Line", required=True, ondelete="cascade"
     )
+    archived = fields.Boolean(string="Archived", default=False)
 
     date_issued = fields.Date(
         string="Date Issued", related="ris_line.ris_id.issue_date", store=False
@@ -119,13 +120,5 @@ class Issuance(models.Model):
 
     def wizard_unlink(self):
         for rec in self:
-            ppmp_balance_line = rec.mapped("ris_line.ppmp_balance_id")
-            quantity_issued = rec.quantity_issued
-            initial_balance = ppmp_balance_line.initial_balance or 0
-            ppmp_balance_line.initial_balance -= quantity_issued
-            ppmp_balance_line.ppmp.message_post(
-                body=f"[RESET DATA] Adjusted initial balance of {ppmp_balance_line.stock_id.stock_no} from {initial_balance} to {ppmp_balance_line.initial_balance}"
-            )
-            ppmp_balance_line.stock_id.update_fund_cluster_balance()
-            ppmp_balance_line._compute_total_issued()
-        return self.unlink()
+            rec.archived = True
+            rec.stock_no.update_fund_cluster_balance()

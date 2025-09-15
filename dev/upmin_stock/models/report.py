@@ -38,14 +38,14 @@ class Report(models.Model):
                     COALESCE(r.total_quantity, 0) - COALESCE(i.total_issued, 0) AS total_balance
                 FROM
                     upmin_stock_fund_cluster fc
-                LEFT JOIN (
+                LEFT JOIN ( 
                     SELECT fund_cluster_id, SUM(quantity) AS total_quantity
                     FROM upmin_stock_replenishment
                     GROUP BY fund_cluster_id
                 ) r ON r.fund_cluster_id = fc.id
                 LEFT JOIN (
                     SELECT fund_cluster, SUM(quantity_issued) AS total_issued
-                    FROM upmin_stock_issuance
+                    FROM upmin_stock_issuance WHERE archived = FALSE
                     GROUP BY fund_cluster
                 ) i ON i.fund_cluster = fc.name
             )

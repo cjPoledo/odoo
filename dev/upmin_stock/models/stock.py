@@ -56,7 +56,9 @@ class Stock(models.Model):
                 replenishment.quantity for replenishment in stock.replenishment_ids
             )
             total_issued = sum(
-                issuance.ris_line.quantity_issued for issuance in stock.issuance_ids
+                issuance.ris_line.quantity_issued
+                for issuance in stock.issuance_ids
+                if not issuance.archived
             )
             stock.balance = total_balance - total_issued
 
@@ -64,7 +66,9 @@ class Stock(models.Model):
     def _compute_issued(self):
         for stock in self:
             total_issued = sum(
-                issuance.ris_line.quantity_issued for issuance in stock.issuance_ids
+                issuance.ris_line.quantity_issued
+                for issuance in stock.issuance_ids
+                if not issuance.archived
             )
             stock.issued = total_issued
 
@@ -82,6 +86,8 @@ class Stock(models.Model):
                 grouped[fc_id] = grouped.get(fc_id, 0) + r.quantity
 
             for i in stock.issuance_ids:
+                if i.archived:
+                    continue
                 fc_id = i.ris_line.ris_id.fund_cluster.id
                 grouped[fc_id] = grouped.get(fc_id, 0) - i.ris_line.quantity_issued
 
