@@ -11,7 +11,8 @@
                         <field name="cluster_head" />
                         <field name="cluster" options="{'no_create': True, 'no_open': True}"
                             widget="radio" attrs="{'invisible': [('cluster_head', '=', True)]}" />
-                        <field name="doc_controllers" widget="many2many_tags" />
+                        <field name="doc_controllers" options="{'no_create': True, 'no_open': True}"
+                            widget="many2many_tags" />
                     </group>
                 </sheet>
             </form>
