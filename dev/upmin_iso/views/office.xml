@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="office_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.office.view.form</field>
+        <field name="model">upmin_iso.office</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="cluster_head" />
+                        <field name="cluster" options="{'no_create': True, 'no_open': True}"
+                            widget="radio" />
+                        <field name="doc_controllers" widget="many2many_tags" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="office_view_tree" model="ir.ui.view">
+        <field name="name">upmin_iso.office.view.tree</field>
+        <field name="model">upmin_iso.office</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name" />
+                <field name="cluster" />
+                <field name="cluster_head" />
+                <field name="doc_controllers" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="office_action" model="ir.actions.act_window">
+        <field name="name">Office</field>
+        <field name="res_model">upmin_iso.office</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

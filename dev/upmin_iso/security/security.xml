@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="group_iso_doc_controller" model="res.groups">
+        <field name="name">ISO Document Controller</field>
+    </record>
+
+    <record id="group_iso_staff" model="res.groups">
+        <field name="name">ISO Staff</field>
+    </record>
+
+</odoo>

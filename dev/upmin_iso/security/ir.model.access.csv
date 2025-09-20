@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+upmin_iso_office_access,UPMin ISO Office Access,model_upmin_iso_office,upmin_iso.group_iso_staff,1,1,1,1

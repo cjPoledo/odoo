@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+        id="upmin_iso_menu"
+        name="ISO"
+        sequence="10"
+        web_icon="upmin_iso,static/description/icon.svg" />
+
+    <menuitem
+        id="office_menu"
+        name="Offices"
+        action="office_action"
+        groups="group_iso_staff"
+        parent="upmin_iso_menu"
+        sequence="10" />
+
+</odoo>
