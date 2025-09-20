@@ -10,7 +10,7 @@
     <menuitem
         id="office_menu"
         name="Offices"
-        action="office_action"
+        action="upmin_iso.office_action"
         groups="group_iso_staff"
         parent="upmin_iso_menu"
         sequence="10" />
