@@ -15,12 +15,21 @@ class Office(models.Model):
     )
     cluster_head = fields.Boolean(string="Cluster Head?", default=False)
     doc_controllers = fields.Many2many(
-        comodel_name="res.partner", string="Document Controllers"
+        comodel_name="res.partner",
+        string="Document Controllers",
+        domain=lambda self: self._get_doc_controller_domain(),
     )
 
     _sql_constraints = [
         ("office_name_unique", "unique(name)", "Office name must be unique."),
     ]
+
+    @api.model
+    def _get_doc_controller_domain(self):
+        group = self.env.ref("upmin_iso.group_iso_doc_controller")
+        users = self.env["res.users"].search([("groups_id", "in", group.id)])
+        partners = users.mapped("partner_id")
+        return [("id", "in", partners.ids)]
 
     @api.onchange("cluster_head")
     def _cluster_head_onchange(self):
