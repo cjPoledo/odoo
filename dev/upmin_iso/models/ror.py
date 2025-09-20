@@ -8,7 +8,10 @@ class ROR(models.Model):
     _order = "office"
 
     office = fields.Many2one(
-        comodel_name="upmin_iso.office", string="Department", required=True
+        comodel_name="upmin_iso.office",
+        string="Department",
+        required=True,
+        domain=lambda self: [("doc_controllers", "in", self.env.user.partner_id.id)],
     )
     issue_type = fields.Selection(
         selection=([("internal", "Internal Issue"), ("external", "External Issue")]),
@@ -48,4 +51,7 @@ class ROR(models.Model):
     existing_control = fields.Text(
         string="Existing Control",
         help='What is currently being done to address the risk or avail of the opportunity?\nIf none, kindly indicate "None".',
+    )
+    ratings = fields.One2many(
+        comodel_name="upmin_iso.ror_rating", inverse_name="issue", string="Ratings"
     )
