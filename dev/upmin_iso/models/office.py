@@ -18,6 +18,10 @@ class Office(models.Model):
         comodel_name="res.partner", string="Document Controllers"
     )
 
+    _sql_constraints = [
+        ("office_name_unique", "unique(name)", "Office name must be unique."),
+    ]
+
     @api.onchange("cluster_head")
     def _cluster_head_onchange(self):
         if self.cluster_head:
