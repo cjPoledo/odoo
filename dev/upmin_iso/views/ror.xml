@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="upmin_iso.ror_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.ror.view.form</field>
+        <field name="model">upmin_iso.ror</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="office" />
+                        <field name="issue_type" />
+                        <field name="issue" />
+                        <field name="interested_parties" />
+                        <field name="needs_and_exp" />
+                        <field name="compliance" />
+                        <field name="risks" />
+                        <field name="opportunities" />
+                        <field name="consequence" />
+                        <field name="benefit" />
+                        <field name="existing_control" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upmin_iso.ror_view_tree" model="ir.ui.view">
+        <field name="name">upmin_iso.ror.view.tree</field>
+        <field name="model">upmin_iso.ror</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="office" />
+                <field name="issue_type" />
+                <field name="issue" />
+                <field name="interested_parties" />
+                <field name="needs_and_exp" />
+                <field name="compliance" />
+                <field name="risks" />
+                <field name="opportunities" />
+                <field name="consequence" />
+                <field name="benefit" />
+                <field name="existing_control" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="upmin_iso.ror_action" model="ir.actions.act_window">
+        <field name="name">Risk and Opportunities Register</field>
+        <field name="res_model">upmin_iso.ror</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

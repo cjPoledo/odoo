@@ -13,6 +13,14 @@
         action="upmin_iso.office_action"
         groups="group_iso_staff"
         parent="upmin_iso_menu"
+        sequence="50" />
+
+    <menuitem
+        id="ror_menu"
+        name="ROR"
+        action="upmin_iso.ror_action"
+        groups="group_iso_doc_controller"
+        parent="upmin_iso_menu"
         sequence="10" />
 
 </odoo>

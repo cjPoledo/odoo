@@ -8,6 +8,7 @@
         "security/security.xml",
         "security/ir.model.access.csv",
         "views/office.xml",
+        "views/ror.xml",
         "views/menu.xml",
     ],
     "icon": "upmin_iso/static/description/logo.jpeg",
