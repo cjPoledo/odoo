@@ -118,7 +118,7 @@
         <field name="model">upmin_iso.ror_rating</field>
         <field name="arch" type="xml">
             <tree string="">
-                <field name="review_date" />
+                <field name="review_date" widget="remaining_days" />
                 <field name="risk_rating" />
                 <field name="risk_conclusion" />
                 <field name="opportunity_rating" />
