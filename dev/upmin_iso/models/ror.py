@@ -4,8 +4,8 @@ from odoo import models, fields, api
 class ROR(models.Model):
     _name = "upmin_iso.ror"
     _description = "Risk and Opportunities Register"
-    _rec_name = "office"
-    _order = "office"
+    _rec_name = "issue"
+    _order = "create_date"
 
     office = fields.Many2one(
         comodel_name="upmin_iso.office",
@@ -31,7 +31,7 @@ class ROR(models.Model):
         string="Needs and Expectations",
         help="What are the needs and expectations of the identified interested parties?",
     )
-    compliance = fields.Char(
+    compliance = fields.Text(
         string="Compliance Obligations",
         help='Is there any law, directive, issuance, statute, ordinance or regulation that\'s related to the issue?\nIf yes, then kindly indicate.\nIf none, kindly indicate "None".',
     )
@@ -48,9 +48,13 @@ class ROR(models.Model):
     benefit = fields.Text(
         string="Benefit (B)", help="What's the benefit if opportunity is availed of?"
     )
-    existing_control = fields.Text(
-        string="Existing Control",
-        help='What is currently being done to address the risk or avail of the opportunity?\nIf none, kindly indicate "None".',
+    risk_existing_control = fields.Text(
+        string="Existing Control (Risks)",
+        help='What is currently being done to address the risk?\nIf none, kindly indicate "None".',
+    )
+    opportunities_existing_control = fields.Text(
+        string="Existing Control (Opportunities)",
+        help='What is currently being done to avail of the opportunity?\nIf none, kindly indicate "None".',
     )
     ratings = fields.One2many(
         comodel_name="upmin_iso.ror_rating", inverse_name="issue", string="Ratings"

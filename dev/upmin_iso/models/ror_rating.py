@@ -4,8 +4,8 @@ from odoo import models, fields, api
 class RORRating(models.Model):
     _name = "upmin_iso.ror_rating"
     _description = "Risk and Opportunities Register Rating"
-    _rec_name = "issue"
-    _order = "create_date"
+    _rec_name = "review_date"
+    _order = "review_date"
 
     issue = fields.Many2one(
         comodel_name="upmin_iso.ror", string="Issue", required=True, readonly=True
@@ -192,6 +192,20 @@ class RORRating(models.Model):
     )
     risk_status = fields.Text(string="Status/Results (Risk)")
     opportunity_status = fields.Text(string="Status/Results (Opportunity)")
+
+    risks = fields.Text(string="Risks (R)", related="issue.risks")
+    opportunities = fields.Text(
+        string="Opportunities (O)", related="issue.opportunities"
+    )
+    consequence = fields.Text(string="Consequence (C)", related="issue.consequence")
+    benefit = fields.Text(string="Benefit (B)", related="issue.benefit")
+    risk_existing_control = fields.Text(
+        string="Existing Control (Risks)", related="issue.risk_existing_control"
+    )
+    opportunities_existing_control = fields.Text(
+        string="Existing Control (Opportunities)",
+        related="issue.opportunities_existing_control",
+    )
 
     @api.depends("risk_likelihood", "risk_frequency", "consequence_severity")
     def _compute_risk_rating(self):
