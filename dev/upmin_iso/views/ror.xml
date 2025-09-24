@@ -113,6 +113,17 @@
         </field>
     </record>
 
+    <record id="upmin_iso.ror_tree_inherit_js_class" model="ir.ui.view">
+        <field name="name">upmin_iso.ror.tree.inherit</field>
+        <field name="model">upmin_iso.ror</field>
+        <field name="inherit_id" ref="upmin_iso.ror_view_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class">button_in_tree</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="upmin_iso.ror_rating_view_tree" model="ir.ui.view">
         <field name="name">upmin_iso.ror_rating.view.tree</field>
         <field name="model">upmin_iso.ror_rating</field>
