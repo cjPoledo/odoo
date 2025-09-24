@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 import io, base64
 import xlsxwriter
 
@@ -11,10 +11,16 @@ class RORExportWizard(models.TransientModel):
         comodel_name="upmin_iso.office",
         string="Office",
         required=True,
-        domain=lambda self: [("doc_controllers", "in", self.env.user.partner_id.id)],
+        domain=lambda self: self._get_office_domain(),
     )
     export_file = fields.Binary("Export File", readonly=True)
     export_filename = fields.Char("File Name")
+
+    @api.model
+    def _get_office_domain(self):
+        if self.env.user.has_group("upmin_iso.group_iso_staff"):
+            return []
+        return [("doc_controllers", "in", self.env.user.partner_id.id)]
 
     def action_export_ror(self):
         output = io.BytesIO()
