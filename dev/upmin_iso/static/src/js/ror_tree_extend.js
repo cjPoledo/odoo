@@ -9,13 +9,11 @@ export class RORListController extends ListController {
   onExportRORClick() {
     this.actionService.doAction({
       type: "ir.actions.act_window",
-      res_model: "upmin_iso.ror",
+      res_model: "upmin_iso.ror_export_wizard",
       name: "Export ROR",
       view_mode: "form",
-      view_type: "form",
       views: [[false, "form"]],
       target: "new",
-      res_id: false,
     });
   }
 }

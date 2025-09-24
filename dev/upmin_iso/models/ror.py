@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields
 
 
 class ROR(models.Model):
@@ -59,15 +59,3 @@ class ROR(models.Model):
     ratings = fields.One2many(
         comodel_name="upmin_iso.ror_rating", inverse_name="issue", string="Ratings"
     )
-
-    @api.model
-    def action_ror_export(self):
-        return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": "Success",
-                "message": "Hi",
-                "sticky": False,
-            },
-        }
