@@ -1,5 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 upmin_iso_office_access_staff,UPMin ISO Office Access - Staff,model_upmin_iso_office,upmin_iso.group_iso_staff,1,1,1,1
 upmin_iso_office_access_doc_controller,UPMin ISO Office Access - Doc Controller,model_upmin_iso_office,upmin_iso.group_iso_doc_controller,1,0,0,0
-upmin_iso_ror_access,UPMin ISO ROR Access,model_upmin_iso_ror,upmin_iso.group_iso_doc_controller,1,1,1,1
-upmin_iso_ror_rating_access,UPMin ISO ROR Rating Access,model_upmin_iso_ror_rating,upmin_iso.group_iso_doc_controller,1,1,1,1
+upmin_iso_ror_access_staff,UPMin ISO ROR Access - Staff,model_upmin_iso_ror,upmin_iso.group_iso_staff,1,0,0,0
+upmin_iso_ror_rating_access_staff,UPMin ISO ROR Rating Access - Staff,model_upmin_iso_ror_rating,upmin_iso.group_iso_staff,1,0,0,0
+upmin_iso_ror_access_doc_controller,UPMin ISO ROR Access - Doc Controller,model_upmin_iso_ror,upmin_iso.group_iso_doc_controller,1,1,1,1
+upmin_iso_ror_rating_access_doc_controller,UPMin ISO ROR Rating Access - Doc Controller,model_upmin_iso_ror_rating,upmin_iso.group_iso_doc_controller,1,1,1,1

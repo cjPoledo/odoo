@@ -53,11 +53,11 @@
                     <group col="2">
                         <group>
                             <field name="issue" />
-                            <field name="prev_rating" />
+                            <!-- <field name="prev_rating" /> -->
                         </group>
                         <group>
                             <field name="review_date" />
-                            <field name="next_rating" />
+                            <!-- <field name="next_rating" /> -->
                         </group>
                     </group>
                     <notebook>

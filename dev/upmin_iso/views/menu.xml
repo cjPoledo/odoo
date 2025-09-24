@@ -19,7 +19,7 @@
         id="ror_menu"
         name="ROR"
         action="upmin_iso.ror_action"
-        groups="group_iso_doc_controller"
+        groups="group_iso_doc_controller,group_iso_staff"
         parent="upmin_iso_menu"
         sequence="10" />
 
