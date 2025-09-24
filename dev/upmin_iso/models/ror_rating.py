@@ -190,8 +190,8 @@ class RORRating(models.Model):
         string="Review Date",
         help="Review is done every quarter to determine if action/s is/are effective or not.",
     )
-    risk_status = fields.Text(string="Status/Results (Risk)")
-    opportunity_status = fields.Text(string="Status/Results (Opportunity)")
+    risk_status = fields.Html(string="Status/Results (Risk)")
+    opportunity_status = fields.Html(string="Status/Results (Opportunity)")
 
     risks = fields.Text(string="Risks (R)", related="issue.risks")
     opportunities = fields.Text(

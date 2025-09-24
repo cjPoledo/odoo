@@ -31,7 +31,7 @@ class ROR(models.Model):
         string="Needs and Expectations",
         help="What are the needs and expectations of the identified interested parties?",
     )
-    compliance = fields.Text(
+    compliance = fields.Html(
         string="Compliance Obligations",
         help='Is there any law, directive, issuance, statute, ordinance or regulation that\'s related to the issue?\nIf yes, then kindly indicate.\nIf none, kindly indicate "None".',
     )
