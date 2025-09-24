@@ -103,7 +103,7 @@
         <field name="name">upmin_iso.ror.view.tree</field>
         <field name="model">upmin_iso.ror</field>
         <field name="arch" type="xml">
-            <tree string="">
+            <tree string="" export_xlsx="false">
                 <field name="office" />
                 <field name="issue_type" />
                 <field name="issue" />
