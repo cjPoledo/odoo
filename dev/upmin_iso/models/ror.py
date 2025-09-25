@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+from collections import Counter
 
 
 class ROR(models.Model):
@@ -89,3 +91,19 @@ class ROR(models.Model):
                 else:
                     ratings_status_text = f"Missing: {missing_ratings}"
             rec.ratings_status = ratings_status_text
+
+    @api.constrains("ratings")
+    def _unique_ratings_constrain(self):
+        for rec in self:
+            review_dates = [
+                str(rating.review_date.review_date) for rating in rec.ratings
+            ]
+            review_date_counts = Counter(review_dates)
+            duplicates = [
+                date for date, count in review_date_counts.items() if count > 1
+            ]
+            if duplicates:
+                dup_str = ", ".join(duplicates)
+                raise ValidationError(
+                    f"The following review dates are duplicated: {dup_str}"
+                )
