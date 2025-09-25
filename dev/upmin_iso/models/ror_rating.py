@@ -178,9 +178,14 @@ class RORRating(models.Model):
         string="Due Date (Opportunity)",
         help="Kindly indicate the due date to do the required action.",
     )
-    review_date = fields.Date(
+    review_date = fields.Many2one(
+        comodel_name="upmin_iso.review_period",
         string="Review Date",
         help="Review is done every quarter to determine if action/s is/are effective or not.",
+        required=True,
+    )
+    review_date_date = fields.Date(
+        string="Review Date Date", related="review_date.review_date"
     )
     risk_status = fields.Html(string="Status/Results (Risk)")
     opportunity_status = fields.Html(string="Status/Results (Opportunity)")

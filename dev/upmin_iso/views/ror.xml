@@ -56,7 +56,7 @@
                             <!-- <field name="prev_rating" /> -->
                         </group>
                         <group>
-                            <field name="review_date" />
+                            <field name="review_date" options="{'no_open': True}" />
                             <!-- <field name="next_rating" /> -->
                         </group>
                     </group>
@@ -150,7 +150,7 @@
         <field name="model">upmin_iso.ror_rating</field>
         <field name="arch" type="xml">
             <tree string="">
-                <field name="review_date" widget="remaining_days" />
+                <field name="review_date_date" widget="remaining_days" string="Review Date" />
                 <field name="risk_rating" />
                 <field name="risk_conclusion" />
                 <field name="opportunity_rating" />
