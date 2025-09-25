@@ -10,12 +10,6 @@ class RORRating(models.Model):
     issue = fields.Many2one(
         comodel_name="upmin_iso.ror", string="Issue", required=True, readonly=True
     )
-    prev_rating = fields.Many2one(
-        comodel_name="upmin_iso.ror_rating", string="Previous Rating", readonly=True
-    )
-    next_rating = fields.Many2one(
-        comodel_name="upmin_iso.ror_rating", string="Next Rating", readonly=True
-    )
     risk_likelihood = fields.Selection(
         selection=[
             ("4", "4 - Most Likely (No operational control in place)"),

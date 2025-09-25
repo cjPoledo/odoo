@@ -8,3 +8,7 @@ class ReviewPeriod(models.Model):
     _order = "review_date"
 
     review_date = fields.Date(string="Review Date", required=True)
+
+    _sql_constraints = [
+        ("review_date_unique", "unique(review_date)", "Review date must be unique."),
+    ]

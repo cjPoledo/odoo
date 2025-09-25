@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class ROR(models.Model):
@@ -59,3 +59,33 @@ class ROR(models.Model):
     ratings = fields.One2many(
         comodel_name="upmin_iso.ror_rating", inverse_name="issue", string="Ratings"
     )
+    ratings_status = fields.Char(
+        string="Ratings Status", compute="_compute_ratings_status", store=True
+    )
+
+    @api.depends("ratings", "ratings.review_date")
+    def _compute_ratings_status(self):
+        for rec in self:
+            ratings = (
+                rec.env["upmin_iso.ror_rating"]
+                .search(domain=[("issue", "=", rec.id)])
+                .mapped("review_date.review_date")
+            )
+            if len(ratings) == 0:
+                ratings_status_text = "Empty"
+            else:
+                required_ratings = (
+                    rec.env["upmin_iso.review_period"]
+                    .search([("review_date", ">=", ratings[0])])
+                    .mapped("review_date")
+                )
+                for rating in ratings:
+                    required_ratings.remove(rating)
+                missing_ratings = ", ".join(
+                    str(required_rating) for required_rating in required_ratings
+                )
+                if missing_ratings == "":
+                    ratings_status_text = "Complete"
+                else:
+                    ratings_status_text = f"Missing: {missing_ratings}"
+            rec.ratings_status = ratings_status_text

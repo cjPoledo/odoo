@@ -36,7 +36,11 @@
                             </group>
                         </page>
                     </notebook>
+                    <br />
                     <group col="1">
+                        <field name="ratings_status" widget="badge"
+                            decoration-success="ratings_status == 'Complete'"
+                            decoration-danger="ratings_status == 'Empty'" decoration-warning="True" />
                         <field name="ratings" />
                     </group>
                 </sheet>
@@ -130,6 +134,9 @@
                 <field name="issue" />
                 <field name="interested_parties" />
                 <field name="ratings" />
+                <field name="ratings_status" widget="badge"
+                    decoration-success="ratings_status == 'Complete'"
+                    decoration-danger="ratings_status == 'Empty'" decoration-warning="True" />
             </tree>
         </field>
     </record>
