@@ -68,20 +68,19 @@ class ROR(models.Model):
     # @api.depends("ratings", "ratings.review_date")
     def _compute_ratings_status(self):
         for rec in self:
-            ratings = (
-                rec.env["upmin_iso.ror_rating"]
-                .search(domain=[("issue", "=", rec.id)])
-                .mapped("review_date.review_date")
+            ratings = rec.env["upmin_iso.ror_rating"].search(
+                domain=[("issue", "=", rec.id)]
             )
             if len(ratings) == 0:
                 ratings_status_text = "Empty"
             else:
+                mapped_ratings = ratings.mapped("review_date.review_date")
                 required_ratings = (
                     rec.env["upmin_iso.review_period"]
-                    .search([("review_date", ">=", ratings[0])])
+                    .search([("review_date", ">=", mapped_ratings[0])])
                     .mapped("review_date")
                 )
-                for rating in ratings:
+                for rating in mapped_ratings:
                     required_ratings.remove(rating)
                 missing_ratings = ", ".join(
                     str(required_rating) for required_rating in required_ratings
@@ -90,6 +89,12 @@ class ROR(models.Model):
                     ratings_status_text = "Complete"
                 else:
                     ratings_status_text = f"Missing: {missing_ratings}"
+
+                ratings_progress = ratings.mapped("progress")
+                for progress in ratings_progress:
+                    if progress < 100:
+                        ratings_status_text += " | Unfinished Reviews"
+                        break
             rec.ratings_status = ratings_status_text
 
     @api.constrains("ratings")

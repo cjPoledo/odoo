@@ -181,8 +181,17 @@ class RORRating(models.Model):
     review_date_date = fields.Date(
         string="Review Date Date", related="review_date.review_date"
     )
-    risk_status = fields.Html(string="Status/Results (Risk)")
-    opportunity_status = fields.Html(string="Status/Results (Opportunity)")
+    risk_status = fields.Html(
+        string="Status/Results (Risk)",
+        help="To be filled up later during the review date.",
+    )
+    opportunity_status = fields.Html(
+        string="Status/Results (Opportunity)",
+        help="To be filled up later during the review date.",
+    )
+    progress = fields.Integer(
+        string="Progress", compute="_compute_progress", store=True, readonly=True
+    )
 
     risks = fields.Text(string="Risks (R)", related="issue.risks")
     opportunities = fields.Text(
@@ -231,3 +240,51 @@ class RORRating(models.Model):
                 rating.opportunity_conclusion = "significant"
             else:
                 rating.opportunity_conclusion = "not significant"
+
+    @api.depends(
+        "issue",
+        "risk_likelihood",
+        "opportunity_likelihood",
+        "risk_frequency",
+        "opportunity_frequency",
+        "consequence_severity",
+        "benefit_severity",
+        "risk_required_action",
+        "opportunity_required_action",
+        "risk_responsible",
+        "opportunity_responsible",
+        "risk_due_date",
+        "opportunity_due_date",
+        "review_date",
+        "risk_status",
+        "opportunity_status",
+    )
+    def _compute_progress(self):
+        # List of fields to check
+        tracked_fields = [
+            "issue",
+            "risk_likelihood",
+            "opportunity_likelihood",
+            "risk_frequency",
+            "opportunity_frequency",
+            "consequence_severity",
+            "benefit_severity",
+            "risk_required_action",
+            "opportunity_required_action",
+            "risk_responsible",
+            "opportunity_responsible",
+            "risk_due_date",
+            "opportunity_due_date",
+            "review_date",
+            "risk_status",
+            "opportunity_status",
+        ]
+        total_fields = len(tracked_fields)
+
+        for rec in self:
+            filled = 0
+            for field in tracked_fields:
+                if rec[field]:  # field has a value
+                    filled += 1
+            # convert to percentage
+            rec.progress = int((filled / total_fields) * 100) if total_fields else 0

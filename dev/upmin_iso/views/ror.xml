@@ -54,6 +54,9 @@
         <field name="arch" type="xml">
             <form string="">
                 <sheet>
+                    <group col="1">
+                        <field name="progress" widget="progressbar" />
+                    </group>
                     <group col="2">
                         <group>
                             <field name="issue" />
@@ -159,9 +162,14 @@
             <tree string="">
                 <field name="review_date_date" widget="remaining_days" string="Review Date" />
                 <field name="risk_rating" />
-                <field name="risk_conclusion" />
+                <field name="risk_conclusion" widget="badge"
+                    decoration-success="risk_conclusion == 'not significant'"
+                    decoration-danger="risk_conclusion == 'significant'" />
                 <field name="opportunity_rating" />
-                <field name="opportunity_conclusion" />
+                <field name="opportunity_conclusion" widget="badge"
+                    decoration-success="opportunity_conclusion == 'significant'"
+                    decoration-danger="opportunity_conclusion == 'not significant'" />
+                <field name="progress" widget="progressbar" />
             </tree>
         </field>
     </record>
