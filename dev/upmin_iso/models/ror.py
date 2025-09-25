@@ -62,10 +62,10 @@ class ROR(models.Model):
         comodel_name="upmin_iso.ror_rating", inverse_name="issue", string="Ratings"
     )
     ratings_status = fields.Char(
-        string="Ratings Status", compute="_compute_ratings_status", store=True
+        string="Ratings Status", compute="_compute_ratings_status", store=False
     )
 
-    @api.depends("ratings", "ratings.review_date")
+    # @api.depends("ratings", "ratings.review_date")
     def _compute_ratings_status(self):
         for rec in self:
             ratings = (
