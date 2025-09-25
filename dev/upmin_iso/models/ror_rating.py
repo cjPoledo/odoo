@@ -30,7 +30,6 @@ class RORRating(models.Model):
             ),
         ],
         string="Risk Likelihood",
-        default="4",
     )
     opportunity_likelihood = fields.Selection(
         selection=[
@@ -40,7 +39,6 @@ class RORRating(models.Model):
             ("1", "1 - Improbable (Unlikely to happen)"),
         ],
         string="Opportunity Likelihood",
-        default="4",
     )
     risk_frequency = fields.Selection(
         selection=[
@@ -62,7 +60,6 @@ class RORRating(models.Model):
             ),
         ],
         string="Risk Frequency",
-        default="4",
     )
     opportunity_frequency = fields.Selection(
         selection=[
@@ -84,7 +81,6 @@ class RORRating(models.Model):
             ),
         ],
         string="Opportunity Frequency",
-        default="4",
     )
     consequence_severity = fields.Selection(
         selection=[
@@ -106,7 +102,6 @@ class RORRating(models.Model):
             ),
         ],
         string="Consequence Severity",
-        default="4",
     )
     benefit_severity = fields.Selection(
         selection=[
@@ -128,7 +123,6 @@ class RORRating(models.Model):
             ),
         ],
         string="Benefit Severity",
-        default="4",
     )
     risk_rating = fields.Integer(
         string="Risk Rating", readonly=True, compute="_compute_risk_rating", store=True
@@ -148,7 +142,6 @@ class RORRating(models.Model):
         readonly=True,
         compute="_compute_risk_conclusion",
         store=True,
-        default="significant",
         help="For significant risks, additional required action is a must.\nFor not significant risks, additional required action is not a must. However, the process owner may undertake an additional action to further lower down the risk rating.",
     )
     opportunity_conclusion = fields.Selection(
@@ -160,7 +153,6 @@ class RORRating(models.Model):
         readonly=True,
         compute="_compute_opportunity_conclusion",
         store=True,
-        default="significant",
     )
     risk_required_action = fields.Text(
         string="Required Action (Risk)",
