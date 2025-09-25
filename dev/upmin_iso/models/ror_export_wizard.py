@@ -27,7 +27,30 @@ class RORExportWizard(models.TransientModel):
         workbook = xlsxwriter.Workbook(output, {"in_memory": True})
         sheet = workbook.add_worksheet("ROR")
 
-        sheet.write(0, 0, self.office.name)
+        # formats
+        format_default = workbook.add_format(
+            {
+                "font_name": "Calibri",
+                "font_size": 11,
+                "valign": "vcenter",
+                "text_wrap": True,
+            }
+        )
+        format_main_title = workbook.add_format(
+            {"font_name": "Calibri", "font_size": 14, "bold": True}
+        )
+        format_sub_title = workbook.add_format(
+            {"font_name": "Calibri", "font_size": 12, "bold": True}
+        )
+
+        # column width
+        sheet.set_column("A:A", 3.56, format_default)
+        sheet.set_column("B:B", 54.33, format_default)
+        sheet.set_column("C:E", 23.22, format_default)
+        sheet.set_column("F:H", 21.89, format_default)
+
+        sheet.write("B1", "RISKS and OPPORTUNITIES REGISTER (ROR)", format_main_title)
+        sheet.write("B2", f"Department: {self.office.name}", format_sub_title)
 
         workbook.close()
         data_bytes = output.getvalue()
@@ -36,7 +59,7 @@ class RORExportWizard(models.TransientModel):
         self.write(
             {
                 "export_file": file_b64,
-                "export_filename": f"{self.office.name} - ror_export.xlsx",
+                "export_filename": f"Risks and Opportunities Register - {self.office.name}.xlsx",
             }
         )
 
