@@ -13,12 +13,6 @@ class RORExportWizard(models.TransientModel):
         required=True,
         domain=lambda self: self._get_office_domain(),
     )
-    related_ror = fields.One2many(
-        comodel_name="upmin_iso.ror",
-        inverse_name="office",
-        string="Related ROR",
-        readonly=True,
-    )
     export_file = fields.Binary("Export File", readonly=True)
     export_filename = fields.Char("File Name")
 
@@ -74,6 +68,37 @@ class RORExportWizard(models.TransientModel):
                 "underline": True,
                 "bold": True,
                 "align": "center",
+                "valign": "vcenter",
+                "text_wrap": True,
+                "border": 1,
+            }
+        )
+        format_gray_bg = workbook.add_format(
+            {
+                "font_name": "Calibri",
+                "font_size": 11,
+                "bold": True,
+                "align": "center",
+                "valign": "vcenter",
+                "text_wrap": True,
+                "border": 1,
+                "bg_color": "#D9D9D9",
+            }
+        )
+        format_default_table = workbook.add_format(
+            {
+                "font_name": "Calibri",
+                "font_size": 11,
+                "valign": "vcenter",
+                "text_wrap": True,
+                "border": 1,
+            }
+        )
+        format_right_align_table = workbook.add_format(
+            {
+                "font_name": "Calibri",
+                "font_size": 11,
+                "align": "right",
                 "valign": "vcenter",
                 "text_wrap": True,
                 "border": 1,
@@ -186,6 +211,101 @@ class RORExportWizard(models.TransientModel):
                     format_table_header,
                 )
                 start_col += 10
+
+            # Add internal issues
+            for i in range(start_col):
+                if i == 1:
+                    sheet.write(6, i, "Internal Issues", format_gray_bg)
+                elif i >= 13 and (i - 13) % 10 == 0:
+                    sheet.merge_range(6, i, 6, i + 1, None, format_gray_bg)
+                elif i >= 13 and (i - 13) % 10 == 1:
+                    continue
+                else:
+                    sheet.write(6, i, None, format_gray_bg)
+            internal_issues = self.env["upmin_iso.ror"].search(
+                domain=[
+                    "&",
+                    ("office", "=", self.office.id),
+                    ("issue_type", "=", "internal"),
+                ]
+            )
+            curr_row = 7
+            for i, i_issue in enumerate(internal_issues, 1):
+                sheet.merge_range(
+                    curr_row, 0, curr_row + 1, 0, i, format_right_align_table
+                )
+                sheet.merge_range(
+                    curr_row, 1, curr_row + 1, 1, i_issue.issue, format_default_table
+                )
+                sheet.merge_range(
+                    curr_row,
+                    2,
+                    curr_row + 1,
+                    2,
+                    i_issue.interested_parties,
+                    format_default_table,
+                )
+                sheet.merge_range(
+                    curr_row,
+                    3,
+                    curr_row + 1,
+                    3,
+                    i_issue.needs_and_exp,
+                    format_default_table,
+                )
+                sheet.merge_range(
+                    curr_row,
+                    4,
+                    curr_row + 1,
+                    4,
+                    i_issue.compliance,
+                    format_default_table,
+                )
+                sheet.write(curr_row, 5, f"Risk: {i_issue.risks}", format_default_table)
+                sheet.write(
+                    curr_row + 1,
+                    5,
+                    f"Opportunity: {i_issue.opportunities}",
+                    format_default_table,
+                )
+                sheet.write(
+                    curr_row,
+                    6,
+                    f"Consequence: {i_issue.consequence}",
+                    format_default_table,
+                )
+                sheet.write(
+                    curr_row + 1, 6, f"Benefit: {i_issue.benefit}", format_default_table
+                )
+                sheet.write(
+                    curr_row, 7, i_issue.risk_existing_control, format_default_table
+                )
+                sheet.write(
+                    curr_row + 1,
+                    7,
+                    i_issue.opportunities_existing_control,
+                    format_default_table,
+                )
+                curr_row += 2
+
+                # for date in date_dict[year]:
+                #     rating = i_issue.ratings.filtered(
+                #         lambda r: r.review_date.review_date == date
+                #     )
+
+
+            # Add external issues
+            for i in range(start_col):
+                if i == 1:
+                    sheet.write(curr_row, i, "External Issues", format_gray_bg)
+                elif i >= 13 and (i - 13) % 10 == 0:
+                    sheet.merge_range(
+                        curr_row, i, curr_row, i + 1, None, format_gray_bg
+                    )
+                elif i >= 13 and (i - 13) % 10 == 1:
+                    continue
+                else:
+                    sheet.write(curr_row, i, None, format_gray_bg)
 
         workbook.close()
         data_bytes = output.getvalue()
