@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 import io, base64
 import xlsxwriter
+from xlsxwriter.utility import xl_rowcol_to_cell
 
 
 class RORExportWizard(models.TransientModel):
@@ -104,6 +105,8 @@ class RORExportWizard(models.TransientModel):
                 "border": 1,
             }
         )
+
+        conditional_format_red = workbook.add_format({"bg_color": "red"})
 
         for year in sorted(date_dict.keys(), reverse=True):
             sheet = workbook.add_worksheet(str(year))
@@ -286,13 +289,194 @@ class RORExportWizard(models.TransientModel):
                     i_issue.opportunities_existing_control,
                     format_default_table,
                 )
+
+                curr_col = 8
+                for date in date_dict[year]:
+                    rating = i_issue.ratings.filtered(
+                        lambda r: r.review_date.review_date == date
+                    )
+                    if rating:
+                        sheet.write(
+                            curr_row,
+                            curr_col,
+                            int(rating.risk_likelihood),
+                            format_default_table,
+                        )
+                        sheet.write(
+                            curr_row + 1,
+                            curr_col,
+                            int(rating.opportunity_likelihood),
+                            format_default_table,
+                        )
+                        curr_col += 1
+                        sheet.write(
+                            curr_row,
+                            curr_col,
+                            int(rating.risk_frequency),
+                            format_default_table,
+                        )
+                        sheet.write(
+                            curr_row + 1,
+                            curr_col,
+                            int(rating.opportunity_frequency),
+                            format_default_table,
+                        )
+                        curr_col += 1
+                        sheet.write(
+                            curr_row,
+                            curr_col,
+                            int(rating.consequence_severity),
+                            format_default_table,
+                        )
+                        sheet.write(
+                            curr_row + 1,
+                            curr_col,
+                            int(rating.benefit_severity),
+                            format_default_table,
+                        )
+                        curr_col += 1
+                        sheet.write(curr_row, curr_col, "RR:", format_default_table)
+                        sheet.write(curr_row + 1, curr_col, "OR:", format_default_table)
+                        curr_col += 1
+                        sheet.write_formula(
+                            curr_row,
+                            curr_col,
+                            f"={xl_rowcol_to_cell(curr_row, curr_col-4)}*{xl_rowcol_to_cell(curr_row, curr_col-3)}*{xl_rowcol_to_cell(curr_row, curr_col-2)}",
+                            format_default_table,
+                        )
+                        sheet.write_formula(
+                            curr_row + 1,
+                            curr_col,
+                            f"={xl_rowcol_to_cell(curr_row + 1, curr_col - 4)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 3)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 2)}",
+                            format_default_table,
+                        )
+                        curr_col += 1
+                        sheet.merge_range(
+                            curr_row,
+                            curr_col,
+                            curr_row,
+                            curr_col + 1,
+                            rating.risk_conclusion,
+                            format_default_table,
+                        )
+                        sheet.merge_range(
+                            curr_row + 1,
+                            curr_col,
+                            curr_row + 1,
+                            curr_col + 1,
+                            rating.opportunity_conclusion,
+                            format_default_table,
+                        )
+                        curr_col += 2
+                        sheet.write(
+                            curr_row,
+                            curr_col,
+                            rating.risk_required_action,
+                            format_default_table,
+                        )
+                        sheet.write(
+                            curr_row + 1,
+                            curr_col,
+                            rating.opportunity_required_action,
+                            format_default_table,
+                        )
+                        curr_col += 1
+                        risk_due_date_str = rating.risk_due_date.strftime("%B %d, %Y")
+                        sheet.write(
+                            curr_row,
+                            curr_col,
+                            f"{rating.risk_responsible}/{risk_due_date_str}",
+                            format_default_table,
+                        )
+                        opportunity_due_date_str = rating.opportunity_due_date.strftime(
+                            "%B %d, %Y"
+                        )
+                        sheet.write(
+                            curr_row + 1,
+                            curr_col,
+                            f"{rating.opportunity_responsible}/{opportunity_due_date_str}",
+                            format_default_table,
+                        )
+                        curr_col += 1
+                        sheet.write(
+                            curr_row,
+                            curr_col,
+                            rating.risk_status,
+                            format_default_table,
+                        )
+                        sheet.write(
+                            curr_row + 1,
+                            curr_col,
+                            rating.opportunity_status,
+                            format_default_table,
+                        )
+                        curr_col += 1
+                    else:
+                        sheet.write(curr_row, curr_col, None, format_default_table)
+                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        curr_col += 1
+                        sheet.write(curr_row, curr_col, None, format_default_table)
+                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        curr_col += 1
+                        sheet.write(curr_row, curr_col, None, format_default_table)
+                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        curr_col += 1
+                        sheet.write(curr_row, curr_col, "RR:", format_default_table)
+                        sheet.write(curr_row + 1, curr_col, "OR:", format_default_table)
+                        curr_col += 1
+                        sheet.write_formula(
+                            curr_row,
+                            curr_col,
+                            f"={xl_rowcol_to_cell(curr_row, curr_col-4)}*{xl_rowcol_to_cell(curr_row, curr_col-3)}*{xl_rowcol_to_cell(curr_row, curr_col-2)}",
+                            format_default_table,
+                        )
+                        sheet.write_formula(
+                            curr_row + 1,
+                            curr_col,
+                            f"={xl_rowcol_to_cell(curr_row + 1, curr_col - 4)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 3)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 2)}",
+                            format_default_table,
+                        )
+                        sheet.conditional_format(
+                            curr_row,
+                            curr_col,
+                            curr_row + 1,
+                            curr_col,
+                            {
+                                "type": "cell",
+                                "criteria": ">=",
+                                "value": 27,
+                                "format": conditional_format_red,
+                            },
+                        )
+                        curr_col += 1
+                        sheet.merge_range(
+                            curr_row,
+                            curr_col,
+                            curr_row,
+                            curr_col + 1,
+                            None,
+                            format_default_table,
+                        )
+                        sheet.merge_range(
+                            curr_row + 1,
+                            curr_col,
+                            curr_row + 1,
+                            curr_col + 1,
+                            None,
+                            format_default_table,
+                        )
+                        curr_col += 2
+                        sheet.write(curr_row, curr_col, None, format_default_table)
+                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        curr_col += 1
+                        sheet.write(curr_row, curr_col, None, format_default_table)
+                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        curr_col += 1
+                        sheet.write(curr_row, curr_col, None, format_default_table)
+                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        curr_col += 1
+
                 curr_row += 2
-
-                # for date in date_dict[year]:
-                #     rating = i_issue.ratings.filtered(
-                #         lambda r: r.review_date.review_date == date
-                #     )
-
 
             # Add external issues
             for i in range(start_col):
@@ -306,6 +490,259 @@ class RORExportWizard(models.TransientModel):
                     continue
                 else:
                     sheet.write(curr_row, i, None, format_gray_bg)
+
+            external_issues = self.env["upmin_iso.ror"].search(
+                domain=[
+                    "&",
+                    ("office", "=", self.office.id),
+                    ("issue_type", "=", "external"),
+                ]
+            )
+            curr_row += 1
+            for i, e_issue in enumerate(external_issues, 1):
+                sheet.merge_range(
+                    curr_row, 0, curr_row + 1, 0, i, format_right_align_table
+                )
+                sheet.merge_range(
+                    curr_row, 1, curr_row + 1, 1, e_issue.issue, format_default_table
+                )
+                sheet.merge_range(
+                    curr_row,
+                    2,
+                    curr_row + 1,
+                    2,
+                    e_issue.interested_parties,
+                    format_default_table,
+                )
+                sheet.merge_range(
+                    curr_row,
+                    3,
+                    curr_row + 1,
+                    3,
+                    e_issue.needs_and_exp,
+                    format_default_table,
+                )
+                sheet.merge_range(
+                    curr_row,
+                    4,
+                    curr_row + 1,
+                    4,
+                    e_issue.compliance,
+                    format_default_table,
+                )
+                sheet.write(curr_row, 5, f"Risk: {e_issue.risks}", format_default_table)
+                sheet.write(
+                    curr_row + 1,
+                    5,
+                    f"Opportunity: {e_issue.opportunities}",
+                    format_default_table,
+                )
+                sheet.write(
+                    curr_row,
+                    6,
+                    f"Consequence: {e_issue.consequence}",
+                    format_default_table,
+                )
+                sheet.write(
+                    curr_row + 1, 6, f"Benefit: {e_issue.benefit}", format_default_table
+                )
+                sheet.write(
+                    curr_row, 7, e_issue.risk_existing_control, format_default_table
+                )
+                sheet.write(
+                    curr_row + 1,
+                    7,
+                    e_issue.opportunities_existing_control,
+                    format_default_table,
+                )
+
+                curr_col = 8
+                for date in date_dict[year]:
+                    rating = e_issue.ratings.filtered(
+                        lambda r: r.review_date.review_date == date
+                    )
+                    if rating:
+                        sheet.write(
+                            curr_row,
+                            curr_col,
+                            int(rating.risk_likelihood),
+                            format_default_table,
+                        )
+                        sheet.write(
+                            curr_row + 1,
+                            curr_col,
+                            int(rating.opportunity_likelihood),
+                            format_default_table,
+                        )
+                        curr_col += 1
+                        sheet.write(
+                            curr_row,
+                            curr_col,
+                            int(rating.risk_frequency),
+                            format_default_table,
+                        )
+                        sheet.write(
+                            curr_row + 1,
+                            curr_col,
+                            int(rating.opportunity_frequency),
+                            format_default_table,
+                        )
+                        curr_col += 1
+                        sheet.write(
+                            curr_row,
+                            curr_col,
+                            int(rating.consequence_severity),
+                            format_default_table,
+                        )
+                        sheet.write(
+                            curr_row + 1,
+                            curr_col,
+                            int(rating.benefit_severity),
+                            format_default_table,
+                        )
+                        curr_col += 1
+                        sheet.write(curr_row, curr_col, "RR:", format_default_table)
+                        sheet.write(curr_row + 1, curr_col, "OR:", format_default_table)
+                        curr_col += 1
+                        sheet.write_formula(
+                            curr_row,
+                            curr_col,
+                            f"={xl_rowcol_to_cell(curr_row, curr_col-4)}*{xl_rowcol_to_cell(curr_row, curr_col-3)}*{xl_rowcol_to_cell(curr_row, curr_col-2)}",
+                            format_default_table,
+                        )
+                        sheet.write_formula(
+                            curr_row + 1,
+                            curr_col,
+                            f"={xl_rowcol_to_cell(curr_row + 1, curr_col - 4)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 3)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 2)}",
+                            format_default_table,
+                        )
+                        curr_col += 1
+                        sheet.merge_range(
+                            curr_row,
+                            curr_col,
+                            curr_row,
+                            curr_col + 1,
+                            rating.risk_conclusion,
+                            format_default_table,
+                        )
+                        sheet.merge_range(
+                            curr_row + 1,
+                            curr_col,
+                            curr_row + 1,
+                            curr_col + 1,
+                            rating.opportunity_conclusion,
+                            format_default_table,
+                        )
+                        curr_col += 2
+                        sheet.write(
+                            curr_row,
+                            curr_col,
+                            rating.risk_required_action,
+                            format_default_table,
+                        )
+                        sheet.write(
+                            curr_row + 1,
+                            curr_col,
+                            rating.opportunity_required_action,
+                            format_default_table,
+                        )
+                        curr_col += 1
+                        risk_due_date_str = rating.risk_due_date.strftime("%B %d, %Y")
+                        sheet.write(
+                            curr_row,
+                            curr_col,
+                            f"{rating.risk_responsible}/{risk_due_date_str}",
+                            format_default_table,
+                        )
+                        opportunity_due_date_str = rating.opportunity_due_date.strftime(
+                            "%B %d, %Y"
+                        )
+                        sheet.write(
+                            curr_row + 1,
+                            curr_col,
+                            f"{rating.opportunity_responsible}/{opportunity_due_date_str}",
+                            format_default_table,
+                        )
+                        curr_col += 1
+                        sheet.write(
+                            curr_row,
+                            curr_col,
+                            rating.risk_status,
+                            format_default_table,
+                        )
+                        sheet.write(
+                            curr_row + 1,
+                            curr_col,
+                            rating.opportunity_status,
+                            format_default_table,
+                        )
+                        curr_col += 1
+                    else:
+                        sheet.write(curr_row, curr_col, None, format_default_table)
+                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        curr_col += 1
+                        sheet.write(curr_row, curr_col, None, format_default_table)
+                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        curr_col += 1
+                        sheet.write(curr_row, curr_col, None, format_default_table)
+                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        curr_col += 1
+                        sheet.write(curr_row, curr_col, "RR:", format_default_table)
+                        sheet.write(curr_row + 1, curr_col, "OR:", format_default_table)
+                        curr_col += 1
+                        sheet.write_formula(
+                            curr_row,
+                            curr_col,
+                            f"={xl_rowcol_to_cell(curr_row, curr_col-4)}*{xl_rowcol_to_cell(curr_row, curr_col-3)}*{xl_rowcol_to_cell(curr_row, curr_col-2)}",
+                            format_default_table,
+                        )
+                        sheet.write_formula(
+                            curr_row + 1,
+                            curr_col,
+                            f"={xl_rowcol_to_cell(curr_row + 1, curr_col - 4)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 3)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 2)}",
+                            format_default_table,
+                        )
+                        sheet.conditional_format(
+                            curr_row,
+                            curr_col,
+                            curr_row + 1,
+                            curr_col,
+                            {
+                                "type": "cell",
+                                "criteria": ">=",
+                                "value": 27,
+                                "format": conditional_format_red,
+                            },
+                        )
+                        curr_col += 1
+                        sheet.merge_range(
+                            curr_row,
+                            curr_col,
+                            curr_row,
+                            curr_col + 1,
+                            None,
+                            format_default_table,
+                        )
+                        sheet.merge_range(
+                            curr_row + 1,
+                            curr_col,
+                            curr_row + 1,
+                            curr_col + 1,
+                            None,
+                            format_default_table,
+                        )
+                        curr_col += 2
+                        sheet.write(curr_row, curr_col, None, format_default_table)
+                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        curr_col += 1
+                        sheet.write(curr_row, curr_col, None, format_default_table)
+                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        curr_col += 1
+                        sheet.write(curr_row, curr_col, None, format_default_table)
+                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        curr_col += 1
+
+                curr_row += 2
 
         workbook.close()
         data_bytes = output.getvalue()
