@@ -95,6 +95,37 @@ class RORExportWizard(models.TransientModel):
                 "border": 1,
             }
         )
+        format_table_light_gray = workbook.add_format(
+            {
+                "font_name": "Calibri",
+                "font_size": 11,
+                "valign": "vcenter",
+                "text_wrap": True,
+                "bg_color": "#EFEFEF",
+                "border": 1,
+            }
+        )
+        format_table_center = workbook.add_format(
+            {
+                "font_name": "Calibri",
+                "font_size": 11,
+                "align": "center",
+                "valign": "vcenter",
+                "text_wrap": True,
+                "border": 1,
+            }
+        )
+        format_table_light_gray_center = workbook.add_format(
+            {
+                "font_name": "Calibri",
+                "font_size": 11,
+                "align": "center",
+                "valign": "vcenter",
+                "text_wrap": True,
+                "bg_color": "#EFEFEF",
+                "border": 1,
+            }
+        )
         format_right_align_table = workbook.add_format(
             {
                 "font_name": "Calibri",
@@ -300,39 +331,39 @@ class RORExportWizard(models.TransientModel):
                             curr_row,
                             curr_col,
                             int(rating.risk_likelihood),
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.write(
                             curr_row + 1,
                             curr_col,
                             int(rating.opportunity_likelihood),
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 1
                         sheet.write(
                             curr_row,
                             curr_col,
                             int(rating.risk_frequency),
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.write(
                             curr_row + 1,
                             curr_col,
                             int(rating.opportunity_frequency),
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 1
                         sheet.write(
                             curr_row,
                             curr_col,
                             int(rating.consequence_severity),
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.write(
                             curr_row + 1,
                             curr_col,
                             int(rating.benefit_severity),
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 1
                         sheet.write(curr_row, curr_col, "RR:", format_default_table)
@@ -342,13 +373,13 @@ class RORExportWizard(models.TransientModel):
                             curr_row,
                             curr_col,
                             f"={xl_rowcol_to_cell(curr_row, curr_col-4)}*{xl_rowcol_to_cell(curr_row, curr_col-3)}*{xl_rowcol_to_cell(curr_row, curr_col-2)}",
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.write_formula(
                             curr_row + 1,
                             curr_col,
                             f"={xl_rowcol_to_cell(curr_row + 1, curr_col - 4)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 3)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 2)}",
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 1
                         sheet.merge_range(
@@ -357,7 +388,7 @@ class RORExportWizard(models.TransientModel):
                             curr_row,
                             curr_col + 1,
                             rating.risk_conclusion,
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.merge_range(
                             curr_row + 1,
@@ -365,20 +396,20 @@ class RORExportWizard(models.TransientModel):
                             curr_row + 1,
                             curr_col + 1,
                             rating.opportunity_conclusion,
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 2
                         sheet.write(
                             curr_row,
                             curr_col,
                             rating.risk_required_action,
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.write(
                             curr_row + 1,
                             curr_col,
                             rating.opportunity_required_action,
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 1
                         risk_due_date_str = rating.risk_due_date.strftime("%B %d, %Y")
@@ -386,7 +417,7 @@ class RORExportWizard(models.TransientModel):
                             curr_row,
                             curr_col,
                             f"{rating.risk_responsible}/{risk_due_date_str}",
-                            format_default_table,
+                            format_table_center,
                         )
                         opportunity_due_date_str = rating.opportunity_due_date.strftime(
                             "%B %d, %Y"
@@ -395,31 +426,31 @@ class RORExportWizard(models.TransientModel):
                             curr_row + 1,
                             curr_col,
                             f"{rating.opportunity_responsible}/{opportunity_due_date_str}",
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 1
                         sheet.write(
                             curr_row,
                             curr_col,
                             rating.risk_status,
-                            format_default_table,
+                            format_table_light_gray,
                         )
                         sheet.write(
                             curr_row + 1,
                             curr_col,
                             rating.opportunity_status,
-                            format_default_table,
+                            format_table_light_gray,
                         )
                         curr_col += 1
                     else:
-                        sheet.write(curr_row, curr_col, None, format_default_table)
-                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        sheet.write(curr_row, curr_col, None, format_table_center)
+                        sheet.write(curr_row + 1, curr_col, None, format_table_center)
                         curr_col += 1
-                        sheet.write(curr_row, curr_col, None, format_default_table)
-                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        sheet.write(curr_row, curr_col, None, format_table_center)
+                        sheet.write(curr_row + 1, curr_col, None, format_table_center)
                         curr_col += 1
-                        sheet.write(curr_row, curr_col, None, format_default_table)
-                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        sheet.write(curr_row, curr_col, None, format_table_center)
+                        sheet.write(curr_row + 1, curr_col, None, format_table_center)
                         curr_col += 1
                         sheet.write(curr_row, curr_col, "RR:", format_default_table)
                         sheet.write(curr_row + 1, curr_col, "OR:", format_default_table)
@@ -428,13 +459,13 @@ class RORExportWizard(models.TransientModel):
                             curr_row,
                             curr_col,
                             f"={xl_rowcol_to_cell(curr_row, curr_col-4)}*{xl_rowcol_to_cell(curr_row, curr_col-3)}*{xl_rowcol_to_cell(curr_row, curr_col-2)}",
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.write_formula(
                             curr_row + 1,
                             curr_col,
                             f"={xl_rowcol_to_cell(curr_row + 1, curr_col - 4)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 3)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 2)}",
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.conditional_format(
                             curr_row,
@@ -454,26 +485,30 @@ class RORExportWizard(models.TransientModel):
                             curr_col,
                             curr_row,
                             curr_col + 1,
-                            None,
-                            format_default_table,
+                            "-",
+                            format_table_center,
                         )
                         sheet.merge_range(
                             curr_row + 1,
                             curr_col,
                             curr_row + 1,
                             curr_col + 1,
-                            None,
-                            format_default_table,
+                            "-",
+                            format_table_center,
                         )
                         curr_col += 2
-                        sheet.write(curr_row, curr_col, None, format_default_table)
-                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        sheet.write(curr_row, curr_col, "-", format_table_center)
+                        sheet.write(curr_row + 1, curr_col, "-", format_table_center)
                         curr_col += 1
-                        sheet.write(curr_row, curr_col, None, format_default_table)
-                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        sheet.write(curr_row, curr_col, "-", format_table_center)
+                        sheet.write(curr_row + 1, curr_col, "-", format_table_center)
                         curr_col += 1
-                        sheet.write(curr_row, curr_col, None, format_default_table)
-                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        sheet.write(
+                            curr_row, curr_col, "-", format_table_light_gray_center
+                        )
+                        sheet.write(
+                            curr_row + 1, curr_col, "-", format_table_light_gray_center
+                        )
                         curr_col += 1
 
                 curr_row += 2
@@ -566,39 +601,39 @@ class RORExportWizard(models.TransientModel):
                             curr_row,
                             curr_col,
                             int(rating.risk_likelihood),
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.write(
                             curr_row + 1,
                             curr_col,
                             int(rating.opportunity_likelihood),
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 1
                         sheet.write(
                             curr_row,
                             curr_col,
                             int(rating.risk_frequency),
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.write(
                             curr_row + 1,
                             curr_col,
                             int(rating.opportunity_frequency),
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 1
                         sheet.write(
                             curr_row,
                             curr_col,
                             int(rating.consequence_severity),
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.write(
                             curr_row + 1,
                             curr_col,
                             int(rating.benefit_severity),
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 1
                         sheet.write(curr_row, curr_col, "RR:", format_default_table)
@@ -608,13 +643,13 @@ class RORExportWizard(models.TransientModel):
                             curr_row,
                             curr_col,
                             f"={xl_rowcol_to_cell(curr_row, curr_col-4)}*{xl_rowcol_to_cell(curr_row, curr_col-3)}*{xl_rowcol_to_cell(curr_row, curr_col-2)}",
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.write_formula(
                             curr_row + 1,
                             curr_col,
                             f"={xl_rowcol_to_cell(curr_row + 1, curr_col - 4)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 3)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 2)}",
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 1
                         sheet.merge_range(
@@ -623,7 +658,7 @@ class RORExportWizard(models.TransientModel):
                             curr_row,
                             curr_col + 1,
                             rating.risk_conclusion,
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.merge_range(
                             curr_row + 1,
@@ -631,20 +666,20 @@ class RORExportWizard(models.TransientModel):
                             curr_row + 1,
                             curr_col + 1,
                             rating.opportunity_conclusion,
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 2
                         sheet.write(
                             curr_row,
                             curr_col,
                             rating.risk_required_action,
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.write(
                             curr_row + 1,
                             curr_col,
                             rating.opportunity_required_action,
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 1
                         risk_due_date_str = rating.risk_due_date.strftime("%B %d, %Y")
@@ -652,7 +687,7 @@ class RORExportWizard(models.TransientModel):
                             curr_row,
                             curr_col,
                             f"{rating.risk_responsible}/{risk_due_date_str}",
-                            format_default_table,
+                            format_table_center,
                         )
                         opportunity_due_date_str = rating.opportunity_due_date.strftime(
                             "%B %d, %Y"
@@ -661,31 +696,31 @@ class RORExportWizard(models.TransientModel):
                             curr_row + 1,
                             curr_col,
                             f"{rating.opportunity_responsible}/{opportunity_due_date_str}",
-                            format_default_table,
+                            format_table_center,
                         )
                         curr_col += 1
                         sheet.write(
                             curr_row,
                             curr_col,
                             rating.risk_status,
-                            format_default_table,
+                            format_table_light_gray,
                         )
                         sheet.write(
                             curr_row + 1,
                             curr_col,
                             rating.opportunity_status,
-                            format_default_table,
+                            format_table_light_gray,
                         )
                         curr_col += 1
                     else:
-                        sheet.write(curr_row, curr_col, None, format_default_table)
-                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        sheet.write(curr_row, curr_col, None, format_table_center)
+                        sheet.write(curr_row + 1, curr_col, None, format_table_center)
                         curr_col += 1
-                        sheet.write(curr_row, curr_col, None, format_default_table)
-                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        sheet.write(curr_row, curr_col, None, format_table_center)
+                        sheet.write(curr_row + 1, curr_col, None, format_table_center)
                         curr_col += 1
-                        sheet.write(curr_row, curr_col, None, format_default_table)
-                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        sheet.write(curr_row, curr_col, None, format_table_center)
+                        sheet.write(curr_row + 1, curr_col, None, format_table_center)
                         curr_col += 1
                         sheet.write(curr_row, curr_col, "RR:", format_default_table)
                         sheet.write(curr_row + 1, curr_col, "OR:", format_default_table)
@@ -694,13 +729,13 @@ class RORExportWizard(models.TransientModel):
                             curr_row,
                             curr_col,
                             f"={xl_rowcol_to_cell(curr_row, curr_col-4)}*{xl_rowcol_to_cell(curr_row, curr_col-3)}*{xl_rowcol_to_cell(curr_row, curr_col-2)}",
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.write_formula(
                             curr_row + 1,
                             curr_col,
                             f"={xl_rowcol_to_cell(curr_row + 1, curr_col - 4)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 3)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 2)}",
-                            format_default_table,
+                            format_table_center,
                         )
                         sheet.conditional_format(
                             curr_row,
@@ -720,26 +755,30 @@ class RORExportWizard(models.TransientModel):
                             curr_col,
                             curr_row,
                             curr_col + 1,
-                            None,
-                            format_default_table,
+                            "-",
+                            format_table_center,
                         )
                         sheet.merge_range(
                             curr_row + 1,
                             curr_col,
                             curr_row + 1,
                             curr_col + 1,
-                            None,
-                            format_default_table,
+                            "-",
+                            format_table_center,
                         )
                         curr_col += 2
-                        sheet.write(curr_row, curr_col, None, format_default_table)
-                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        sheet.write(curr_row, curr_col, "-", format_table_center)
+                        sheet.write(curr_row + 1, curr_col, "-", format_table_center)
                         curr_col += 1
-                        sheet.write(curr_row, curr_col, None, format_default_table)
-                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        sheet.write(curr_row, curr_col, "-", format_table_center)
+                        sheet.write(curr_row + 1, curr_col, "-", format_table_center)
                         curr_col += 1
-                        sheet.write(curr_row, curr_col, None, format_default_table)
-                        sheet.write(curr_row + 1, curr_col, None, format_default_table)
+                        sheet.write(
+                            curr_row, curr_col, "-", format_table_light_gray_center
+                        )
+                        sheet.write(
+                            curr_row + 1, curr_col, "-", format_table_light_gray_center
+                        )
                         curr_col += 1
 
                 curr_row += 2
