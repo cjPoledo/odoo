@@ -137,7 +137,7 @@ class RORExportWizard(models.TransientModel):
             }
         )
 
-        conditional_format_red = workbook.add_format({"bg_color": "red"})
+        conditional_format_red = workbook.add_format({"bg_color": "#E6B8AF"})
 
         for year in sorted(date_dict.keys(), reverse=True):
             sheet = workbook.add_worksheet(str(year))
@@ -380,6 +380,18 @@ class RORExportWizard(models.TransientModel):
                             curr_col,
                             f"={xl_rowcol_to_cell(curr_row + 1, curr_col - 4)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 3)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 2)}",
                             format_table_center,
+                        )
+                        sheet.conditional_format(
+                            curr_row,
+                            curr_col,
+                            curr_row + 1,
+                            curr_col,
+                            {
+                                "type": "cell",
+                                "criteria": ">=",
+                                "value": 27,
+                                "format": conditional_format_red,
+                            },
                         )
                         curr_col += 1
                         sheet.merge_range(
@@ -650,6 +662,18 @@ class RORExportWizard(models.TransientModel):
                             curr_col,
                             f"={xl_rowcol_to_cell(curr_row + 1, curr_col - 4)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 3)}*{xl_rowcol_to_cell(curr_row + 1, curr_col - 2)}",
                             format_table_center,
+                        )
+                        sheet.conditional_format(
+                            curr_row,
+                            curr_col,
+                            curr_row + 1,
+                            curr_col,
+                            {
+                                "type": "cell",
+                                "criteria": ">=",
+                                "value": 27,
+                                "format": conditional_format_red,
+                            },
                         )
                         curr_col += 1
                         sheet.merge_range(
