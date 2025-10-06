@@ -16,8 +16,15 @@ class Office(models.Model):
     cluster_head = fields.Boolean(string="Cluster Head?", default=False)
     doc_controllers = fields.Many2many(
         comodel_name="res.partner",
+        relation="upmin_iso_office_doc_controller_rel",
         string="Document Controllers",
         domain=lambda self: self._get_doc_controller_domain(),
+    )
+    internal_auditors = fields.Many2many(
+        comodel_name="res.partner",
+        relation="upmin_iso_office_internal_auditor_rel",
+        string="Internal Auditors",
+        domain=lambda self: self._get_internal_auditor_domain(),
     )
 
     _sql_constraints = [
@@ -27,6 +34,13 @@ class Office(models.Model):
     @api.model
     def _get_doc_controller_domain(self):
         group = self.env.ref("upmin_iso.group_iso_doc_controller")
+        users = self.env["res.users"].search([("groups_id", "in", group.id)])
+        partners = users.mapped("partner_id")
+        return [("id", "in", partners.ids)]
+
+    @api.model
+    def _get_internal_auditor_domain(self):
+        group = self.env.ref("upmin_iso.group_iso_internal_auditor")
         users = self.env["res.users"].search([("groups_id", "in", group.id)])
         partners = users.mapped("partner_id")
         return [("id", "in", partners.ids)]

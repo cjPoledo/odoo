@@ -28,4 +28,18 @@
         <field name="domain_force">[('office.doc_controllers', 'in', user.partner_id.id)]</field>
     </record>
 
+    <record id="rule_audit_info_doc_controller" model="ir.rule">
+        <field name="name">Doc Controller: See Audit Info of Own Office</field>
+        <field name="model_id" ref="model_upmin_iso_audit_info" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
+        <field name="domain_force">[('office_to_audit.doc_controllers', 'in', user.partner_id.id)]</field>
+    </record>
+
+    <record id="rule_audit_info_internal_auditor" model="ir.rule">
+        <field name="name">Internal Auditor: See Audit Info Where Internal Auditor</field>
+        <field name="model_id" ref="model_upmin_iso_audit_info" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_internal_auditor'))]" />
+        <field name="domain_force">[('internal_auditors', 'in', user.partner_id.id)]</field>
+    </record>
+
 </odoo>

@@ -13,6 +13,9 @@
                             widget="radio" attrs="{'invisible': [('cluster_head', '=', True)]}" />
                         <field name="doc_controllers" options="{'no_create': True, 'no_open': True}"
                             widget="many2many_tags_avatar" />
+                        <field name="internal_auditors"
+                            options="{'no_create': True, 'no_open': True}"
+                            widget="many2many_tags_avatar" />
                     </group>
                 </sheet>
             </form>
@@ -28,6 +31,7 @@
                 <field name="cluster" />
                 <field name="cluster_head" />
                 <field name="doc_controllers" />
+                <field name="internal_auditors" />
             </tree>
         </field>
     </record>
