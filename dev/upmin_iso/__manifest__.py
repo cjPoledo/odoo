@@ -10,6 +10,7 @@
         "views/office.xml",
         "views/review_period.xml",
         "views/audit_period.xml",
+        "views/audit_info.xml",
         "views/ror.xml",
         "views/menu.xml",
     ],

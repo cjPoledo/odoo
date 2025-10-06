@@ -16,6 +16,14 @@
         sequence="10" />
 
     <menuitem
+        id="audit_info_menu"
+        name="Audit Info"
+        action="upmin_iso.audit_info_action"
+        groups="group_iso_internal_auditor,group_iso_doc_controller,group_iso_staff"
+        parent="upmin_iso_menu"
+        sequence="20" />
+
+    <menuitem
         id="configuration_menu"
         name="Configuration"
         groups="group_iso_staff"
