@@ -8,6 +8,7 @@
         "security/security.xml",
         "security/ir.model.access.csv",
         "views/office.xml",
+        "views/iso_clause.xml",
         "views/review_period.xml",
         "views/audit_period.xml",
         "views/audit_info.xml",

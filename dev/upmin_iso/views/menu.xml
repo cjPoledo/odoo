@@ -17,11 +17,19 @@
 
     <menuitem
         id="audit_info_menu"
-        name="Audit Info"
+        name="Internal Audit"
         action="upmin_iso.audit_info_action"
         groups="group_iso_internal_auditor,group_iso_doc_controller,group_iso_staff"
         parent="upmin_iso_menu"
         sequence="20" />
+
+    <menuitem
+        id="upmin_iso.iso_clause_menu"
+        name="ISO Clauses"
+        action="upmin_iso.iso_clause_action"
+        groups="group_iso_doc_controller,group_iso_internal_auditor,group_iso_staff"
+        parent="upmin_iso_menu"
+        sequence="30" />
 
     <menuitem
         id="configuration_menu"

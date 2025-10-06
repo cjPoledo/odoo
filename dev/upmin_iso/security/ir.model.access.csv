@@ -14,3 +14,6 @@ upmin_iso_audit_period_access_internal_auditor,UPMin ISO Audit Period Access - I
 upmin_iso_audit_info_access_staff,UPMin ISO Audit Info Access - Staff,model_upmin_iso_audit_info,group_iso_staff,1,1,1,1
 upmin_iso_audit_info_access_doc_controller,UPMin ISO Audit Info Access - Doc Controller,model_upmin_iso_audit_info,group_iso_doc_controller,1,0,0,0
 upmin_iso_audit_info_access_internal_auditor,UPMin ISO Audit Info Access - Internal Auditor,model_upmin_iso_audit_info,group_iso_internal_auditor,1,1,0,0
+upmin_iso_iso_clause_access_staff,UPMin ISO Clause Access - Staff,model_upmin_iso_iso_clause,group_iso_staff,1,1,1,1
+upmin_iso_iso_clause_access_internal_auditor,UPMin ISO Clause Access - Internal Auditor,model_upmin_iso_iso_clause,group_iso_internal_auditor,1,0,0,0
+upmin_iso_iso_clause_access_doc_controller,UPMin ISO Clause Access - Doc Controller,model_upmin_iso_iso_clause,group_iso_doc_controller,1,0,0,0
