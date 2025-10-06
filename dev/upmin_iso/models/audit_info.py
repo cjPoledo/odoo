@@ -21,6 +21,11 @@ class AuditInfo(models.Model):
     )
     audit_start_datetime = fields.Datetime(string="Audit Start Date", required=True)
     audit_end_datetime = fields.Datetime(string="Audit End Date", required=True)
+    audit_findings = fields.One2many(
+        comodel_name="upmin_iso.audit_finding",
+        inverse_name="audit_info",
+        string="Audit Findings",
+    )
 
     _sql_constraints = [
         (

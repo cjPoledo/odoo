@@ -28,6 +28,9 @@
                             <field name="audit_end_datetime" />
                         </group>
                     </group>
+                    <group col="1">
+                        <field name="audit_findings" />
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -43,6 +46,40 @@
                 <field name="internal_auditors" />
                 <field name="audit_start_datetime" />
                 <field name="audit_end_datetime" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="upmin_iso.audit_finding_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.audit_finding.view.form</field>
+        <field name="model">upmin_iso.audit_finding</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group col="1">
+                        <field name="auditor" />
+                        <field name="clause" />
+                        <field name="question" />
+                        <field name="evidence" />
+                        <field name="rating" widget="radio" />
+                        <field name="statement" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upmin_iso.audit_finding_view_tree" model="ir.ui.view">
+        <field name="name">upmin_iso.audit_finding.view.tree</field>
+        <field name="model">upmin_iso.audit_finding</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="auditor" />
+                <field name="clause" />
+                <field name="question" />
+                <field name="evidence" />
+                <field name="rating" />
+                <field name="statement" />
             </tree>
         </field>
     </record>
