@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="upmin_iso.audit_period_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.audit_period.view.form</field>
+        <field name="model">upmin_iso.audit_period</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="audit_start_date" />
+                        <field name="audit_end_date" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upmin_iso.audit_period_view_tree" model="ir.ui.view">
+        <field name="name">upmin_iso.audit_period.view.tree</field>
+        <field name="model">upmin_iso.audit_period</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="audit_start_date" />
+                <field name="audit_end_date" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="upmin_iso.audit_period_action" model="ir.actions.act_window">
+        <field name="name">Audit Period</field>
+        <field name="res_model">upmin_iso.audit_period</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

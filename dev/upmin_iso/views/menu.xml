@@ -16,19 +16,34 @@
         sequence="10" />
 
     <menuitem
-        id="review_period_menu"
-        name="Review Period"
-        action="upmin_iso.review_period_action"
+        id="configuration_menu"
+        name="Configuration"
         groups="group_iso_staff"
         parent="upmin_iso_menu"
-        sequence="40" />
+        sequence="50" />
 
     <menuitem
         id="office_menu"
         name="Offices"
         action="upmin_iso.office_action"
         groups="group_iso_staff"
-        parent="upmin_iso_menu"
+        parent="configuration_menu"
+        sequence="30" />
+
+    <menuitem
+        id="review_period_menu"
+        name="Review Period"
+        action="upmin_iso.review_period_action"
+        groups="group_iso_staff"
+        parent="configuration_menu"
+        sequence="40" />
+
+    <menuitem
+        id="audit_period_menu"
+        name="Audit Period"
+        action="upmin_iso.audit_period_action"
+        groups="group_iso_staff"
+        parent="configuration_menu"
         sequence="50" />
 
 </odoo>
