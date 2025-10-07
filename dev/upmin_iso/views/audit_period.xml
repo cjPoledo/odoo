@@ -7,9 +7,15 @@
         <field name="arch" type="xml">
             <form string="">
                 <sheet>
-                    <group>
-                        <field name="audit_start_date" />
-                        <field name="audit_end_date" />
+                    <group col="2">
+                        <group>
+                            <field name="audit_start_date" widget="daterange"
+                                options="{'related_end_date': 'audit_end_date'}" />
+                        </group>
+                        <group>
+                            <field name="audit_end_date" widget="daterange"
+                                options="{'related_start_date': 'audit_start_date'}" />
+                        </group>
                     </group>
                 </sheet>
             </form>

@@ -5,7 +5,7 @@ class AuditFinding(models.Model):
     _name = "upmin_iso.audit_finding"
     _description = "ISO Audit Finding"
     _rec_name = "audit_info"
-    _order = "audit_info"
+    _order = "audit_info, auditor, clause"
 
     audit_info = fields.Many2one(
         comodel_name="upmin_iso.audit_info",

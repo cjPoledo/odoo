@@ -5,8 +5,8 @@ from odoo.exceptions import ValidationError
 class AuditInfo(models.Model):
     _name = "upmin_iso.audit_info"
     _description = "ISO Internal Audit Information"
-    _rec_name = "audit_start_datetime"
-    _order = "audit_start_datetime"
+    _rec_name = "office_to_audit"
+    _order = "office_to_audit"
 
     office_to_audit = fields.Many2one(
         comodel_name="upmin_iso.office", string="Office to Audit", required=True
@@ -19,8 +19,14 @@ class AuditInfo(models.Model):
         string="Internal Auditors",
         domain=lambda self: self._get_internal_auditor_domain(),
     )
-    audit_start_datetime = fields.Datetime(string="Audit Start Date", required=True)
-    audit_end_datetime = fields.Datetime(string="Audit End Date", required=True)
+    audit_date = fields.Date(string="Audit Date")
+    audit_time_start = fields.Float(
+        string="Audit Time Start",
+        help="Please use 24-hour format\n(e.g., 1 PM = 13:00)",
+    )
+    audit_time_end = fields.Float(
+        string="Audit Time End", help="Please use 24-hour format\n(e.g., 1 PM = 13:00)"
+    )
     audit_findings = fields.One2many(
         comodel_name="upmin_iso.audit_finding",
         inverse_name="audit_info",
@@ -34,9 +40,9 @@ class AuditInfo(models.Model):
             "An audit for this office in the selected period already exists.",
         ),
         (
-            "check_audit_dates",
-            "CHECK(audit_end_datetime >= audit_start_datetime)",
-            "Audit end date must be same or after start date.",
+            "check_audit_times",
+            "CHECK(audit_time_end >= audit_time_start)",
+            "Audit end time must be same or after start time.",
         ),
     ]
 

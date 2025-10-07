@@ -19,13 +19,14 @@
                         <field name="internal_auditors"
                             options="{'no_create': True, 'no_open': True}"
                             widget="many2many_tags_avatar" />
+                        <field name="audit_date" />
                     </group>
                     <group col="2">
                         <group>
-                            <field name="audit_start_datetime" />
+                            <field name="audit_time_start" widget="float_time" />
                         </group>
                         <group>
-                            <field name="audit_end_datetime" />
+                            <field name="audit_time_end" widget="float_time" />
                         </group>
                     </group>
                     <group col="1">
@@ -44,8 +45,9 @@
                 <field name="office_to_audit" />
                 <field name="audit_period" />
                 <field name="internal_auditors" />
-                <field name="audit_start_datetime" />
-                <field name="audit_end_datetime" />
+                <field name="audit_date" />
+                <field name="audit_time_start" widget="float_time" />
+                <field name="audit_time_end" widget="float_time" />
             </tree>
         </field>
     </record>
