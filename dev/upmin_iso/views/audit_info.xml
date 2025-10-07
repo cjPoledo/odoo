@@ -33,6 +33,17 @@
                             <field name="audit_time_end" widget="float_time" />
                         </group>
                     </group>
+                    <group col="3">
+                        <group>
+                            <field name="c" decoration-success="True" />
+                        </group>
+                        <group>
+                            <field name="nc" decoration-danger="True" />
+                        </group>
+                        <group>
+                            <field name="ofi" decoration-warning="True" />
+                        </group>
+                    </group>
                     <group col="1">
                         <field name="audit_findings" />
                     </group>
@@ -52,6 +63,9 @@
                 <field name="audit_date" />
                 <field name="audit_time_start" widget="float_time" />
                 <field name="audit_time_end" widget="float_time" />
+                <field name="c" decoration-success="True" />
+                <field name="nc" decoration-danger="True" />
+                <field name="ofi" decoration-warning="True" />
                 <field name="audit_findings" />
             </tree>
         </field>

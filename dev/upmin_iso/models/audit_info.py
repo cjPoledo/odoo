@@ -33,6 +33,16 @@ class AuditInfo(models.Model):
         string="Audit Findings",
     )
 
+    c = fields.Integer(
+        string="C", default=0, compute="_compute_ratings", store=True, readonly=True
+    )
+    nc = fields.Integer(
+        string="NC", default=0, compute="_compute_ratings", store=True, readonly=True
+    )
+    ofi = fields.Integer(
+        string="OFI", default=0, compute="_compute_ratings", store=True, readonly=True
+    )
+
     is_staff = fields.Boolean(
         string="Is Staff?", default=False, compute="_compute_is_staff", store=False
     )
@@ -73,3 +83,16 @@ class AuditInfo(models.Model):
     def _compute_is_staff(self):
         for record in self:
             record.is_staff = self.env.user.has_group("upmin_iso.group_iso_staff")
+
+    @api.depends("audit_findings", "audit_findings.rating")
+    def _compute_ratings(self):
+        for record in self:
+            record.c = sum(
+                1 for finding in record.audit_findings if finding.rating == "c"
+            )
+            record.nc = sum(
+                1 for finding in record.audit_findings if finding.rating == "nc"
+            )
+            record.ofi = sum(
+                1 for finding in record.audit_findings if finding.rating == "ofi"
+            )
