@@ -7,18 +7,22 @@
         <field name="arch" type="xml">
             <form string="">
                 <sheet>
+                    <field name="is_staff" invisible="1" />
                     <group col="2">
                         <group>
-                            <field name="office_to_audit" />
+                            <field name="office_to_audit"
+                                attrs="{'readonly': [('is_staff','=',False)]}" />
                         </group>
                         <group>
-                            <field name="audit_period" />
+                            <field name="audit_period"
+                                attrs="{'readonly': [('is_staff','=',False)]}" />
                         </group>
                     </group>
                     <group col="1">
                         <field name="internal_auditors"
                             options="{'no_create': True, 'no_open': True}"
-                            widget="many2many_tags_avatar" />
+                            widget="many2many_tags_avatar"
+                            attrs="{'readonly': [('is_staff','=',False)]}" />
                         <field name="audit_date" />
                     </group>
                     <group col="2">

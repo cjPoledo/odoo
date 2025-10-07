@@ -33,6 +33,10 @@ class AuditInfo(models.Model):
         string="Audit Findings",
     )
 
+    is_staff = fields.Boolean(
+        string="Is Staff?", default=False, compute="_compute_is_staff", store=False
+    )
+
     _sql_constraints = [
         (
             "unique_audit_schedule",
@@ -65,3 +69,7 @@ class AuditInfo(models.Model):
                         "\nConflicting auditors: %s"
                         % ", ".join(conflicting_auditors.mapped("name"))
                     )
+
+    def _compute_is_staff(self):
+        for record in self:
+            record.is_staff = self.env.user.has_group("upmin_iso.group_iso_staff")
