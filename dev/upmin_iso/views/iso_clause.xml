@@ -29,6 +29,18 @@
         </field>
     </record>
 
+    <record id="upmin_iso.iso_clause_view_search" model="ir.ui.view">
+        <field name="name">upmin_iso.iso_clause.view.search</field>
+        <field name="model">upmin_iso.iso_clause</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="clause_number" />
+                <field name="clause_title" />
+                <field name="clause_description" />
+            </search>
+        </field>
+    </record>
+
     <record id="upmin_iso.iso_clause_action" model="ir.actions.act_window">
         <field name="name">ISO Clauses</field>
         <field name="res_model">upmin_iso.iso_clause</field>

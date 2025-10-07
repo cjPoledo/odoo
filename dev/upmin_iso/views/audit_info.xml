@@ -52,6 +52,7 @@
                 <field name="audit_date" />
                 <field name="audit_time_start" widget="float_time" />
                 <field name="audit_time_end" widget="float_time" />
+                <field name="audit_findings" />
             </tree>
         </field>
     </record>
@@ -90,10 +91,23 @@
         </field>
     </record>
 
+    <record id="upmin_iso.audit_info_view_search" model="ir.ui.view">
+        <field name="name">upmin_iso.audit_info.view.search</field>
+        <field name="model">upmin_iso.audit_info</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="office_to_audit" />
+                <filter name="group_by_audit_period" string="Group By Audit Period"
+                    context="{'group_by': 'audit_period'}" />
+            </search>
+        </field>
+    </record>
+
     <record id="upmin_iso.audit_info_action" model="ir.actions.act_window">
         <field name="name">Audit Info</field>
         <field name="res_model">upmin_iso.audit_info</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_group_by_audit_period': 1}</field>
     </record>
 
 </odoo>

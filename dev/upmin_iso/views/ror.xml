@@ -186,6 +186,8 @@
                     domain="[('issue_type', '=', 'external')]" />
                 <filter name="group_by_office" string="Group By Office"
                     context="{'group_by': 'office'}" />
+                <filter name="group_by_issue_type" string="Group By Issue Type"
+                    context="{'group_by': 'issue_type'}" />
             </search>
         </field>
     </record>
@@ -194,7 +196,8 @@
         <field name="name">Risk and Opportunities Register</field>
         <field name="res_model">upmin_iso.ror</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_group_by_office': 1}</field>
+        <field name="context">{'search_default_group_by_office': 1,
+            'search_default_group_by_issue_type': 1}</field>
     </record>
 
 </odoo>

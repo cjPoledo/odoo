@@ -22,3 +22,10 @@ class AuditPeriod(models.Model):
             "Audit end date must be same or after the start date.",
         ),
     ]
+
+    def name_get(self):
+        result = []
+        for record in self:
+            name = f"{record.audit_start_date} to {record.audit_end_date}"
+            result.append((record.id, name))
+        return result

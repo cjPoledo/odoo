@@ -15,6 +15,16 @@
         </field>
     </record>
 
+    <record id="upmin_iso.review_period_view_search" model="ir.ui.view">
+        <field name="name">upmin_iso.review_period.view.search</field>
+        <field name="model">upmin_iso.review_period</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="review_date" />
+            </search>
+        </field>
+    </record>
+
     <record id="upmin_iso.review_period_view_tree" model="ir.ui.view">
         <field name="name">upmin_iso.review_period.view.tree</field>
         <field name="model">upmin_iso.review_period</field>

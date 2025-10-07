@@ -33,6 +33,17 @@
         </field>
     </record>
 
+    <record id="upmin_iso.audit_period_view_search" model="ir.ui.view">
+        <field name="name">upmin_iso.audit_period.view.search</field>
+        <field name="model">upmin_iso.audit_period</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="audit_start_date" />
+                <field name="audit_end_date" />
+            </search>
+        </field>
+    </record>
+
     <record id="upmin_iso.audit_period_action" model="ir.actions.act_window">
         <field name="name">Audit Period</field>
         <field name="res_model">upmin_iso.audit_period</field>
