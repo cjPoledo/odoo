@@ -46,6 +46,12 @@ class AuditInfo(models.Model):
     is_staff = fields.Boolean(
         string="Is Staff?", default=False, compute="_compute_is_staff", store=False
     )
+    is_office_auditor = fields.Boolean(
+        string="Is Office Auditor?",
+        default=False,
+        compute="_compute_is_office_auditor",
+        store=False,
+    )
 
     _sql_constraints = [
         (
@@ -83,6 +89,12 @@ class AuditInfo(models.Model):
     def _compute_is_staff(self):
         for record in self:
             record.is_staff = self.env.user.has_group("upmin_iso.group_iso_staff")
+
+    def _compute_is_office_auditor(self):
+        for record in self:
+            record.is_office_auditor = (
+                self.env.user.partner_id in record.internal_auditors
+            )
 
     @api.depends("audit_findings", "audit_findings.rating")
     def _compute_ratings(self):

@@ -8,6 +8,7 @@
             <form string="">
                 <sheet>
                     <field name="is_staff" invisible="1" />
+                    <field name="is_office_auditor" invisible="1" />
                     <group col="2">
                         <group>
                             <field name="office_to_audit"
@@ -27,10 +28,12 @@
                     </group>
                     <group col="2">
                         <group>
-                            <field name="audit_time_start" widget="float_time" />
+                            <field name="audit_time_start" widget="float_time"
+                                attrs="{'readonly': [('is_office_auditor','=',False)]}" />
                         </group>
                         <group>
-                            <field name="audit_time_end" widget="float_time" />
+                            <field name="audit_time_end" widget="float_time"
+                                attrs="{'readonly': [('is_office_auditor','=',False)]}" />
                         </group>
                     </group>
                     <group col="3">
@@ -45,7 +48,8 @@
                         </group>
                     </group>
                     <group col="1">
-                        <field name="audit_findings" />
+                        <field name="audit_findings"
+                            attrs="{'readonly': [('is_office_auditor','=',False)]}" />
                     </group>
                 </sheet>
             </form>

@@ -23,8 +23,11 @@ class AuditFinding(models.Model):
     clause = fields.Many2one(
         comodel_name="upmin_iso.iso_clause", string="Requirement/Clause"
     )
-    question = fields.Char(string="Question")
-    evidence = fields.Text(string="Scenario/Evidence")
+    question = fields.Char(string="Question", help="Guide question for the audit.")
+    evidence = fields.Text(
+        string="Scenario/Evidence",
+        help="Describe the scenario or evidence found during the audit.",
+    )
     rating = fields.Selection(
         selection=[
             ("c", "Conformity"),
@@ -33,4 +36,6 @@ class AuditFinding(models.Model):
         ],
         string="Rating",
     )
-    statement = fields.Text(string="Statement")
+    statement = fields.Text(
+        string="Statement", help="Justification for the rating based on the evidence."
+    )
