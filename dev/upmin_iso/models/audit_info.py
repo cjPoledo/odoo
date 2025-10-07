@@ -52,6 +52,13 @@ class AuditInfo(models.Model):
         compute="_compute_is_office_auditor",
         store=False,
     )
+    cluster = fields.Many2one(
+        comodel_name="upmin_iso.office",
+        string="Cluster",
+        related="office_to_audit.cluster",
+        store=True,
+        readonly=True,
+    )
 
     _sql_constraints = [
         (
