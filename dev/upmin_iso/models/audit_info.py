@@ -44,7 +44,7 @@ class AuditInfo(models.Model):
     )
 
     is_staff = fields.Boolean(
-        string="Is Staff?", default=False, compute="_compute_is_staff", store=False
+        string="Is Staff?", default=True, compute="_compute_is_staff", store=False
     )
     is_office_auditor = fields.Boolean(
         string="Is Office Auditor?",

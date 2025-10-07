@@ -29,11 +29,11 @@
                     <group col="2">
                         <group>
                             <field name="audit_time_start" widget="float_time"
-                                attrs="{'readonly': [('is_office_auditor','=',False)]}" />
+                                attrs="{'readonly': [('is_office_auditor','=',False), ('is_staff','=',False)]}" />
                         </group>
                         <group>
                             <field name="audit_time_end" widget="float_time"
-                                attrs="{'readonly': [('is_office_auditor','=',False)]}" />
+                                attrs="{'readonly': [('is_office_auditor','=',False), ('is_staff','=',False)]}" />
                         </group>
                     </group>
                     <group col="3">
