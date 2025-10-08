@@ -10,6 +10,14 @@ class AuditPeriod(models.Model):
     audit_start_date = fields.Date(string="Audit Start Date", required=True)
     audit_end_date = fields.Date(string="Audit End Date", required=True)
 
+    related_findings = fields.One2many(
+        comodel_name="upmin_iso.audit_finding",
+        inverse_name="related_audit_period",
+        string="Nonconformities",
+        domain=[("rating", "=", "nc")],
+        readonly=True,
+    )
+
     _sql_constraints = [
         (
             "audit_start_date_unique",

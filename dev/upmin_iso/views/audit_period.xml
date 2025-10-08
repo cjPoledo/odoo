@@ -17,6 +17,18 @@
                                 options="{'related_start_date': 'audit_start_date'}" />
                         </group>
                     </group>
+                    <group col="1">
+                        <field name="related_findings">
+                            <tree string="">
+                                <field name="related_office" />
+                                <field name="auditor" />
+                                <field name="clause" />
+                                <field name="question" />
+                                <field name="evidence" />
+                                <field name="statement" />
+                            </tree>
+                        </field>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -29,6 +41,7 @@
             <tree string="">
                 <field name="audit_start_date" />
                 <field name="audit_end_date" />
+                <field name="related_findings" />
             </tree>
         </field>
     </record>

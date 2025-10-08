@@ -39,3 +39,14 @@ class AuditFinding(models.Model):
     statement = fields.Text(
         string="Statement", help="Justification for the rating based on the evidence."
     )
+
+    related_audit_period = fields.Many2one(
+        comodel_name="upmin_iso.audit_period",
+        string="Audit Period",
+        related="audit_info.audit_period",
+    )
+    related_office = fields.Many2one(
+        comodel_name="upmin_iso.office",
+        string="Office",
+        related="audit_info.office_to_audit",
+    )
