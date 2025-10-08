@@ -9,31 +9,33 @@
                 <sheet>
                     <field name="is_staff" invisible="1" />
                     <field name="is_office_auditor" invisible="1" />
+                    <field name="is_finalized" invisible="1" />
                     <group col="2">
                         <group>
                             <field name="office_to_audit"
-                                attrs="{'readonly': [('is_staff','=',False)]}" />
+                                attrs="{'readonly': ['|', ('is_finalized','=',True), ('is_staff','=',False)]}" />
                         </group>
                         <group>
                             <field name="audit_period"
-                                attrs="{'readonly': [('is_staff','=',False)]}" />
+                                attrs="{'readonly': ['|', ('is_finalized','=',True), ('is_staff','=',False)]}" />
                         </group>
                     </group>
                     <group col="1">
                         <field name="internal_auditors"
                             options="{'no_create': True, 'no_open': True}"
                             widget="many2many_tags_avatar"
-                            attrs="{'readonly': [('is_staff','=',False)]}" />
-                        <field name="audit_date" />
+                            attrs="{'readonly': ['|', ('is_finalized','=',True), ('is_staff','=',False)]}" />
+                        <field name="audit_date"
+                            attrs="{'readonly': ['|', ('is_finalized','=',True), '&amp;', ('is_office_auditor','=',False), ('is_staff','=',False)]}" />
                     </group>
                     <group col="2">
                         <group>
                             <field name="audit_time_start" widget="float_time"
-                                attrs="{'readonly': [('is_office_auditor','=',False), ('is_staff','=',False)]}" />
+                                attrs="{'readonly': ['|', ('is_finalized','=',True), '&amp;', ('is_office_auditor','=',False), ('is_staff','=',False)]}" />
                         </group>
                         <group>
                             <field name="audit_time_end" widget="float_time"
-                                attrs="{'readonly': [('is_office_auditor','=',False), ('is_staff','=',False)]}" />
+                                attrs="{'readonly': ['|', ('is_finalized','=',True), '&amp;', ('is_office_auditor','=',False), ('is_staff','=',False)]}" />
                         </group>
                     </group>
                     <group col="3">
@@ -49,7 +51,7 @@
                     </group>
                     <group col="1">
                         <field name="audit_findings"
-                            attrs="{'readonly': [('is_office_auditor','=',False)]}" />
+                            attrs="{'readonly': ['|', ('is_finalized','=',True), ('is_office_auditor','=',False)]}" />
                     </group>
                 </sheet>
             </form>

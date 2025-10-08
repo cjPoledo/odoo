@@ -9,6 +9,11 @@ class AuditPeriod(models.Model):
 
     audit_start_date = fields.Date(string="Audit Start Date", required=True)
     audit_end_date = fields.Date(string="Audit End Date", required=True)
+    is_finalized = fields.Boolean(
+        string="Finalized?",
+        default=False,
+        help="Mark as finalized to prevent further editing and enable report generation.",
+    )
 
     related_findings = fields.One2many(
         comodel_name="upmin_iso.audit_finding",

@@ -63,6 +63,10 @@ class AuditInfo(models.Model):
         readonly=True,
     )
 
+    is_finalized = fields.Boolean(
+        string="Finalized?", related="audit_period.is_finalized", store=True
+    )
+
     _sql_constraints = [
         (
             "unique_audit_schedule",
