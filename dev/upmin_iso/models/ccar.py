@@ -50,3 +50,16 @@ class CCAR(models.Model):
         readonly=True,
         related="related_nc.audit_info.office_to_audit",
     )
+
+    _sql_constraints = [
+        (
+            "ccar_no_unique",
+            "unique(ccar_no)",
+            "CCAR No. must be unique.",
+        ),
+        (
+            "related_nc_unique",
+            "unique(related_nc)",
+            "This Nonconformity is already linked to another CCAR.",
+        ),
+    ]
