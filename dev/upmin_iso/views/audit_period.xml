@@ -6,6 +6,15 @@
         <field name="model">upmin_iso.audit_period</field>
         <field name="arch" type="xml">
             <form string="">
+                <header>
+                    <button name="action_finalize" string="Finalize" type="object"
+                        attrs="{'invisible': [('is_finalized', '=', True)]}" class="btn-primary" />
+                    <button name="action_unfinalize" string="Unfinalize" type="object"
+                        attrs="{'invisible': [('is_finalized', '=', False)]}" class="btn-secondary" />
+                    <button name="action_generate_ccar" string="GENERATE CCAR" type="object"
+                        attrs="{'invisible': [('is_finalized', '=', False)]}" class="btn-primary" />
+                    <field name="is_finalized" invisible="1" />
+                </header>
                 <sheet>
                     <group col="2">
                         <group>
@@ -18,7 +27,6 @@
                         </group>
                     </group>
                     <group col="1">
-                        <field name="is_finalized" />
                         <field name="related_nc">
                             <tree string="">
                                 <field name="related_office" />

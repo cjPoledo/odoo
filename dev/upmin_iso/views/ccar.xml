@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="upmin_iso.ccar_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.ccar.view.form</field>
+        <field name="model">upmin_iso.ccar</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="ccar_no" />
+                        <field name="date" />
+                        <field name="office" />
+                        <field name="clause" />
+                        <field name="details_scenario" />
+                        <field name="details_statement" />
+                        <field name="auditors" widget="many2many_tags_avatar" />
+                        <field name="audit_date" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upmin_iso.ccar_view_tree" model="ir.ui.view">
+        <field name="name">upmin_iso.ccar.view.tree</field>
+        <field name="model">upmin_iso.ccar</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="ccar_no" />
+                <field name="date" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="upmin_iso.ccar_action" model="ir.actions.act_window">
+        <field name="name">Correction and Corrective Action Report</field>
+        <field name="res_model">upmin_iso.ccar</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

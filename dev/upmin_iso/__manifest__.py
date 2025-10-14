@@ -12,6 +12,7 @@
         "views/review_period.xml",
         "views/audit_period.xml",
         "views/audit_info.xml",
+        "views/ccar.xml",
         "views/ror.xml",
         "views/menu.xml",
     ],

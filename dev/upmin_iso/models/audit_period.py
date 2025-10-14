@@ -50,6 +50,35 @@ class AuditPeriod(models.Model):
         ),
     ]
 
+    def action_finalize(self):
+        for record in self:
+            record.is_finalized = True
+
+    def action_unfinalize(self):
+        for record in self:
+            record.is_finalized = False
+
+    def action_generate_ccar(self):
+        CCAR = self.env["upmin_iso.ccar"]
+        for record in self:
+            for nc in record.related_nc:
+                year = fields.Date.today().year
+                count = (
+                    self.env["upmin_iso.ccar"].search_count(
+                        [("ccar_no", "like", f"{year}-%")]
+                    )
+                    + 1
+                )
+                ccar_no = f"{year}-{count:02d}"
+                CCAR.create(
+                    {
+                        "ccar_no": ccar_no,
+                        "date": fields.Date.today(),
+                        "audit_period": record.id,
+                        "related_nc": nc.id,
+                    }
+                )
+
     def name_get(self):
         result = []
         for record in self:
