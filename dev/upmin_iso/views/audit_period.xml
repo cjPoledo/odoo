@@ -19,7 +19,7 @@
                     </group>
                     <group col="1">
                         <field name="is_finalized" />
-                        <field name="related_findings">
+                        <field name="related_nc">
                             <tree string="">
                                 <field name="related_office" />
                                 <field name="auditor" />
@@ -42,7 +42,9 @@
             <tree string="">
                 <field name="audit_start_date" />
                 <field name="audit_end_date" />
-                <field name="related_findings" />
+                <field name="related_c" />
+                <field name="related_nc" />
+                <field name="related_ofi" />
                 <field name="is_finalized" />
             </tree>
         </field>

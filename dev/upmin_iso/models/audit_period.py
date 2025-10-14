@@ -15,11 +15,25 @@ class AuditPeriod(models.Model):
         help="Mark as finalized to prevent further editing and enable report generation.",
     )
 
-    related_findings = fields.One2many(
+    related_c = fields.One2many(
+        comodel_name="upmin_iso.audit_finding",
+        inverse_name="related_audit_period",
+        string="Conformities",
+        domain=[("rating", "=", "c")],
+        readonly=True,
+    )
+    related_nc = fields.One2many(
         comodel_name="upmin_iso.audit_finding",
         inverse_name="related_audit_period",
         string="Nonconformities",
         domain=[("rating", "=", "nc")],
+        readonly=True,
+    )
+    related_ofi = fields.One2many(
+        comodel_name="upmin_iso.audit_finding",
+        inverse_name="related_audit_period",
+        string="Opportunities for Improvement",
+        domain=[("rating", "=", "ofi")],
         readonly=True,
     )
 
