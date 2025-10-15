@@ -50,3 +50,10 @@ class AuditFinding(models.Model):
         string="Office",
         related="audit_info.office_to_audit",
     )
+
+    def name_get(self):
+        result = []
+        for record in self:
+            name = f"{record.audit_info.office_to_audit.name}({record.rating}) - {record.clause.clause_number} {record.clause.clause_title}"
+            result.append((record.id, name))
+        return result
