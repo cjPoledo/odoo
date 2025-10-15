@@ -7,11 +7,18 @@ class CCAR(models.Model):
     _rec_name = "ccar_no"
     _order = "ccar_no"
 
-    ccar_no = fields.Char(string="CCAR No.", required=True)
-    audit_period = fields.Many2one(
-        comodel_name="upmin_iso.audit_period", string="Audit Period", required=True
+    ccar_no = fields.Char(
+        string="CCAR No.",
+        required=True,
+        readonly=True,
     )
-    date = fields.Date(string="Date", required=True)
+    audit_period = fields.Many2one(
+        comodel_name="upmin_iso.audit_period",
+        string="Audit Period",
+        required=True,
+        readonly=True,
+    )
+    date = fields.Date(string="Date", required=True, readonly=True)
     related_nc = fields.Many2one(
         comodel_name="upmin_iso.audit_finding",
         string="Related Nonconformity",

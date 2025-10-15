@@ -36,6 +36,12 @@ class AuditPeriod(models.Model):
         domain=[("rating", "=", "ofi")],
         readonly=True,
     )
+    ccars = fields.One2many(
+        comodel_name="upmin_iso.ccar",
+        inverse_name="audit_period",
+        string="Issued CCARs",
+        readonly=True,
+    )
 
     _sql_constraints = [
         (
@@ -78,6 +84,10 @@ class AuditPeriod(models.Model):
                         "related_nc": nc.id,
                     }
                 )
+
+    def action_undo_generate_ccar(self):
+        for record in self:
+            record.ccars.unlink()
 
     def name_get(self):
         result = []
