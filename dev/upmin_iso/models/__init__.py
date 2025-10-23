@@ -8,3 +8,6 @@ from . import audit_info
 from . import iso_clause
 from . import audit_finding
 from . import ccar
+from . import ccar_corrective_action
+from . import ccar_corrective_action_effectiveness
+from . import ccar_correction_effectiveness

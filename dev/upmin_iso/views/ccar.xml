@@ -7,17 +7,50 @@
         <field name="arch" type="xml">
             <form string="" delete="false">
                 <sheet>
-                    <group>
-                        <field name="ccar_no" />
-                        <field name="date" />
-                        <field name="audit_period" />
-                        <field name="office" />
-                        <field name="clause" />
-                        <field name="details_scenario" />
-                        <field name="details_statement" />
-                        <field name="auditors" widget="many2many_tags_avatar" />
-                        <field name="audit_date" />
+                    <group col="2">
+                        <group col="1">
+                            <field name="ccar_no" />
+                        </group>
+                        <group col="1">
+                            <field name="date" />
+                        </group>
                     </group>
+                    <notebook>
+                        <page name="nature" string="Nature">
+                            <group col="5">
+                                <group col="1">
+                                    <field name="audit_nature" widget="radio" nolabel="1" />
+                                </group>
+                                <group col="1">
+                                    <field name="conformity_nature" widget="radio" nolabel="1" />
+                                </group>
+                                <group col="1">
+                                    <field name="complaint_nature_a" widget="radio" nolabel="1" />
+                                    <br />
+                                    <label for="internal_complaint_dept" />
+                                    <br />
+                                    <field name="internal_complaint_dept" nolabel="1" />
+                                </group>
+                                <group col="1">
+                                    <field name="complaint_nature_b" widget="radio" nolabel="1" />
+                                    <br />
+                                    <label for="customer_complaint_customer" />
+                                    <br />
+                                    <field name="customer_complaint_customer" nolabel="1" />
+                                </group>
+                                <group col="1">
+                                    <field name="complaint_nature_c" widget="radio" nolabel="1" />
+                                    <br />
+                                    <label for="supplier_nonconformity_supplier" />
+                                    <br />
+                                    <field name="supplier_nonconformity_supplier" nolabel="1" />
+                                </group>
+                            </group>
+                        </page>
+                        <page name="details" string="Details">
+
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
