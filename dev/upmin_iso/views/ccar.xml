@@ -16,7 +16,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page name="nature" string="Nature">
+                        <page name="nature" string="NATURE">
                             <group col="5">
                                 <group col="1">
                                     <field name="audit_nature" widget="radio" nolabel="1" />
@@ -47,8 +47,75 @@
                                 </group>
                             </group>
                         </page>
-                        <page name="details" string="Details">
-
+                        <page name="details" string="DETAILS">
+                            <group col="1">
+                                <field name="clause" />
+                                <field name="details_scenario" />
+                                <field name="details_statement" />
+                                <field name="auditors" widget="many2many_tags_avatar" />
+                                <field name="audit_date" />
+                                <field name="responsible_person" />
+                                <field name="date_received" />
+                                <field name="office" />
+                            </group>
+                        </page>
+                        <page name="immediate_action" string="IMMEDIATE ACTION/CORRECTION TAKEN">
+                            <group col="1">
+                                <field name="description" />
+                                <field name="results" />
+                                <field name="responsibility" />
+                                <field name="completed_date" />
+                            </group>
+                        </page>
+                        <page name="root_cause" string="INVESTIGATION OF ROOT CAUSE">
+                            <group col="1">
+                                <field name="tree_diagram_link" widget="url" />
+                                <field name="investigated_by" />
+                                <field name="date_investigated" />
+                                <field name="investigator_dept" />
+                            </group>
+                        </page>
+                        <page name="corrective_action" string="AGREED CORRECTIVE ACTION PLAN"
+                            help="Actions taken to eliminate root cause, resolve issue, and prevent recurrence.">
+                            <group col="1">
+                                <field name="corrective_action_plan" />
+                                <field name="proposed_by" />
+                                <field name="target_date" />
+                                <field name="approved_by" />
+                            </group>
+                        </page>
+                        <page name="impact_analysis"
+                            string="IMPACT ANALYSIS ON OTHER SIMILAR PROCESSES/PRODUCTS"
+                            help="if applicable">
+                            <group col="1">
+                                <field name="affected_areas" />
+                                <field name="initiated_date" />
+                                <field name="effective_date" />
+                            </group>
+                        </page>
+                        <page name="verification" string="VERIFICATION OF EFFECTIVENESS TAKEN">
+                            <group col="1">
+                                <field name="correction_effectiveness" />
+                                <field name="corrective_action_effectiveness" />
+                            </group>
+                        </page>
+                        <page name="related_risk"
+                            string="DETAILS ON AFFECTED RELATED RISK AND OPPORTUNITIES"
+                            help="if necessary">
+                            <group col="1">
+                                <field name="affected_related_risks_opportunities" />
+                                <field name="updated_by" />
+                                <field name="updated_date" />
+                            </group>
+                        </page>
+                        <page name="changes_qms"
+                            string="CHANGES TO THE QUALITY MANAGEMENT SYSTEM IF NECESSARY"
+                            help="policy, procedure, job descriptions, etc.">
+                            <group col="1">
+                                <field name="changes_to_qms" />
+                                <field name="changes_by" />
+                                <field name="changes_date" />
+                            </group>
                         </page>
                     </notebook>
                 </sheet>

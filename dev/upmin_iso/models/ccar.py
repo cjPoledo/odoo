@@ -120,6 +120,9 @@ class CCAR(models.Model):
         comodel_name="res.partner", string="Investigated By"
     )
     date_investigated = fields.Date(string="Date Investigated")
+    investigator_dept = fields.Many2one(
+        comodel_name="upmin_iso.office", string="Department"
+    )
 
     # agreed corrective action plan
     corrective_action_plan = fields.One2many(
