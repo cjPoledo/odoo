@@ -109,10 +109,10 @@ class CCAR(models.Model):
     )
 
     # Immediate Action/Correction Taken
-    description = fields.Text(string="Description", required=True)
-    results = fields.Text(string="Results", required=True)
-    responsibility = fields.Char(string="Responsibility", required=True)
-    completed_date = fields.Date(string="Completed Date", required=True)
+    description = fields.Text(string="Description")
+    results = fields.Text(string="Results")
+    responsibility = fields.Char(string="Responsibility")
+    completed_date = fields.Date(string="Completed Date")
 
     # Investigation of Root Cause
     tree_diagram_link = fields.Char(string="Tree Diagram")
