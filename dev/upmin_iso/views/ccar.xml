@@ -6,6 +6,9 @@
         <field name="model">upmin_iso.ccar</field>
         <field name="arch" type="xml">
             <form string="" delete="false">
+                <header>
+                    <field name="status" widget="statusbar" />
+                </header>
                 <sheet>
                     <group col="2">
                         <group col="1">
@@ -47,7 +50,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page name="details" string="DETAILS">
+                        <page name="details" string="1. DETAILS">
                             <group col="1">
                                 <field name="clause" />
                                 <field name="details_scenario" />
@@ -59,7 +62,7 @@
                                 <field name="office" />
                             </group>
                         </page>
-                        <page name="immediate_action" string="IMMEDIATE ACTION/CORRECTION TAKEN">
+                        <page name="immediate_action" string="2. IMMEDIATE ACTION/CORRECTION TAKEN">
                             <group col="1">
                                 <field name="description" />
                                 <field name="results" />
@@ -67,7 +70,7 @@
                                 <field name="completed_date" />
                             </group>
                         </page>
-                        <page name="root_cause" string="INVESTIGATION OF ROOT CAUSE">
+                        <page name="root_cause" string="3. INVESTIGATION OF ROOT CAUSE">
                             <group col="1">
                                 <field name="tree_diagram_link" widget="url" />
                                 <field name="investigated_by" />
@@ -75,7 +78,7 @@
                                 <field name="investigator_dept" />
                             </group>
                         </page>
-                        <page name="corrective_action" string="AGREED CORRECTIVE ACTION PLAN"
+                        <page name="corrective_action" string="4. AGREED CORRECTIVE ACTION PLAN"
                             help="Actions taken to eliminate root cause, resolve issue, and prevent recurrence.">
                             <group col="1">
                                 <field name="corrective_action_plan" />
@@ -85,7 +88,7 @@
                             </group>
                         </page>
                         <page name="impact_analysis"
-                            string="IMPACT ANALYSIS ON OTHER SIMILAR PROCESSES/PRODUCTS"
+                            string="5. IMPACT ANALYSIS ON OTHER SIMILAR PROCESSES/PRODUCTS"
                             help="if applicable">
                             <group col="1">
                                 <field name="affected_areas" />
@@ -93,14 +96,14 @@
                                 <field name="effective_date" />
                             </group>
                         </page>
-                        <page name="verification" string="VERIFICATION OF EFFECTIVENESS TAKEN">
+                        <page name="verification" string="6. VERIFICATION OF EFFECTIVENESS TAKEN">
                             <group col="1">
                                 <field name="correction_effectiveness" />
                                 <field name="corrective_action_effectiveness" />
                             </group>
                         </page>
                         <page name="related_risk"
-                            string="DETAILS ON AFFECTED RELATED RISK AND OPPORTUNITIES"
+                            string="7. DETAILS ON AFFECTED RELATED RISK AND OPPORTUNITIES"
                             help="if necessary">
                             <group col="1">
                                 <field name="affected_related_risks_opportunities" />
@@ -109,7 +112,7 @@
                             </group>
                         </page>
                         <page name="changes_qms"
-                            string="CHANGES TO THE QUALITY MANAGEMENT SYSTEM IF NECESSARY"
+                            string="8. CHANGES TO THE QUALITY MANAGEMENT SYSTEM IF NECESSARY"
                             help="policy, procedure, job descriptions, etc.">
                             <group col="1">
                                 <field name="changes_to_qms" />

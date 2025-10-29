@@ -25,6 +25,16 @@ class CCAR(models.Model):
         domain=[("rating", "=", "nc")],
         required=True,
     )
+    status = fields.Selection(
+        selection=[
+            ("creation", "CCAR Creation"),
+            ("office", "For Office Accomplishment"),
+            ("verification", "For IA Verification"),
+            ("completed", "Completed"),
+        ],
+        string="Status",
+        default="creation",
+    )
 
     # Nature
     audit_nature = fields.Selection(
