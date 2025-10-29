@@ -424,15 +424,21 @@ class RORExportWizard(models.TransientModel):
                             format_table_center,
                         )
                         curr_col += 1
-                        risk_due_date_str = rating.risk_due_date.strftime("%B %d, %Y")
+                        risk_due_date_str = (
+                            rating.risk_due_date.strftime("%B %d, %Y")
+                            if rating.risk_due_date
+                            else ""
+                        )
                         sheet.write(
                             curr_row,
                             curr_col,
                             f"{rating.risk_responsible}/{risk_due_date_str}",
                             format_table_center,
                         )
-                        opportunity_due_date_str = rating.opportunity_due_date.strftime(
-                            "%B %d, %Y"
+                        opportunity_due_date_str = (
+                            rating.opportunity_due_date.strftime("%B %d, %Y")
+                            if rating.opportunity_due_date
+                            else ""
                         )
                         sheet.write(
                             curr_row + 1,
@@ -706,15 +712,21 @@ class RORExportWizard(models.TransientModel):
                             format_table_center,
                         )
                         curr_col += 1
-                        risk_due_date_str = rating.risk_due_date.strftime("%B %d, %Y")
+                        risk_due_date_str = (
+                            rating.risk_due_date.strftime("%B %d, %Y")
+                            if rating.risk_due_date
+                            else ""
+                        )
                         sheet.write(
                             curr_row,
                             curr_col,
                             f"{rating.risk_responsible}/{risk_due_date_str}",
                             format_table_center,
                         )
-                        opportunity_due_date_str = rating.opportunity_due_date.strftime(
-                            "%B %d, %Y"
+                        opportunity_due_date_str = (
+                            rating.opportunity_due_date.strftime("%B %d, %Y")
+                            if rating.opportunity_due_date
+                            else ""
                         )
                         sheet.write(
                             curr_row + 1,
