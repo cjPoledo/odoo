@@ -7,6 +7,10 @@
         <field name="arch" type="xml">
             <form string="" delete="false">
                 <header>
+                    <button string="Return" name="previous_step" type="object" class="btn-primary"
+                        attrs="{'invisible': [('status', '=', 'creation')]}" />
+                    <button string="Submit" name="next_step" type="object" class="btn-primary"
+                        attrs="{'invisible': [('status', '=', 'completed')]}" />
                     <field name="status" widget="statusbar" />
                 </header>
                 <sheet>
@@ -22,102 +26,152 @@
                         <page name="nature" string="NATURE">
                             <group col="5">
                                 <group col="1">
-                                    <field name="audit_nature" widget="radio" nolabel="1" />
+                                    <field name="audit_nature" widget="radio" nolabel="1"
+                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
                                 </group>
                                 <group col="1">
-                                    <field name="conformity_nature" widget="radio" nolabel="1" />
+                                    <field name="conformity_nature" widget="radio" nolabel="1"
+                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
                                 </group>
                                 <group col="1">
-                                    <field name="complaint_nature_a" widget="radio" nolabel="1" />
+                                    <field name="complaint_nature_a" widget="radio" nolabel="1"
+                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
                                     <br />
                                     <label for="internal_complaint_dept" />
                                     <br />
-                                    <field name="internal_complaint_dept" nolabel="1" />
+                                    <field name="internal_complaint_dept" nolabel="1"
+                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
                                 </group>
                                 <group col="1">
-                                    <field name="complaint_nature_b" widget="radio" nolabel="1" />
+                                    <field name="complaint_nature_b" widget="radio" nolabel="1"
+                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
                                     <br />
                                     <label for="customer_complaint_customer" />
                                     <br />
-                                    <field name="customer_complaint_customer" nolabel="1" />
+                                    <field name="customer_complaint_customer" nolabel="1"
+                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
                                 </group>
                                 <group col="1">
-                                    <field name="complaint_nature_c" widget="radio" nolabel="1" />
+                                    <field name="complaint_nature_c" widget="radio" nolabel="1"
+                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
                                     <br />
                                     <label for="supplier_nonconformity_supplier" />
                                     <br />
-                                    <field name="supplier_nonconformity_supplier" nolabel="1" />
+                                    <field name="supplier_nonconformity_supplier" nolabel="1"
+                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
                                 </group>
                             </group>
                         </page>
                         <page name="details" string="1. DETAILS">
                             <group col="1">
-                                <field name="clause" />
-                                <field name="details_scenario" />
-                                <field name="details_statement" />
-                                <field name="auditors" widget="many2many_tags_avatar" />
-                                <field name="audit_date" />
-                                <field name="responsible_person" />
-                                <field name="date_received" />
-                                <field name="office" />
+                                <field name="clause"
+                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                <field name="details_scenario"
+                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                <field name="details_statement"
+                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                <field name="auditors" widget="many2many_tags_avatar"
+                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                <field name="audit_date"
+                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                <field name="responsible_person"
+                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                <field name="date_received"
+                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                <field name="office"
+                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
                             </group>
                         </page>
-                        <page name="immediate_action" string="2. IMMEDIATE ACTION/CORRECTION TAKEN">
+                    </notebook>
+                    <notebook>
+                        <page name="immediate_action" string="2. IMMEDIATE ACTION/CORRECTION TAKEN"
+                            attrs="{'invisible': [('status', '=', 'creation')]}">
                             <group col="1">
-                                <field name="description" />
-                                <field name="results" />
-                                <field name="responsibility" />
-                                <field name="completed_date" />
+                                <field name="description"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                <field name="results"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                <field name="responsibility"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                <field name="completed_date"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
                             </group>
                         </page>
-                        <page name="root_cause" string="3. INVESTIGATION OF ROOT CAUSE">
+                        <page name="root_cause" string="3. INVESTIGATION OF ROOT CAUSE"
+                            attrs="{'invisible': [('status', '=', 'creation')]}">
                             <group col="1">
-                                <field name="tree_diagram_link" widget="url" />
-                                <field name="investigated_by" />
-                                <field name="date_investigated" />
-                                <field name="investigator_dept" />
+                                <field name="tree_diagram_link" widget="url"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                <field name="investigated_by"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                <field name="date_investigated"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                <field name="investigator_dept"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
                             </group>
                         </page>
                         <page name="corrective_action" string="4. AGREED CORRECTIVE ACTION PLAN"
-                            help="Actions taken to eliminate root cause, resolve issue, and prevent recurrence.">
+                            help="Actions taken to eliminate root cause, resolve issue, and prevent recurrence."
+                            attrs="{'invisible': [('status', '=', 'creation')]}">
                             <group col="1">
-                                <field name="corrective_action_plan" />
-                                <field name="proposed_by" />
-                                <field name="target_date" />
-                                <field name="approved_by" />
+                                <field name="corrective_action_plan"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                <field name="proposed_by"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                <field name="target_date"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                <field name="approved_by"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
                             </group>
                         </page>
                         <page name="impact_analysis"
                             string="5. IMPACT ANALYSIS ON OTHER SIMILAR PROCESSES/PRODUCTS"
-                            help="if applicable">
+                            help="if applicable"
+                            attrs="{'invisible': [('status', '=', 'creation')]}">
                             <group col="1">
-                                <field name="affected_areas" />
-                                <field name="initiated_date" />
-                                <field name="effective_date" />
+                                <field name="affected_areas"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                <field name="initiated_date"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                <field name="effective_date"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
                             </group>
                         </page>
-                        <page name="verification" string="6. VERIFICATION OF EFFECTIVENESS TAKEN">
+                    </notebook>
+                    <notebook>
+                        <page name="verification" string="6. VERIFICATION OF EFFECTIVENESS TAKEN"
+                            attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'office')]}">
                             <group col="1">
-                                <field name="correction_effectiveness" />
-                                <field name="corrective_action_effectiveness" />
+                                <field name="correction_effectiveness"
+                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                <field name="corrective_action_effectiveness"
+                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
                             </group>
                         </page>
                         <page name="related_risk"
                             string="7. DETAILS ON AFFECTED RELATED RISK AND OPPORTUNITIES"
-                            help="if necessary">
+                            help="if necessary"
+                            attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'office')]}">
                             <group col="1">
-                                <field name="affected_related_risks_opportunities" />
-                                <field name="updated_by" />
-                                <field name="updated_date" />
+                                <field name="affected_related_risks_opportunities"
+                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                <field name="updated_by"
+                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                <field name="updated_date"
+                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
                             </group>
                         </page>
                         <page name="changes_qms"
                             string="8. CHANGES TO THE QUALITY MANAGEMENT SYSTEM IF NECESSARY"
+                            attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'office')]}"
                             help="policy, procedure, job descriptions, etc.">
                             <group col="1">
-                                <field name="changes_to_qms" />
-                                <field name="changes_by" />
-                                <field name="changes_date" />
+                                <field name="changes_to_qms"
+                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                <field name="changes_by"
+                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                <field name="changes_date"
+                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
                             </group>
                         </page>
                     </notebook>

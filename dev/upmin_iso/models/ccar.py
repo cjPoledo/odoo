@@ -191,3 +191,21 @@ class CCAR(models.Model):
             "This Nonconformity is already linked to another CCAR.",
         ),
     ]
+
+    def next_step(self):
+        for record in self:
+            if record.status == "creation":
+                record.status = "office"
+            elif record.status == "office":
+                record.status = "verification"
+            elif record.status == "verification":
+                record.status = "completed"
+
+    def previous_step(self):
+        for record in self:
+            if record.status == "completed":
+                record.status = "verification"
+            elif record.status == "verification":
+                record.status = "office"
+            elif record.status == "office":
+                record.status = "creation"
