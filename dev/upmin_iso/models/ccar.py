@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class CCAR(models.Model):
@@ -55,6 +55,7 @@ class CCAR(models.Model):
     )
     complaint_nature_a = fields.Selection(
         selection=[
+            ("clear", "[Clear Selection]"),
             ("external", "External Complaint"),
             ("internal", "Internal Complaint"),
         ],
@@ -65,6 +66,7 @@ class CCAR(models.Model):
     )
     complaint_nature_b = fields.Selection(
         selection=[
+            ("clear", "[Clear Selection]"),
             ("incidents", "Incidents"),
             ("customer", "Customer Complaint"),
         ],
@@ -73,6 +75,7 @@ class CCAR(models.Model):
     customer_complaint_customer = fields.Char(string="Customer Name")
     complaint_nature_c = fields.Selection(
         selection=[
+            ("clear", "[Clear Selection]"),
             ("laws", "Laws/Regulations"),
             ("supplier", "Supplier Nonconformity"),
         ],
@@ -209,3 +212,18 @@ class CCAR(models.Model):
                 record.status = "office"
             elif record.status == "office":
                 record.status = "creation"
+
+    @api.onchange("complaint_nature_a")
+    def _onchange_complaint_nature_a(self):
+        if self.complaint_nature_a == "clear":
+            self.complaint_nature_a = False
+
+    @api.onchange("complaint_nature_b")
+    def _onchange_complaint_nature_b(self):
+        if self.complaint_nature_b == "clear":
+            self.complaint_nature_b = False
+
+    @api.onchange("complaint_nature_c")
+    def _onchange_complaint_nature_c(self):
+        if self.complaint_nature_c == "clear":
+            self.complaint_nature_c = False

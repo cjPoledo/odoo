@@ -37,49 +37,46 @@
                                     <field name="complaint_nature_a" widget="radio" nolabel="1"
                                         attrs="{'readonly': [('status', '!=', 'creation')]}" />
                                     <br />
-                                    <label for="internal_complaint_dept" />
+                                    <label for="internal_complaint_dept"
+                                        attrs="{'invisible': [('complaint_nature_a', '!=', 'internal')]}" />
                                     <br />
                                     <field name="internal_complaint_dept" nolabel="1"
-                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                        attrs="{'readonly': [('status', '!=', 'creation')], 'invisible': [('complaint_nature_a', '!=', 'internal')]}" />
                                 </group>
                                 <group col="1">
                                     <field name="complaint_nature_b" widget="radio" nolabel="1"
                                         attrs="{'readonly': [('status', '!=', 'creation')]}" />
                                     <br />
-                                    <label for="customer_complaint_customer" />
+                                    <label for="customer_complaint_customer"
+                                        attrs="{'invisible': [('complaint_nature_b', '!=', 'customer')]}" />
                                     <br />
                                     <field name="customer_complaint_customer" nolabel="1"
-                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                        attrs="{'readonly': [('status', '!=', 'creation')], 'invisible': [('complaint_nature_b', '!=', 'customer')]}" />
                                 </group>
                                 <group col="1">
                                     <field name="complaint_nature_c" widget="radio" nolabel="1"
                                         attrs="{'readonly': [('status', '!=', 'creation')]}" />
                                     <br />
-                                    <label for="supplier_nonconformity_supplier" />
+                                    <label for="supplier_nonconformity_supplier"
+                                        attrs="{'invisible': [('complaint_nature_c', '!=', 'supplier')]}" />
                                     <br />
                                     <field name="supplier_nonconformity_supplier" nolabel="1"
-                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                        attrs="{'readonly': [('status', '!=', 'creation')], 'invisible': [('complaint_nature_c', '!=', 'supplier')]}" />
                                 </group>
                             </group>
                         </page>
                         <page name="details" string="1. DETAILS">
                             <group col="1">
-                                <field name="clause"
-                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
-                                <field name="details_scenario"
-                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
-                                <field name="details_statement"
-                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
-                                <field name="auditors" widget="many2many_tags_avatar"
-                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
-                                <field name="audit_date"
-                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                <field name="clause" />
+                                <field name="details_scenario" />
+                                <field name="details_statement" />
+                                <field name="auditors" widget="many2many_tags_avatar" />
+                                <field name="audit_date" />
                                 <field name="responsible_person"
                                     attrs="{'readonly': [('status', '!=', 'creation')]}" />
                                 <field name="date_received"
                                     attrs="{'readonly': [('status', '!=', 'creation')]}" />
-                                <field name="office"
-                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                <field name="office" />
                             </group>
                         </page>
                     </notebook>
