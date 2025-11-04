@@ -120,7 +120,15 @@
                             attrs="{'invisible': [('status', '=', 'creation')]}">
                             <group col="1">
                                 <field name="corrective_action_plan"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                    attrs="{'readonly': [('status', '!=', 'office')]}">
+                                    <tree string="" editable="bottom">
+                                        <field name="corrective_action" />
+                                        <field name="effectiveness" />
+                                        <field name="responsible" />
+                                        <field name="start_date" />
+                                        <field name="effective_date" />
+                                    </tree>
+                                </field>
                                 <field name="proposed_by"
                                     attrs="{'readonly': [('status', '!=', 'office')]}" />
                                 <field name="target_date"
