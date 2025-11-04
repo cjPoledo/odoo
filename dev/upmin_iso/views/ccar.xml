@@ -99,12 +99,20 @@
                             <group col="1">
                                 <field name="tree_diagram_link" widget="url"
                                     attrs="{'readonly': [('status', '!=', 'office')]}" />
-                                <field name="investigated_by"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
-                                <field name="date_investigated"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
-                                <field name="investigator_dept"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                            </group>
+                            <group col="3">
+                                <group col='1'>
+                                    <field name="investigated_by"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                </group>
+                                <group col="1">
+                                    <field name="date_investigated"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                </group>
+                                <group col="1">
+                                    <field name="investigator_dept"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                </group>
                             </group>
                         </page>
                         <page name="corrective_action" string="4. AGREED CORRECTIVE ACTION PLAN"
