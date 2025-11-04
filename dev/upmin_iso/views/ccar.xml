@@ -156,9 +156,25 @@
                             attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'office')]}">
                             <group col="1">
                                 <field name="correction_effectiveness"
-                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                    attrs="{'readonly': [('status', '!=', 'verification')]}">
+                                    <tree string="" editable="bottom">
+                                        <field name="correction" />
+                                        <field name="verification" />
+                                        <field name="verified_by" />
+                                        <field name="verified_date" />
+                                        <field name="approval" />
+                                    </tree>
+                                </field>
                                 <field name="corrective_action_effectiveness"
-                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                    attrs="{'readonly': [('status', '!=', 'verification')]}">
+                                    <tree string="" editable="bottom">
+                                        <field name="corrective_action" />
+                                        <field name="verification" />
+                                        <field name="verified_by" />
+                                        <field name="verified_date" />
+                                        <field name="approval" />
+                                    </tree>
+                                </field>
                             </group>
                         </page>
                         <page name="related_risk"
