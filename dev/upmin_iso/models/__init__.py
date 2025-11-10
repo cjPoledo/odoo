@@ -11,3 +11,4 @@ from . import ccar
 from . import ccar_corrective_action
 from . import ccar_corrective_action_effectiveness
 from . import ccar_correction_effectiveness
+from . import internal_auditor

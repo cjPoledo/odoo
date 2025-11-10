@@ -70,4 +70,12 @@
         parent="configuration_menu"
         sequence="50" />
 
+    <menuitem
+        id="internal_auditor_menu"
+        name="Internal Auditor"
+        action="upmin_iso.internal_auditor_action"
+        groups="base.group_user"
+        parent="upmin_iso_menu"
+        sequence="60" />
+
 </odoo>

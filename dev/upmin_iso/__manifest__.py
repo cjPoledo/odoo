@@ -4,9 +4,13 @@
     "version": "1.0",
     "summary": "Tools for managing ISO-related documents",
     "application": True,
+    "depends": [
+        "hr",
+    ],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
+        "views/internal_auditor.xml",
         "views/office.xml",
         "views/iso_clause.xml",
         "views/review_period.xml",
