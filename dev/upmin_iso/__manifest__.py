@@ -11,6 +11,7 @@
         "security/security.xml",
         "security/ir.model.access.csv",
         "views/internal_auditor.xml",
+        "views/document_controller.xml",
         "views/office.xml",
         "views/iso_clause.xml",
         "views/review_period.xml",

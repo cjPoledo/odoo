@@ -1,14 +1,14 @@
 from odoo import models, fields
 
 
-class InternalAuditor(models.Model):
-    _name = "upmin_iso.internal_auditor"
-    _description = "Internal Auditor"
+class DocumentController(models.Model):
+    _name = "upmin_iso.document_controller"
+    _description = "Document Controller"
     _rec_name = "name"
-    _order = "office,name,certified,trained"
+    _order = "office,name,trained"
 
     name = fields.Many2one(
-        comodel_name="hr.employee", string="Auditor Name", required=True
+        comodel_name="hr.employee", string="Document Controller Name", required=True
     )
     email = fields.Char(
         string="Email", related="name.work_email", readonly=True, store=True
@@ -21,4 +21,3 @@ class InternalAuditor(models.Model):
         store=True,
     )
     trained = fields.Boolean(string="Trained", default=False)
-    certified = fields.Boolean(string="Certified", default=False)

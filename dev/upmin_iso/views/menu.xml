@@ -71,11 +71,26 @@
         sequence="50" />
 
     <menuitem
-        id="internal_auditor_menu"
-        name="Internal Auditor"
-        action="upmin_iso.internal_auditor_action"
+        id="directory_menu"
+        name="Directory"
         groups="base.group_user"
         parent="upmin_iso_menu"
+        sequence="60" />
+
+    <menuitem
+        id="internal_auditor_menu"
+        name="Internal Auditors"
+        action="upmin_iso.internal_auditor_action"
+        groups="base.group_user"
+        parent="directory_menu"
+        sequence="50" />
+
+    <menuitem
+        id="document_controller_menu"
+        name="Document Controllers"
+        action="upmin_iso.document_controller_action"
+        groups="base.group_user"
+        parent="directory_menu"
         sequence="60" />
 
 </odoo>

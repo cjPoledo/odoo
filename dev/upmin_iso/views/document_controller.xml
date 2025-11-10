@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="upmin_iso.internal_auditor_view_form" model="ir.ui.view">
-        <field name="name">upmin_iso.internal_auditor.view.form</field>
-        <field name="model">upmin_iso.internal_auditor</field>
+    <record id="upmin_iso.document_controller_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.document_controller.view.form</field>
+        <field name="model">upmin_iso.document_controller</field>
         <field name="arch" type="xml">
             <form string="">
                 <sheet>
@@ -11,30 +11,28 @@
                         <field name="email" widget="email" />
                         <field name="office" />
                         <field name="trained" />
-                        <field name="certified" />
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <record id="upmin_iso.internal_auditor_view_tree" model="ir.ui.view">
-        <field name="name">upmin_iso.internal_auditor.view.tree</field>
-        <field name="model">upmin_iso.internal_auditor</field>
+    <record id="upmin_iso.document_controller_view_tree" model="ir.ui.view">
+        <field name="name">upmin_iso.document_controller.view.tree</field>
+        <field name="model">upmin_iso.document_controller</field>
         <field name="arch" type="xml">
             <tree string="">
                 <field name="name" />
                 <field name="email" widget="email" />
                 <field name="office" />
                 <field name="trained" />
-                <field name="certified" />
             </tree>
         </field>
     </record>
 
-    <record id="upmin_iso.internal_auditor_action" model="ir.actions.act_window">
-        <field name="name">Internal Auditors</field>
-        <field name="res_model">upmin_iso.internal_auditor</field>
+    <record id="upmin_iso.document_controller_action" model="ir.actions.act_window">
+        <field name="name">Document Controllers</field>
+        <field name="res_model">upmin_iso.document_controller</field>
         <field name="view_mode">tree,form</field>
     </record>
 
