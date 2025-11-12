@@ -21,3 +21,11 @@ class DocumentController(models.Model):
         store=True,
     )
     trained = fields.Boolean(string="Trained", default=False)
+
+    _sql_constraints = [
+        (
+            "name_unique",
+            "unique(name)",
+            "Document Controller already exists.",
+        ),
+    ]

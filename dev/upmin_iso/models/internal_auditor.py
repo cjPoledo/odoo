@@ -22,3 +22,11 @@ class InternalAuditor(models.Model):
     )
     trained = fields.Boolean(string="Trained", default=False)
     certified = fields.Boolean(string="Certified", default=False)
+
+    _sql_constraints = [
+        (
+            "name_unique",
+            "unique(name)",
+            "Auditor already exists.",
+        ),
+    ]
