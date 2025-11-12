@@ -7,9 +7,7 @@ class DocumentController(models.Model):
     _rec_name = "name"
     _order = "office,name,trained"
 
-    name = fields.Many2one(
-        comodel_name="hr.employee", string="Document Controller Name", required=True
-    )
+    name = fields.Many2one(comodel_name="hr.employee", string="Name", required=True)
     email = fields.Char(
         string="Email", related="name.work_email", readonly=True, store=True
     )
