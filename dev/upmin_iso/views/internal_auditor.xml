@@ -12,6 +12,7 @@
                         <field name="office" />
                         <field name="trained" />
                         <field name="certified" />
+                        <field name="have_internal_auditor_perms" groups="upmin_iso.group_iso_staff" />
                     </group>
                 </sheet>
             </form>
