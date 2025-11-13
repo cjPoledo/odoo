@@ -93,4 +93,12 @@
         parent="directory_menu"
         sequence="60" />
 
+    <menuitem
+        id="swot_menu"
+        name="SWOT"
+        action="upmin_iso.swot_action"
+        groups="group_iso_staff"
+        parent="upmin_iso_menu"
+        sequence="70" />
+
 </odoo>

@@ -13,3 +13,5 @@ from . import ccar_corrective_action_effectiveness
 from . import ccar_correction_effectiveness
 from . import internal_auditor
 from . import document_controller
+from . import swot
+from . import swot_line
