@@ -9,7 +9,14 @@ class SWOT(models.Model):
 
     year = fields.Integer(string="Year", required=True)
     office = fields.Many2one(
-        comodel_name="hr.department", string="Office", required=True
+        comodel_name="hr.department",
+        string="Office",
+        required=True,
+        domain=lambda self: (
+            [("id", "=", self.env.user.employee_id.department_id.id)]
+            if self.env.user.employee_id and self.env.user.employee_id.department_id
+            else []
+        ),
     )
     strengths = fields.One2many(
         comodel_name="upmin_iso.swot_line", inverse_name="swot_id", string="Strengths"
