@@ -13,6 +13,7 @@
                         <group col="1">
                             <field name="office" />
                         </group>
+                        <h2 colspan="2">SWOT Analysis</h2>
                         <group col="2">
                             <field name="strengths" nolabel="1" colspan="2">
                                 <tree editable="bottom">
@@ -38,6 +39,35 @@
                             <field name="threats" nolabel="1" colspan="2">
                                 <tree editable="bottom">
                                     <field name="description" string="Threats" />
+                                </tree>
+                            </field>
+                        </group>
+                        <h2 colspan="2">TOWS Analysis</h2>
+                        <group col="2">
+                            <field name="so" nolabel="1" colspan="2">
+                                <tree editable="bottom">
+                                    <field name="description" string="Strengths-Opportunities" />
+                                </tree>
+                            </field>
+                        </group>
+                        <group col="2">
+                            <field name="wo" nolabel="1" colspan="2">
+                                <tree editable="bottom">
+                                    <field name="description" string="Weaknesses-Opportunities" />
+                                </tree>
+                            </field>
+                        </group>
+                        <group col="2">
+                            <field name="st" nolabel="1" colspan="2">
+                                <tree editable="bottom">
+                                    <field name="description" string="Strengths-Threats" />
+                                </tree>
+                            </field>
+                        </group>
+                        <group col="2">
+                            <field name="wt" nolabel="1" colspan="2">
+                                <tree editable="bottom">
+                                    <field name="description" string="Weaknesses-Threats" />
                                 </tree>
                             </field>
                         </group>
