@@ -1,3 +1,4 @@
+from datetime import date
 from odoo import models, fields
 
 
@@ -7,7 +8,9 @@ class SWOT(models.Model):
     _rec_name = "office"
     _order = "office,year"
 
-    year = fields.Integer(string="Year", required=True)
+    year = fields.Char(
+        string="Year", required=True, default=lambda self: str(date.today().year)
+    )
     office = fields.Many2one(
         comodel_name="hr.department",
         string="Office",
