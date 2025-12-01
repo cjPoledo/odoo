@@ -16,7 +16,8 @@
                         <h2 colspan="2">SWOT Analysis</h2>
                         <group col="2">
                             <field name="strengths" nolabel="1" colspan="2">
-                                <tree editable="bottom">
+                                <tree>
+                                    <field name="label" />
                                     <field name="description" string="Strengths" />
                                 </tree>
                             </field>
@@ -24,6 +25,7 @@
                         <group col="2">
                             <field name="weaknesses" nolabel="1" colspan="2">
                                 <tree editable="bottom">
+                                    <field name="label" />
                                     <field name="description" string="Weaknesses" />
                                 </tree>
                             </field>
@@ -31,6 +33,7 @@
                         <group col="2">
                             <field name="opportunities" nolabel="1" colspan="2">
                                 <tree editable="bottom">
+                                    <field name="label" />
                                     <field name="description" string="Opportunities" />
                                 </tree>
                             </field>
@@ -38,11 +41,12 @@
                         <group col="2">
                             <field name="threats" nolabel="1" colspan="2">
                                 <tree editable="bottom">
+                                    <field name="label" />
                                     <field name="description" string="Threats" />
                                 </tree>
                             </field>
                         </group>
-                        <h2 colspan="2">TOWS Analysis</h2>
+                        <!-- <h2 colspan="2">TOWS Analysis</h2>
                         <group col="2">
                             <field name="so" nolabel="1" colspan="2">
                                 <tree editable="bottom">
@@ -70,7 +74,7 @@
                                     <field name="description" string="Weaknesses-Threats" />
                                 </tree>
                             </field>
-                        </group>
+                        </group> -->
                     </group>
                 </sheet>
             </form>
@@ -85,6 +89,28 @@
                 <field name="year" />
                 <field name="office" />
             </tree>
+        </field>
+    </record>
+
+    <record id="upmin_iso.swot_line_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.swot_line.view.form</field>
+        <field name="model">upmin_iso.swot_line</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group col="2">
+                        <group col="1">
+                            <field name="label" />
+                        </group>
+                        <group col="1">
+                            <field name="swot_type" />
+                        </group>
+                        <group col="1" colspan="2">
+                            <field name="description" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
 

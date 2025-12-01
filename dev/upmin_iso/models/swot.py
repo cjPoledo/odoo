@@ -22,18 +22,32 @@ class SWOT(models.Model):
         ),
     )
     strengths = fields.One2many(
-        comodel_name="upmin_iso.swot_line", inverse_name="swot_id", string="Strengths"
+        comodel_name="upmin_iso.swot_line",
+        inverse_name="swot_id",
+        string="Strengths",
+        context={"default_swot_type": "S"},
+        domain=[("swot_type", "=", "S")],
     )
     weaknesses = fields.One2many(
-        comodel_name="upmin_iso.swot_line", inverse_name="swot_id", string="Weaknesses"
+        comodel_name="upmin_iso.swot_line",
+        inverse_name="swot_id",
+        string="Weaknesses",
+        context={"default_swot_type": "W"},
+        domain=[("swot_type", "=", "W")],
     )
     opportunities = fields.One2many(
         comodel_name="upmin_iso.swot_line",
         inverse_name="swot_id",
         string="Opportunities",
+        context={"default_swot_type": "O"},
+        domain=[("swot_type", "=", "O")],
     )
     threats = fields.One2many(
-        comodel_name="upmin_iso.swot_line", inverse_name="swot_id", string="Threats"
+        comodel_name="upmin_iso.swot_line",
+        inverse_name="swot_id",
+        string="Threats",
+        context={"default_swot_type": "T"},
+        domain=[("swot_type", "=", "T")],
     )
     so = fields.One2many(
         comodel_name="upmin_iso.swot_line",
