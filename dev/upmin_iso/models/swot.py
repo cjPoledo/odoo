@@ -69,3 +69,11 @@ class SWOT(models.Model):
         inverse_name="swot_id",
         string="Weaknesses-Threats",
     )
+
+    _sql_constraints = [
+        (
+            "unique_year_office",
+            "unique(year, office)",
+            "SWOT for this year and office already exists.",
+        )
+    ]
