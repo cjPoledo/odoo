@@ -24,7 +24,7 @@
                         </group>
                         <group col="2">
                             <field name="weaknesses" nolabel="1" colspan="2">
-                                <tree editable="bottom">
+                                <tree>
                                     <field name="label" />
                                     <field name="description" string="Weaknesses" />
                                 </tree>
@@ -32,7 +32,7 @@
                         </group>
                         <group col="2">
                             <field name="opportunities" nolabel="1" colspan="2">
-                                <tree editable="bottom">
+                                <tree>
                                     <field name="label" />
                                     <field name="description" string="Opportunities" />
                                 </tree>
@@ -40,7 +40,7 @@
                         </group>
                         <group col="2">
                             <field name="threats" nolabel="1" colspan="2">
-                                <tree editable="bottom">
+                                <tree>
                                     <field name="label" />
                                     <field name="description" string="Threats" />
                                 </tree>

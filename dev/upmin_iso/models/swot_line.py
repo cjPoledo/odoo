@@ -29,25 +29,31 @@ class SWOTLine(models.Model):
     @api.depends("swot_type", "swot_id")
     def _compute_label(self):
         for rec in self:
-            if rec.swot_type and rec.swot_id:
-                lines = (
-                    rec.swot_id.strengths
-                    if rec.swot_type == "S"
-                    else (
-                        rec.swot_id.weaknesses
-                        if rec.swot_type == "W"
-                        else (
-                            rec.swot_id.opportunities
-                            if rec.swot_type == "O"
-                            else rec.swot_id.threats
-                        )
-                    )
-                )
-
-                index = lines.sorted("id").ids.index(rec.id) + 1
-                rec.label = f"{rec.swot_type}{index}"
-            else:
+            if not rec.swot_type or not rec.swot_id:
                 rec.label = False
+                continue
+
+            field_by_type = {
+                "S": "strengths",
+                "W": "weaknesses",
+                "O": "opportunities",
+                "T": "threats",
+            }
+
+            siblings = rec.swot_id[field_by_type[rec.swot_type]]
+
+            # SAFE sort that works with both NewId() and real IDs
+            sibling_lines = siblings.sorted(key=lambda r: r.id or 0)
+
+            # Find index (works for both new & saved)
+            try:
+                index = sibling_lines.ids.index(rec.id) + 1
+            except ValueError:
+                # rec.id not in sibling_lines.ids because it's a NewId
+                # assign it to the end of the list
+                index = len(sibling_lines) + 1
+
+            rec.label = f"{rec.swot_type}{index}"
 
     def unlink(self):
         # Group records by type so we process per type only once
