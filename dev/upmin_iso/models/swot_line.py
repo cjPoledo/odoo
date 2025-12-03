@@ -29,7 +29,14 @@ class SWOTLine(models.Model):
     @api.depends("swot_type", "swot_id")
     def _compute_label(self):
         for rec in self:
+
+            # Always empty if missing type or parent
             if not rec.swot_type or not rec.swot_id:
+                rec.label = False
+                continue
+
+            # If record is not saved yet → leave label empty
+            if not isinstance(rec.id, int):
                 rec.label = False
                 continue
 
@@ -42,16 +49,11 @@ class SWOTLine(models.Model):
 
             siblings = rec.swot_id[field_by_type[rec.swot_type]]
 
-            # SAFE sort that works with both NewId() and real IDs
+            # Sort siblings reliably
             sibling_lines = siblings.sorted(key=lambda r: r.id or 0)
 
-            # Find index (works for both new & saved)
-            try:
-                index = sibling_lines.ids.index(rec.id) + 1
-            except ValueError:
-                # rec.id not in sibling_lines.ids because it's a NewId
-                # assign it to the end of the list
-                index = len(sibling_lines) + 1
+            # Find index (now always valid because rec.id is real)
+            index = sibling_lines.ids.index(rec.id) + 1
 
             rec.label = f"{rec.swot_type}{index}"
 
