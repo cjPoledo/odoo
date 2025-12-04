@@ -32,7 +32,7 @@
         sequence="30" />
 
     <menuitem
-        id="upmin_iso.iso_clause_menu"
+        id="iso_clause_menu"
         name="ISO Clauses"
         action="upmin_iso.iso_clause_action"
         groups="group_iso_doc_controller,group_iso_internal_auditor,group_iso_staff"
@@ -94,11 +94,26 @@
         sequence="60" />
 
     <menuitem
-        id="swot_menu"
+        id="swot_main_menu"
         name="SWOT"
-        action="upmin_iso.swot_action"
         groups="group_iso_staff"
         parent="upmin_iso_menu"
         sequence="70" />
+
+    <menuitem
+        id="swot_menu"
+        name="SWOT Analysis"
+        action="upmin_iso.swot_action"
+        groups="group_iso_staff"
+        parent="swot_main_menu"
+        sequence="50" />
+
+    <menuitem
+        id="tows_menu"
+        name="TOWS Analysis"
+        action="upmin_iso.tows_action"
+        groups="group_iso_staff"
+        parent="swot_main_menu"
+        sequence="60" />
 
 </odoo>

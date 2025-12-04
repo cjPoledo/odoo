@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="upmin_iso.tows_view_tree" model="ir.ui.view">
+        <field name="name">upmin_iso.tows.view.tree</field>
+        <field name="model">upmin_iso.tows</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="year" />
+                <field name="office" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="upmin_iso.tows_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.tows.view.form</field>
+        <field name="model">upmin_iso.tows</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group col="2">
+                        <group col="1" colspan="2">
+                            <field name="swot" />
+                        </group>
+                        <group col="1">
+                            <field name="year" />
+                        </group>
+                        <group col="1">
+                            <field name="office" />
+                        </group>
+                        <h2 colspan="2">TOWS Analysis</h2>
+                        <group col="2">
+                            <field name="so" nolabel="1" colspan="2">
+                                <tree>
+                                    <field name="related_swot_line_ids" widget="many2many_tags" />
+                                    <field name="description" string="Strengths-Opportunities" />
+                                </tree>
+                            </field>
+                        </group>
+                        <group col="2">
+                            <field name="wo" nolabel="1" colspan="2">
+                                <tree>
+                                    <field name="related_swot_line_ids" widget="many2many_tags" />
+                                    <field name="description" string="Weaknesses-Opportunities" />
+                                </tree>
+                            </field>
+                        </group>
+                        <group col="2">
+                            <field name="st" nolabel="1" colspan="2">
+                                <tree>
+                                    <field name="related_swot_line_ids" widget="many2many_tags" />
+                                    <field name="description" string="Strengths-Threats" />
+                                </tree>
+                            </field>
+                        </group>
+                        <group col="2">
+                            <field name="wt" nolabel="1" colspan="2">
+                                <tree>
+                                    <field name="related_swot_line_ids" widget="many2many_tags" />
+                                    <field name="description" string="Weaknesses-Threats" />
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upmin_iso.tows_line_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.tows_line.view.form</field>
+        <field name="model">upmin_iso.tows_line</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group col="1">
+                        <field name="allowed_swot_line_ids" invisible="1" />
+                        <field name="related_swot_line_ids" />
+                        <field name="description" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upmin_iso.tows_action" model="ir.actions.act_window">
+        <field name="name">TOWS Analysis</field>
+        <field name="res_model">upmin_iso.tows</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

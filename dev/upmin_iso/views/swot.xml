@@ -16,7 +16,7 @@
                         <h2 colspan="2">SWOT Analysis</h2>
                         <group col="2">
                             <field name="strengths" nolabel="1" colspan="2">
-                                <tree>
+                                <tree editable="bottom">
                                     <field name="label" />
                                     <field name="description" string="Strengths" />
                                 </tree>
@@ -24,7 +24,7 @@
                         </group>
                         <group col="2">
                             <field name="weaknesses" nolabel="1" colspan="2">
-                                <tree>
+                                <tree editable="bottom">
                                     <field name="label" />
                                     <field name="description" string="Weaknesses" />
                                 </tree>
@@ -32,7 +32,7 @@
                         </group>
                         <group col="2">
                             <field name="opportunities" nolabel="1" colspan="2">
-                                <tree>
+                                <tree editable="bottom">
                                     <field name="label" />
                                     <field name="description" string="Opportunities" />
                                 </tree>
@@ -40,41 +40,12 @@
                         </group>
                         <group col="2">
                             <field name="threats" nolabel="1" colspan="2">
-                                <tree>
+                                <tree editable="bottom">
                                     <field name="label" />
                                     <field name="description" string="Threats" />
                                 </tree>
                             </field>
                         </group>
-                        <!-- <h2 colspan="2">TOWS Analysis</h2>
-                        <group col="2">
-                            <field name="so" nolabel="1" colspan="2">
-                                <tree editable="bottom">
-                                    <field name="description" string="Strengths-Opportunities" />
-                                </tree>
-                            </field>
-                        </group>
-                        <group col="2">
-                            <field name="wo" nolabel="1" colspan="2">
-                                <tree editable="bottom">
-                                    <field name="description" string="Weaknesses-Opportunities" />
-                                </tree>
-                            </field>
-                        </group>
-                        <group col="2">
-                            <field name="st" nolabel="1" colspan="2">
-                                <tree editable="bottom">
-                                    <field name="description" string="Strengths-Threats" />
-                                </tree>
-                            </field>
-                        </group>
-                        <group col="2">
-                            <field name="wt" nolabel="1" colspan="2">
-                                <tree editable="bottom">
-                                    <field name="description" string="Weaknesses-Threats" />
-                                </tree>
-                            </field>
-                        </group> -->
                     </group>
                 </sheet>
             </form>
@@ -111,6 +82,17 @@
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="upmin_iso.swot_line_view_tree" model="ir.ui.view">
+        <field name="name">upmin_iso.swot_line.view.tree</field>
+        <field name="model">upmin_iso.swot_line</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="label" />
+                <field name="description" />
+            </tree>
         </field>
     </record>
 

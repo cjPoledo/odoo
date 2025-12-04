@@ -13,6 +13,7 @@
         "views/internal_auditor.xml",
         "views/document_controller.xml",
         "views/swot.xml",
+        "views/tows.xml",
         "views/office.xml",
         "views/iso_clause.xml",
         "views/review_period.xml",
