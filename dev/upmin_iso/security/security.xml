@@ -42,4 +42,47 @@
         <field name="domain_force">[('internal_auditors', 'in', user.partner_id.id)]</field>
     </record>
 
+    <record id="rule_swot_doc_controller_own" model="ir.rule">
+        <field name="name">Doc Controller: CRUD Own Office SWOT</field>
+        <field name="model_id" ref="model_upmin_iso_swot" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
+        <field name="domain_force">[('office', '=', user.employee_id.department_id.id)]</field>
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_unlink" eval="1" />
+    </record>
+
+    <record id="rule_swot_iso_staff_readall" model="ir.rule">
+        <field name="name">ISO Staff: Read All SWOT</field>
+        <field name="model_id" ref="model_upmin_iso_swot" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]" />
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="0" />
+        <field name="perm_create" eval="0" />
+        <field name="perm_unlink" eval="0" />
+    </record>
+
+    <record id="rule_tows_doc_controller_own" model="ir.rule">
+        <field name="name">Doc Controller: CRUD Own Office TOWS</field>
+        <field name="model_id" ref="model_upmin_iso_tows" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
+        <field name="domain_force">[('office', '=', user.employee_id.department_id.id)]</field>
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_unlink" eval="1" />
+    </record>
+
+    <record id="rule_tows_iso_staff_readall" model="ir.rule">
+        <field name="name">ISO Staff: Read All TOWS</field>
+        <field name="model_id" ref="model_upmin_iso_tows" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]" />
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="0" />
+        <field name="perm_create" eval="0" />
+        <field name="perm_unlink" eval="0" />
+    </record>
 </odoo>

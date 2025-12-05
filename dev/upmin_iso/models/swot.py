@@ -57,3 +57,10 @@ class SWOT(models.Model):
             "SWOT for this year and office already exists.",
         )
     ]
+
+    def name_get(self):
+        result = []
+        for rec in self:
+            name = f"{rec.office.name} - {rec.year}"
+            result.append((rec.id, name))
+        return result

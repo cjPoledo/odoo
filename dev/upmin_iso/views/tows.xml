@@ -20,7 +20,7 @@
                 <sheet>
                     <group col="2">
                         <group col="1" colspan="2">
-                            <field name="swot" />
+                            <field name="swot" attrs="{'readonly': [('id', '!=', False)]}" />
                         </group>
                         <group col="1">
                             <field name="year" />

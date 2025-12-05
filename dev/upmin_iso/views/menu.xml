@@ -8,12 +8,35 @@
         web_icon="upmin_iso,static/description/icon.svg" />
 
     <menuitem
+        id="swot_main_menu"
+        name="SWOT"
+        groups="group_iso_staff,group_iso_doc_controller"
+        parent="upmin_iso_menu"
+        sequence="20" />
+
+    <menuitem
+        id="swot_menu"
+        name="SWOT Analysis"
+        action="upmin_iso.swot_action"
+        groups="group_iso_staff,group_iso_doc_controller"
+        parent="swot_main_menu"
+        sequence="50" />
+
+    <menuitem
+        id="tows_menu"
+        name="TOWS Analysis"
+        action="upmin_iso.tows_action"
+        groups="group_iso_staff,group_iso_doc_controller"
+        parent="swot_main_menu"
+        sequence="60" />
+
+    <menuitem
         id="ror_menu"
         name="ROR"
         action="upmin_iso.ror_action"
         groups="group_iso_doc_controller,group_iso_staff"
         parent="upmin_iso_menu"
-        sequence="10" />
+        sequence="30" />
 
     <menuitem
         id="audit_info_menu"
@@ -21,7 +44,7 @@
         action="upmin_iso.audit_info_action"
         groups="group_iso_internal_auditor,group_iso_doc_controller,group_iso_staff"
         parent="upmin_iso_menu"
-        sequence="20" />
+        sequence="40" />
 
     <menuitem
         id="ccar_menu"
@@ -29,7 +52,7 @@
         action="upmin_iso.ccar_action"
         groups="group_iso_doc_controller,group_iso_internal_auditor,group_iso_staff"
         parent="upmin_iso_menu"
-        sequence="30" />
+        sequence="50" />
 
     <menuitem
         id="iso_clause_menu"
@@ -37,14 +60,14 @@
         action="upmin_iso.iso_clause_action"
         groups="group_iso_doc_controller,group_iso_internal_auditor,group_iso_staff"
         parent="upmin_iso_menu"
-        sequence="40" />
+        sequence="60" />
 
     <menuitem
         id="configuration_menu"
         name="Configuration"
         groups="group_iso_staff"
         parent="upmin_iso_menu"
-        sequence="50" />
+        sequence="70" />
 
     <menuitem
         id="office_menu"
@@ -75,7 +98,7 @@
         name="Directory"
         groups="base.group_user"
         parent="upmin_iso_menu"
-        sequence="60" />
+        sequence="80" />
 
     <menuitem
         id="internal_auditor_menu"
@@ -91,29 +114,6 @@
         action="upmin_iso.document_controller_action"
         groups="base.group_user"
         parent="directory_menu"
-        sequence="60" />
-
-    <menuitem
-        id="swot_main_menu"
-        name="SWOT"
-        groups="group_iso_staff"
-        parent="upmin_iso_menu"
-        sequence="70" />
-
-    <menuitem
-        id="swot_menu"
-        name="SWOT Analysis"
-        action="upmin_iso.swot_action"
-        groups="group_iso_staff"
-        parent="swot_main_menu"
-        sequence="50" />
-
-    <menuitem
-        id="tows_menu"
-        name="TOWS Analysis"
-        action="upmin_iso.tows_action"
-        groups="group_iso_staff"
-        parent="swot_main_menu"
         sequence="60" />
 
 </odoo>
