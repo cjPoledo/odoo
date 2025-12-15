@@ -26,6 +26,40 @@ class SWOTLine(models.Model):
         string="Label", compute="_compute_label", store=True, readonly=True
     )
 
+    # ROR stuff
+    interested_parties = fields.Char(
+        string="Interested Parties", help="Who are those affected by the issue?"
+    )
+    needs_and_exp = fields.Text(
+        string="Needs and Expectations",
+        help="What are the needs and expectations of the identified interested parties?",
+    )
+    compliance = fields.Html(
+        string="Compliance Obligations",
+        help='Is there any law, directive, issuance, statute, ordinance or regulation that\'s related to the issue?\nIf yes, then kindly indicate.\nIf none, kindly indicate "None".',
+    )
+    risks = fields.Text(
+        string="Risks (R)", help="Identify the risk/s that may surface from the issue."
+    )
+    opportunities = fields.Text(
+        string="Opportunities (O)",
+        help="Indicate an opportunity that may be taken advantage of or capitalize, in relation to the issue.",
+    )
+    consequence = fields.Text(
+        string="Consequence (C)", help="What's the effect if the risk is not addressed?"
+    )
+    benefit = fields.Text(
+        string="Benefit (B)", help="What's the benefit if opportunity is availed of?"
+    )
+    risk_existing_control = fields.Text(
+        string="Existing Control (Risks)",
+        help='What is currently being done to address the risk?\nIf none, kindly indicate "None".',
+    )
+    opportunities_existing_control = fields.Text(
+        string="Existing Control (Opportunities)",
+        help='What is currently being done to avail of the opportunity?\nIf none, kindly indicate "None".',
+    )
+
     @api.depends("swot_type", "swot_id")
     def _compute_label(self):
         for rec in self:

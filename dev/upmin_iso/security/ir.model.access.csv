@@ -3,10 +3,6 @@ upmin_iso_office_access_staff,UPMin ISO Office Access - Staff,model_upmin_iso_of
 upmin_iso_office_access_doc_controller,UPMin ISO Office Access - Doc Controller,model_upmin_iso_office,group_iso_doc_controller,1,0,0,0
 upmin_iso_ror_access_staff,UPMin ISO ROR Access - Staff,model_upmin_iso_ror,group_iso_staff,1,0,0,0
 upmin_iso_ror_access_doc_controller,UPMin ISO ROR Access - Doc Controller,model_upmin_iso_ror,group_iso_doc_controller,1,1,1,1
-upmin_iso_ror_rating_access_staff,UPMin ISO ROR Rating Access - Staff,model_upmin_iso_ror_rating,group_iso_staff,1,0,0,0
-upmin_iso_ror_rating_access_doc_controller,UPMin ISO ROR Rating Access - Doc Controller,model_upmin_iso_ror_rating,group_iso_doc_controller,1,1,1,1
-upmin_iso_ror_export_wizard_access_staff,UPMin ISO ROR Download Access - Staff,model_upmin_iso_ror_export_wizard,group_iso_staff,1,1,1,1
-upmin_iso_ror_export_wizard_access_doc_controller,UPMin ISO ROR Download Access - Doc Controller,model_upmin_iso_ror_export_wizard,group_iso_doc_controller,1,1,1,1
 upmin_iso_review_period_access_staff,UPMin ISO Review Period Access - Staff,model_upmin_iso_review_period,group_iso_staff,1,1,1,1
 upmin_iso_review_period_access_doc_controller,UPMin ISO Review Period Access - Doc Controller,model_upmin_iso_review_period,group_iso_doc_controller,1,0,0,0
 upmin_iso_audit_period_access_staff,UPMin ISO Audit Period Access - Staff,model_upmin_iso_audit_period,group_iso_staff,1,1,1,1
