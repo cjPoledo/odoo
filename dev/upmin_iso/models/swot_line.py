@@ -59,6 +59,11 @@ class SWOTLine(models.Model):
         string="Existing Control (Opportunities)",
         help='What is currently being done to avail of the opportunity?\nIf none, kindly indicate "None".',
     )
+    ratings = fields.One2many(
+        comodel_name="upmin_iso.ror_rating",
+        inverse_name="issue",
+        string="Ratings",
+    )
 
     @api.depends("swot_type", "swot_id")
     def _compute_label(self):

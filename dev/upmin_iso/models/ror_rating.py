@@ -8,7 +8,7 @@ class RORRating(models.Model):
     _order = "review_date"
 
     issue = fields.Many2one(
-        comodel_name="upmin_iso.ror", string="Issue", required=True, readonly=True
+        comodel_name="upmin_iso.swot_line", string="Issue", required=True, readonly=True
     )
     risk_likelihood = fields.Selection(
         selection=[

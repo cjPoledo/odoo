@@ -56,6 +56,67 @@
                             </group>
                         </page>
                     </notebook>
+                    <group col="1">
+                        <field name="ratings" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upmin_iso.ror_rating_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.ror_rating.view.form</field>
+        <field name="model">upmin_iso.ror_rating</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group col="1">
+                        <field name="progress" widget="progressbar" />
+                    </group>
+                    <group col="2">
+                        <group>
+                            <field name="issue" />
+                            <!-- <field name="prev_rating" /> -->
+                        </group>
+                        <group>
+                            <field name="review_date" options="{'no_open': True}" />
+                            <!-- <field name="next_rating" /> -->
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="risk_rating" string="Risk Rating">
+                            <group>
+                                <field name="risks" />
+                                <field name="consequence" />
+                                <field name="risk_existing_control" />
+                                <field name="risk_likelihood" widget="radio" />
+                                <field name="risk_frequency" widget="radio" />
+                                <field name="consequence_severity" widget="radio" />
+                                <field name="risk_rating" />
+                                <field name="risk_conclusion" />
+                                <field name="risk_required_action" />
+                                <field name="risk_responsible" />
+                                <field name="risk_due_date" />
+                                <field name="risk_status" />
+                            </group>
+                        </page>
+                        <page name="opportunity_rating" string="Opportunity Rating">
+                            <group>
+                                <field name="opportunities" />
+                                <field name="benefit" />
+                                <field name="opportunities_existing_control" />
+                                <field name="opportunity_likelihood" widget="radio" />
+                                <field name="opportunity_frequency" widget="radio" />
+                                <field name="benefit_severity" widget="radio" />
+                                <field name="opportunity_rating" />
+                                <field name="opportunity_conclusion" />
+                                <field name="opportunity_required_action" />
+                                <field name="opportunity_responsible" />
+                                <field name="opportunity_due_date" />
+                                <field name="opportunity_status" />
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
