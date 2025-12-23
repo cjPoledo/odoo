@@ -48,7 +48,7 @@ class DocumentController(models.Model):
             if user:
                 user.sudo().write({"groups_id": [(4, group.id)]})
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         record = super().create(vals)
         record._assign_doc_controller_group()
