@@ -65,6 +65,45 @@ class SWOTLine(models.Model):
         string="Ratings",
     )
 
+    # remarks
+    fields_status = fields.Text(
+        string="Fields Status", compute="_compute_fields_status"
+    )
+    ratings_status = fields.Text(
+        string="Ratings Status", compute="_compute_ratings_status"
+    )
+
+    def _compute_fields_status(self):
+        for rec in self:
+            status_list = []
+            field_names = [
+                "interested_parties",
+                "needs_and_exp",
+                "compliance",
+                "risks",
+                "opportunities",
+                "consequence",
+                "benefit",
+                "risk_existing_control",
+                "opportunities_existing_control",
+            ]
+            for field_name in field_names:
+                if not rec[field_name]:
+                    field_label = rec._fields[field_name].string
+                    status_list.append(field_label)
+
+            if not status_list:
+                rec.fields_status = "All fields are filled."
+            else:
+                rec.fields_status = "Missing: " + ", ".join(status_list)
+
+    def _compute_ratings_status(self):
+        for rec in self:
+            if not rec.ratings:
+                rec.ratings_status = "No ratings"
+            else:
+                rec.ratings_status = f"{len(rec.ratings)} rating(s) added."
+
     @api.depends("swot_type", "swot_id")
     def _compute_label(self):
         for rec in self:

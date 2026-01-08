@@ -13,12 +13,16 @@
                             context="{'form_view_ref': 'upmin_iso.swot_line_view_form_ror'}">
                             <tree create="false" edit="false" delete="false">
                                 <field name="description" />
+                                <field name="fields_status" />
+                                <field name="ratings_status" />
                             </tree>
                         </field>
                         <field name="external_issues" mode="tree,form"
                             context="{'form_view_ref': 'upmin_iso.swot_line_view_form_ror'}">
                             <tree create="false" edit="false" delete="false">
                                 <field name="description" />
+                                <field name="fields_status" />
+                                <field name="ratings_status" />
                             </tree>
                         </field>
                     </group>
