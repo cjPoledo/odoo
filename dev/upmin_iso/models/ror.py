@@ -26,18 +26,21 @@ class ROR(models.Model):
             if self.env.user.employee_id and self.env.user.employee_id.department_id
             else []
         ),
+        required=True,
     )
     internal_issues = fields.One2many(
         comodel_name="upmin_iso.swot_line",
         string="Internal Issues",
         related="related_swot.weaknesses",
         readonly=False,
+        help="What could affect the attainment of goals?\nInternal issues are Weaknesses in your SWOT.",
     )
     external_issues = fields.One2many(
         comodel_name="upmin_iso.swot_line",
         string="External Issues",
         related="related_swot.threats",
         readonly=False,
+        help="What could affect the attainment of goals?\nExternal issues are Threats in your SWOT.",
     )
 
     _sql_constraints = [

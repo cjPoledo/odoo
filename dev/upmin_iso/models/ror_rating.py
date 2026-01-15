@@ -10,6 +10,9 @@ class RORRating(models.Model):
     issue = fields.Many2one(
         comodel_name="upmin_iso.swot_line", string="Issue", required=True, readonly=True
     )
+    issue_description = fields.Text(
+        string="Issue Description", related="issue.description", readonly=True
+    )
     risk_likelihood = fields.Selection(
         selection=[
             ("4", "4 - Most Likely (No operational control in place)"),
@@ -172,14 +175,10 @@ class RORRating(models.Model):
         string="Due Date (Opportunity)",
         help="Kindly indicate the due date to do the required action.",
     )
-    review_date = fields.Many2one(
-        comodel_name="upmin_iso.review_period",
+    review_date = fields.Date(
         string="Review Date",
         help="Review is done every quarter to determine if action/s is/are effective or not.",
         required=True,
-    )
-    review_date_date = fields.Date(
-        string="Review Date Date", related="review_date.review_date"
     )
     risk_status = fields.Html(
         string="Status/Results (Risk)",

@@ -8,7 +8,7 @@
                 <sheet>
                     <group>
                         <field name="office" />
-                        <field name="related_swot" />
+                        <field name="related_swot" attrs="{'readonly':[('id','!=', False)]}" />
                         <field name="internal_issues" mode="tree,form"
                             context="{'form_view_ref': 'upmin_iso.swot_line_view_form_ror'}">
                             <tree create="false" edit="false" delete="false">
@@ -61,7 +61,12 @@
                         </page>
                     </notebook>
                     <group col="1">
-                        <field name="ratings" />
+                        <field name="ratings">
+                            <tree>
+                                <field name="review_date" />
+                                <field name="progress" widget="progressbar" />
+                            </tree>
+                        </field>
                     </group>
                 </sheet>
             </form>
@@ -79,11 +84,11 @@
                     </group>
                     <group col="2">
                         <group>
-                            <field name="issue" />
+                            <field name="issue_description" string="Issue" />
                             <!-- <field name="prev_rating" /> -->
                         </group>
                         <group>
-                            <field name="review_date" options="{'no_open': True}" />
+                            <field name="review_date" />
                             <!-- <field name="next_rating" /> -->
                         </group>
                     </group>

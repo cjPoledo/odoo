@@ -99,10 +99,13 @@ class SWOTLine(models.Model):
 
     def _compute_ratings_status(self):
         for rec in self:
-            if not rec.ratings:
-                rec.ratings_status = "No ratings"
-            else:
-                rec.ratings_status = f"{len(rec.ratings)} rating(s) added."
+            completed_ratings = rec.ratings.filtered(lambda r: r.progress == 100)
+            status = f"{len(completed_ratings)} rating(s) completed."
+            if len(completed_ratings) > 0:
+                status += "\n(Latest review completed: "
+                last_date = max(completed_ratings.mapped("review_date"))
+                status += last_date.strftime("%Y-%m-%d") + ")"
+            rec.ratings_status = status
 
     @api.depends("swot_type", "swot_id")
     def _compute_label(self):
