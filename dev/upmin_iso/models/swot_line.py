@@ -5,7 +5,7 @@ class SWOTLine(models.Model):
     _name = "upmin_iso.swot_line"
     _description = "SWOT Line"
     _rec_name = "label"
-    _order = "swot_id"
+    _order = "swot_id,label"
 
     swot_id = fields.Many2one(
         comodel_name="upmin_iso.swot", string="SWOT", required=True

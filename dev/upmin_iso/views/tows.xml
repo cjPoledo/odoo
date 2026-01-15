@@ -30,7 +30,8 @@
                         </group>
                         <h2 colspan="2">TOWS Analysis</h2>
                         <group col="2">
-                            <field name="so" nolabel="1" colspan="2">
+                            <field name="so" nolabel="1" colspan="2"
+                                attrs="{'invisible': [('id','=',False)]}">
                                 <tree>
                                     <field name="related_swot_line_ids" widget="many2many_tags" />
                                     <field name="description" string="Strengths-Opportunities" />
@@ -38,7 +39,8 @@
                             </field>
                         </group>
                         <group col="2">
-                            <field name="wo" nolabel="1" colspan="2">
+                            <field name="wo" nolabel="1" colspan="2"
+                                attrs="{'invisible': [('id','=',False)]}">
                                 <tree>
                                     <field name="related_swot_line_ids" widget="many2many_tags" />
                                     <field name="description" string="Weaknesses-Opportunities" />
@@ -46,7 +48,8 @@
                             </field>
                         </group>
                         <group col="2">
-                            <field name="st" nolabel="1" colspan="2">
+                            <field name="st" nolabel="1" colspan="2"
+                                attrs="{'invisible': [('id','=',False)]}">
                                 <tree>
                                     <field name="related_swot_line_ids" widget="many2many_tags" />
                                     <field name="description" string="Strengths-Threats" />
@@ -54,7 +57,8 @@
                             </field>
                         </group>
                         <group col="2">
-                            <field name="wt" nolabel="1" colspan="2">
+                            <field name="wt" nolabel="1" colspan="2"
+                                attrs="{'invisible': [('id','=',False)]}">
                                 <tree>
                                     <field name="related_swot_line_ids" widget="many2many_tags" />
                                     <field name="description" string="Weaknesses-Threats" />

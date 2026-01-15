@@ -7,7 +7,7 @@
             <form string="">
                 <sheet>
                     <group>
-                        <field name="office" />
+                        <field name="office" attrs="{'readonly':[('id','!=', False)]}" />
                         <field name="related_swot" attrs="{'readonly':[('id','!=', False)]}" />
                         <field name="internal_issues" mode="tree,form"
                             context="{'form_view_ref': 'upmin_iso.swot_line_view_form_ror'}">
