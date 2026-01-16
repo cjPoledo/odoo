@@ -206,6 +206,14 @@ class RORRating(models.Model):
         related="issue.opportunities_existing_control",
     )
 
+    _sql_constraints = [
+        (
+            "unique_issue_review_date",
+            "unique(issue, review_date)",
+            "A rating for this issue with the same review date already exists.",
+        )
+    ]
+
     @api.depends("risk_likelihood", "risk_frequency", "consequence_severity")
     def _compute_risk_rating(self):
         for rating in self:
@@ -287,3 +295,14 @@ class RORRating(models.Model):
                     filled += 1
             # convert to percentage
             rec.progress = int((filled / total_fields) * 100) if total_fields else 0
+
+    @api.constrains("review_date")
+    def _check_review_date_quarter_end(self):
+        allowed = {(3, 31), (6, 30), (9, 30), (12, 31)}
+        for rec in self:
+            if rec.review_date:
+                if (rec.review_date.month, rec.review_date.day) not in allowed:
+                    raise models.ValidationError(
+                        "Review Date must be a quarter-end date:\n"
+                        "• March 31\n• June 30\n• September 30\n• December 31"
+                    )
