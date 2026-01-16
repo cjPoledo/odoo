@@ -78,14 +78,6 @@
         sequence="30" />
 
     <menuitem
-        id="review_period_menu"
-        name="Review Period"
-        action="upmin_iso.review_period_action"
-        groups="group_iso_staff"
-        parent="configuration_menu"
-        sequence="40" />
-
-    <menuitem
         id="audit_period_menu"
         name="Audit Period"
         action="upmin_iso.audit_period_action"

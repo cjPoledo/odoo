@@ -16,7 +16,6 @@
         "views/tows.xml",
         "views/office.xml",
         "views/iso_clause.xml",
-        "views/review_period.xml",
         "views/audit_period.xml",
         "views/audit_info.xml",
         "views/ccar.xml",
