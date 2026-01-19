@@ -119,8 +119,6 @@
                 <field name="office_to_audit" />
                 <filter name="group_by_audit_period" string="Group By Audit Period"
                     context="{'group_by': 'audit_period'}" />
-                <filter name="group_by_cluster" string="Group By Cluster"
-                    context="{'group_by': 'cluster'}" />
             </search>
         </field>
     </record>
