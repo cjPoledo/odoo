@@ -62,7 +62,7 @@ class CCAR(models.Model):
         string="Complaint Nature A",
     )
     internal_complaint_dept = fields.Many2one(
-        comodel_name="upmin_iso.office", string="Department"
+        comodel_name="hr.department", string="Department"
     )
     complaint_nature_b = fields.Selection(
         selection=[
@@ -115,7 +115,7 @@ class CCAR(models.Model):
     )
     date_received = fields.Date(string="Date Received")
     office = fields.Many2one(
-        comodel_name="upmin_iso.office",
+        comodel_name="hr.department",
         string="Office",
         readonly=True,
         related="related_nc.audit_info.office_to_audit",
@@ -134,7 +134,7 @@ class CCAR(models.Model):
     )
     date_investigated = fields.Date(string="Date Investigated")
     investigator_dept = fields.Many2one(
-        comodel_name="upmin_iso.office", string="Department"
+        comodel_name="hr.department", string="Department"
     )
 
     # agreed corrective action plan

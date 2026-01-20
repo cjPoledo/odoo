@@ -70,14 +70,6 @@
         sequence="70" />
 
     <menuitem
-        id="office_menu"
-        name="Offices"
-        action="upmin_iso.office_action"
-        groups="group_iso_staff"
-        parent="configuration_menu"
-        sequence="30" />
-
-    <menuitem
         id="audit_period_menu"
         name="Audit Period"
         action="upmin_iso.audit_period_action"

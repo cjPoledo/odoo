@@ -46,7 +46,7 @@ class AuditFinding(models.Model):
         related="audit_info.audit_period",
     )
     related_office = fields.Many2one(
-        comodel_name="upmin_iso.office",
+        comodel_name="hr.department",
         string="Office",
         related="audit_info.office_to_audit",
     )
