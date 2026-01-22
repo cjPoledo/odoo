@@ -83,15 +83,21 @@
                     <notebook>
                         <page name="immediate_action" string="2. IMMEDIATE ACTION/CORRECTION TAKEN"
                             attrs="{'invisible': [('status', '=', 'creation')]}">
-                            <group col="1">
-                                <field name="description"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
-                                <field name="results"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
-                                <field name="responsibility"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
-                                <field name="completed_date"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                            <group col="2">
+                                <group col="1" colspan="2">
+                                    <field name="description"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                    <field name="results"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                </group>
+                                <group col="1">
+                                    <field name="responsibility"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                </group>
+                                <group col="1">
+                                    <field name="completed_date"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                </group>
                             </group>
                         </page>
                         <page name="root_cause" string="3. INVESTIGATION OF ROOT CAUSE"
@@ -110,17 +116,18 @@
                                         attrs="{'readonly': [('status', '!=', 'office')]}" />
                                 </group>
                                 <group col="1">
-                                    <field name="investigator_dept"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                    <field name="investigator_dept" />
                                 </group>
                             </group>
                         </page>
                         <page name="corrective_action" string="4. AGREED CORRECTIVE ACTION PLAN"
                             help="Actions taken to eliminate root cause, resolve issue, and prevent recurrence."
                             attrs="{'invisible': [('status', '=', 'creation')]}">
-                            <group col="1">
-                                <field name="corrective_action_plan"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}">
+                            <group col="2">
+                                <field
+                                    name="corrective_action_plan"
+                                    attrs="{'readonly': [('status', '!=', 'office')]}" nolabel="1"
+                                    colspan="2">
                                     <tree string="" editable="bottom">
                                         <field name="corrective_action" />
                                         <field name="effectiveness" />
@@ -129,34 +136,49 @@
                                         <field name="effective_date" />
                                     </tree>
                                 </field>
-                                <field name="proposed_by"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
-                                <field name="target_date"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
-                                <field name="approved_by"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                            </group>
+                            <group col="3">
+                                <group col="1">
+                                    <field name="proposed_by"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                </group>
+                                <group col="1">
+                                    <field name="target_date"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                </group>
+                                <group col="1">
+                                    <field name="approved_by"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                </group>
                             </group>
                         </page>
                         <page name="impact_analysis"
                             string="5. IMPACT ANALYSIS ON OTHER SIMILAR PROCESSES/PRODUCTS"
                             help="if applicable"
                             attrs="{'invisible': [('status', '=', 'creation')]}">
-                            <group col="1">
-                                <field name="affected_areas"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
-                                <field name="initiated_date"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
-                                <field name="effective_date"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                            <group col="2">
+                                <group col="1" colspan="2">
+                                    <field name="affected_areas"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                </group>
+                                <group col="1">
+                                    <field name="initiated_date"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                </group>
+                                <group col="1">
+                                    <field name="effective_date"
+                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                </group>
                             </group>
                         </page>
                     </notebook>
                     <notebook>
                         <page name="verification" string="6. VERIFICATION OF EFFECTIVENESS TAKEN"
                             attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'office')]}">
-                            <group col="1">
+                            <group col="2">
                                 <field name="correction_effectiveness"
-                                    attrs="{'readonly': [('status', '!=', 'verification')]}">
+                                    attrs="{'readonly': [('status', '!=', 'verification')]}"
+                                    nolabel="1" colspan="2">
                                     <tree string="" editable="bottom">
                                         <field name="correction" />
                                         <field name="verification" />
@@ -166,7 +188,8 @@
                                     </tree>
                                 </field>
                                 <field name="corrective_action_effectiveness"
-                                    attrs="{'readonly': [('status', '!=', 'verification')]}">
+                                    attrs="{'readonly': [('status', '!=', 'verification')]}"
+                                    nolabel="1" colspan="2">
                                     <tree string="" editable="bottom">
                                         <field name="corrective_action" />
                                         <field name="verification" />
@@ -181,26 +204,38 @@
                             string="7. DETAILS ON AFFECTED RELATED RISK AND OPPORTUNITIES"
                             help="if necessary"
                             attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'office')]}">
-                            <group col="1">
-                                <field name="affected_related_risks_opportunities"
-                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
-                                <field name="updated_by"
-                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
-                                <field name="updated_date"
-                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                            <group col="2">
+                                <group col="1" colspan="2">
+                                    <field name="affected_related_risks_opportunities"
+                                        attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                </group>
+                                <group col="1">
+                                    <field name="updated_by"
+                                        attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                </group>
+                                <group col="1">
+                                    <field name="updated_date"
+                                        attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                </group>
                             </group>
                         </page>
                         <page name="changes_qms"
                             string="8. CHANGES TO THE QUALITY MANAGEMENT SYSTEM IF NECESSARY"
                             attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'office')]}"
                             help="policy, procedure, job descriptions, etc.">
-                            <group col="1">
-                                <field name="changes_to_qms"
-                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
-                                <field name="changes_by"
-                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
-                                <field name="changes_date"
-                                    attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                            <group col="2">
+                                <group col="1" colspan="2">
+                                    <field name="changes_to_qms"
+                                        attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                </group>
+                                <group col="1">
+                                    <field name="changes_by"
+                                        attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                </group>
+                                <group col="1">
+                                    <field name="changes_date"
+                                        attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                </group>
                             </group>
                         </page>
                     </notebook>

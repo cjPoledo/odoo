@@ -15,7 +15,7 @@ class CCARCorrectiveActionEffectiveness(models.Model):
     )
     corrective_action = fields.Text(string="Corrective Action")
     verification = fields.Text(string="How was verification performed?")
-    verified_by = fields.Char(string="Who verified?")
+    verified_by = fields.Many2one(comodel_name="hr.employee", string="Who verified?")
     verified_date = fields.Date(string="Verified Date")
     approval = fields.Selection(
         selection=[

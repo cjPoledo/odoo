@@ -43,6 +43,7 @@ class CCAR(models.Model):
             ("external", "External Audit"),
         ],
         string="Audit Nature",
+        default="internal",
     )
     conformity_nature = fields.Selection(
         selection=[
@@ -52,6 +53,7 @@ class CCAR(models.Model):
             ("nonconforming", "Nonconforming Product/Services"),
         ],
         string="Conformity Nature",
+        default="nc",
     )
     complaint_nature_a = fields.Selection(
         selection=[
@@ -102,7 +104,7 @@ class CCAR(models.Model):
         readonly=True,
     )
     auditors = fields.Many2many(
-        comodel_name="res.partner",
+        comodel_name="upmin_iso.internal_auditor",
         string="Auditors",
         related="related_nc.audit_info.internal_auditors",
         readonly=True,
@@ -111,7 +113,9 @@ class CCAR(models.Model):
         string="Audit Date", related="related_nc.audit_info.audit_date", readonly=True
     )
     responsible_person = fields.Many2one(
-        comodel_name="res.partner", string="Responsible Person"
+        comodel_name="hr.employee",
+        string="Responsible Person",
+        domain="[('department_id', '=', office)]",
     )
     date_received = fields.Date(string="Date Received")
     office = fields.Many2one(
@@ -130,11 +134,16 @@ class CCAR(models.Model):
     # Investigation of Root Cause
     tree_diagram_link = fields.Char(string="Tree Diagram")
     investigated_by = fields.Many2one(
-        comodel_name="res.partner", string="Investigated By"
+        comodel_name="hr.employee",
+        string="Investigated By",
+        domain="[('department_id', '=', investigator_dept)]",
     )
     date_investigated = fields.Date(string="Date Investigated")
     investigator_dept = fields.Many2one(
-        comodel_name="hr.department", string="Department"
+        comodel_name="hr.department",
+        string="Department",
+        readonly=True,
+        related="related_nc.audit_info.office_to_audit",
     )
 
     # agreed corrective action plan
@@ -143,9 +152,17 @@ class CCAR(models.Model):
         inverse_name="ccar",
         string="Agreed Corrective Action Plan",
     )
-    proposed_by = fields.Many2one(comodel_name="res.partner", string="Proposed By")
+    proposed_by = fields.Many2one(
+        comodel_name="hr.employee",
+        string="Proposed By",
+        domain="[('department_id', '=', office)]",
+    )
     target_date = fields.Date(string="Implementation/Target Date")
-    approved_by = fields.Many2one(comodel_name="res.partner", string="Approved By")
+    approved_by = fields.Many2one(
+        comodel_name="hr.employee",
+        string="Approved By",
+        domain="[('department_id', '=', office)]",
+    )
 
     # impact analysis
     affected_areas = fields.Text(
@@ -170,7 +187,7 @@ class CCAR(models.Model):
     affected_related_risks_opportunities = fields.Text(
         string="Details on affected related risks and opportunities (if necessary)"
     )
-    updated_by = fields.Many2one(comodel_name="res.partner", string="Updated By")
+    updated_by = fields.Many2one(comodel_name="hr.employee", string="Updated By")
     updated_date = fields.Date(string="Date")
 
     # changes to the qms
@@ -178,7 +195,7 @@ class CCAR(models.Model):
         string="Changes to the Quality Management System If Necessary (policy, procedures, job descriptions, etc.)"
     )
     changes_by = fields.Many2one(
-        comodel_name="res.partner", string="Changes Made Completed By"
+        comodel_name="hr.employee", string="Changes Made Completed By"
     )
     changes_date = fields.Date(string="Date")
 
