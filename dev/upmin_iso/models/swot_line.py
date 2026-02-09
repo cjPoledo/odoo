@@ -100,7 +100,10 @@ class SWOTLine(models.Model):
     def _compute_ratings_status(self):
         for rec in self:
             completed_ratings = rec.ratings.filtered(lambda r: r.progress == 100)
+            incomplete_ratings = rec.ratings - completed_ratings
             status = f"{len(completed_ratings)} rating(s) completed."
+            if len(incomplete_ratings) > 0:
+                status += f"\n{len(incomplete_ratings)} rating(s) incomplete."
             if len(completed_ratings) > 0:
                 status += "\n(Latest review completed: "
                 last_date = max(completed_ratings.mapped("review_date"))
