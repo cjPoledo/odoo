@@ -82,7 +82,7 @@
                     </notebook>
                     <notebook>
                         <page name="immediate_action" string="2. IMMEDIATE ACTION/CORRECTION TAKEN"
-                            attrs="{'invisible': [('status', '=', 'creation')]}">
+                            attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'checking1')]}">
                             <group col="2">
                                 <group col="1" colspan="2">
                                     <field name="description"
@@ -101,7 +101,7 @@
                             </group>
                         </page>
                         <page name="root_cause" string="3. INVESTIGATION OF ROOT CAUSE"
-                            attrs="{'invisible': [('status', '=', 'creation')]}">
+                            attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'checking1')]}">
                             <group col="1">
                                 <field name="tree_diagram_link" widget="url"
                                     attrs="{'readonly': [('status', '!=', 'office')]}" />
@@ -122,7 +122,7 @@
                         </page>
                         <page name="corrective_action" string="4. AGREED CORRECTIVE ACTION PLAN"
                             help="Actions taken to eliminate root cause, resolve issue, and prevent recurrence."
-                            attrs="{'invisible': [('status', '=', 'creation')]}">
+                            attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'checking1')]}">
                             <group col="2">
                                 <field
                                     name="corrective_action_plan"
@@ -155,7 +155,7 @@
                         <page name="impact_analysis"
                             string="5. IMPACT ANALYSIS ON OTHER SIMILAR PROCESSES/PRODUCTS"
                             help="if applicable"
-                            attrs="{'invisible': [('status', '=', 'creation')]}">
+                            attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'checking1')]}">
                             <group col="2">
                                 <group col="1" colspan="2">
                                     <field name="affected_areas"
@@ -174,7 +174,7 @@
                     </notebook>
                     <notebook>
                         <page name="verification" string="6. VERIFICATION OF EFFECTIVENESS TAKEN"
-                            attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'office')]}">
+                            attrs="{'invisible': ['|', '|', '|', ('status', '=', 'creation'), ('status', '=', 'office'), ('status', '=', 'checking1'), ('status', '=', 'checking2')]}">
                             <group col="2">
                                 <field name="correction_effectiveness"
                                     attrs="{'readonly': [('status', '!=', 'verification')]}"
@@ -203,7 +203,7 @@
                         <page name="related_risk"
                             string="7. DETAILS ON AFFECTED RELATED RISK AND OPPORTUNITIES"
                             help="if necessary"
-                            attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'office')]}">
+                            attrs="{'invisible': ['|', '|', '|', ('status', '=', 'creation'), ('status', '=', 'office'), ('status', '=', 'checking1'), ('status', '=', 'checking2')]}">
                             <group col="2">
                                 <group col="1" colspan="2">
                                     <field name="affected_related_risks_opportunities"
@@ -221,7 +221,7 @@
                         </page>
                         <page name="changes_qms"
                             string="8. CHANGES TO THE QUALITY MANAGEMENT SYSTEM IF NECESSARY"
-                            attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'office')]}"
+                            attrs="{'invisible': ['|', '|', '|', ('status', '=', 'creation'), ('status', '=', 'office'), ('status', '=', 'checking1'), ('status', '=', 'checking2')]}"
                             help="policy, procedure, job descriptions, etc.">
                             <group col="2">
                                 <group col="1" colspan="2">
@@ -240,6 +240,11 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
             </form>
         </field>
     </record>

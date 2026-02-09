@@ -6,6 +6,7 @@ class CCAR(models.Model):
     _description = "Correction and Corrective Action Report"
     _rec_name = "ccar_no"
     _order = "ccar_no"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     ccar_no = fields.Char(
         string="CCAR No.",
@@ -28,12 +29,15 @@ class CCAR(models.Model):
     status = fields.Selection(
         selection=[
             ("creation", "CCAR Creation"),
+            ("checking1", "QAO Checking (1)"),
             ("office", "For Office Accomplishment"),
+            ("checking2", "QAO Checking (2)"),
             ("verification", "For IA Verification"),
             ("completed", "Completed"),
         ],
         string="Status",
         default="creation",
+        tracking=True,
     )
 
     # Nature
@@ -213,22 +217,36 @@ class CCAR(models.Model):
     ]
 
     def next_step(self):
+        flow = [
+            "creation",
+            "checking1",
+            "office",
+            "checking2",
+            "verification",
+            "completed",
+        ]
+
         for record in self:
-            if record.status == "creation":
-                record.status = "office"
-            elif record.status == "office":
-                record.status = "verification"
-            elif record.status == "verification":
-                record.status = "completed"
+            if record.status in flow:
+                idx = flow.index(record.status)
+                if idx < len(flow) - 1:
+                    record.status = flow[idx + 1]
 
     def previous_step(self):
+        flow = [
+            "creation",
+            "checking1",
+            "office",
+            "checking2",
+            "verification",
+            "completed",
+        ]
+
         for record in self:
-            if record.status == "completed":
-                record.status = "verification"
-            elif record.status == "verification":
-                record.status = "office"
-            elif record.status == "office":
-                record.status = "creation"
+            if record.status in flow:
+                idx = flow.index(record.status)
+                if idx > 0:
+                    record.status = flow[idx - 1]
 
     @api.onchange("complaint_nature_a")
     def _onchange_complaint_nature_a(self):

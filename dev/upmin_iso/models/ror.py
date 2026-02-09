@@ -6,6 +6,7 @@ class ROR(models.Model):
     _description = "Risk and Opportunities Register"
     _rec_name = "office"
     _order = "create_date"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     office = fields.Many2one(
         comodel_name="hr.department",
