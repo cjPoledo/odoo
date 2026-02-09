@@ -87,4 +87,68 @@
         <field name="perm_create" eval="0" />
         <field name="perm_unlink" eval="0" />
     </record>
+
+    <record id="rule_iso_staff_all" model="ir.rule">
+        <field name="name">ISO Staff - Full Read</field>
+        <field name="model_id" ref="model_upmin_iso_ccar" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]" />
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_unlink" eval="1" />
+    </record>
+
+    <record id="rule_doc_controller_read" model="ir.rule">
+        <field name="name">Doc Controller - Read Own Office</field>
+        <field name="model_id" ref="model_upmin_iso_ccar" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
+        <field name="domain_force">
+            [('office', '=', user.employee_id.department_id.id)]
+        </field>
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="0" />
+    </record>
+
+    <record id="rule_doc_controller_write_office" model="ir.rule">
+        <field name="name">Doc Controller - Write Office Status</field>
+        <field name="model_id" ref="model_upmin_iso_ccar" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
+        <field name="domain_force">
+            [
+            ('office', '=', user.employee_id.department_id.id),
+            ('status', '=', 'office')
+            ]
+        </field>
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="1" />
+    </record>
+
+    <record id="rule_internal_auditor_read" model="ir.rule">
+        <field name="name">Internal Auditor - Read Assigned</field>
+        <field name="model_id" ref="model_upmin_iso_ccar" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_internal_auditor'))]" />
+        <field name="domain_force">
+            [
+            ('auditors.name.user_id', '=', user.id)
+            ]
+        </field>
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="0" />
+    </record>
+
+    <record id="rule_internal_auditor_write" model="ir.rule">
+        <field name="name">Internal Auditor - Write Creation and Verification</field>
+        <field name="model_id" ref="model_upmin_iso_ccar" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_internal_auditor'))]" />
+        <field name="domain_force">
+            [
+            ('auditors.name.user_id', '=', user.id),
+            ('status', 'in', ('creation', 'verification'))
+            ]
+        </field>
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="1" />
+    </record>
+
 </odoo>

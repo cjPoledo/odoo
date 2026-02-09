@@ -257,6 +257,7 @@
                 <field name="ccar_no" />
                 <field name="date" />
                 <field name="audit_period" />
+                <field name="status" widget="badge" />
             </tree>
         </field>
     </record>

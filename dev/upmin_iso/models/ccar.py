@@ -68,7 +68,7 @@ class CCAR(models.Model):
         string="Complaint Nature A",
     )
     internal_complaint_dept = fields.Many2one(
-        comodel_name="hr.department", string="Department"
+        comodel_name="hr.department", string="Internal Department"
     )
     complaint_nature_b = fields.Selection(
         selection=[
@@ -192,7 +192,7 @@ class CCAR(models.Model):
         string="Details on affected related risks and opportunities (if necessary)"
     )
     updated_by = fields.Many2one(comodel_name="hr.employee", string="Updated By")
-    updated_date = fields.Date(string="Date")
+    updated_date = fields.Date(string="Updated Date")
 
     # changes to the qms
     changes_to_qms = fields.Text(
@@ -201,7 +201,7 @@ class CCAR(models.Model):
     changes_by = fields.Many2one(
         comodel_name="hr.employee", string="Changes Made Completed By"
     )
-    changes_date = fields.Date(string="Date")
+    changes_date = fields.Date(string="Changes Date")
 
     _sql_constraints = [
         (

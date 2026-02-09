@@ -15,11 +15,17 @@ upmin_iso_audit_finding_access_staff,UPMin ISO Audit Finding Access - Staff,mode
 upmin_iso_audit_finding_access_internal_auditor,UPMin ISO Audit Finding Access - Internal Auditor,model_upmin_iso_audit_finding,group_iso_internal_auditor,1,1,1,1
 upmin_iso_audit_finding_access_doc_controller,UPMin ISO Audit Finding Access - Doc Controller,model_upmin_iso_audit_finding,group_iso_doc_controller,1,0,0,0
 upmin_iso_ccar_access_staff,UPMin ISO CCAR Access - Staff,model_upmin_iso_ccar,group_iso_staff,1,1,1,1
-upmin_iso_ccar_access_internal_auditor,UPMin ISO CCAR Access - Internal Auditor,model_upmin_iso_ccar,group_iso_internal_auditor,1,0,0,0
-upmin_iso_ccar_access_doc_controller,UPMin ISO CCAR Access - Doc Controller,model_upmin_iso_ccar,group_iso_doc_controller,1,0,0,0
 upmin_iso_ccar_corrective_action_access_staff,UPMin ISO CCAR Corrective Action Access - Staff,model_upmin_iso_ccar_corrective_action,group_iso_staff,1,1,1,1
 upmin_iso_ccar_corrective_action_effectiveness_access_staff,UPMin ISO CCAR Corrective Action Effectiveness Access - Staff,model_upmin_iso_ccar_corrective_action_effectiveness,group_iso_staff,1,1,1,1
 upmin_iso_ccar_correction_effectiveness_access_staff,UPMin ISO CCAR Correction Effectiveness Access - Staff,model_upmin_iso_ccar_correction_effectiveness,group_iso_staff,1,1,1,1
+upmin_iso_ccar_access_doc_controller,UPMin ISO CCAR Access - Doc Controller,model_upmin_iso_ccar,group_iso_doc_controller,1,1,0,0
+upmin_iso_ccar_corrective_action_access_doc_controller,UPMin ISO CCAR Corrective Action Access - Doc Controller,model_upmin_iso_ccar_corrective_action,group_iso_doc_controller,1,1,1,1
+upmin_iso_ccar_corrective_action_effectiveness_access_doc_controller,UPMin ISO CCAR Corrective Action Effectiveness Access - Doc Controller,model_upmin_iso_ccar_corrective_action_effectiveness,group_iso_doc_controller,1,0,0,0
+upmin_iso_ccar_correction_effectiveness_access_doc_controller,UPMin ISO CCAR Correction Effectiveness Access - Doc Controller,model_upmin_iso_ccar_correction_effectiveness,group_iso_doc_controller,1,0,0,0
+upmin_iso_ccar_access_internal_auditor,UPMin ISO CCAR Access - Internal Auditor,model_upmin_iso_ccar,group_iso_internal_auditor,1,1,0,0
+upmin_iso_ccar_corrective_action_access_internal_auditor,UPMin ISO CCAR Corrective Action Access - Internal Auditor,model_upmin_iso_ccar_corrective_action,group_iso_internal_auditor,1,0,0,0
+upmin_iso_ccar_corrective_action_effectiveness_access_internal_auditor,UPMin ISO CCAR Corrective Action Effectiveness Access - Internal Auditor,model_upmin_iso_ccar_corrective_action_effectiveness,group_iso_internal_auditor,1,1,1,1
+upmin_iso_ccar_correction_effectiveness_access_internal_auditor,UPMin ISO CCAR Correction Effectiveness Access - Internal Auditor,model_upmin_iso_ccar_correction_effectiveness,group_iso_internal_auditor,1,1,1,1
 upmin_iso_internal_auditor_access_staff,UPMin ISO Internal Auditor Access - Staff,model_upmin_iso_internal_auditor,group_iso_staff,1,1,1,1
 upmin_iso_internal_auditor_access_general,UPMin ISO Internal Auditor Access - General,model_upmin_iso_internal_auditor,base.group_user,1,0,0,0
 upmin_iso_document_controller_access_staff,UPMin ISO Document Controller Access - Staff,model_upmin_iso_document_controller,group_iso_staff,1,1,1,1
