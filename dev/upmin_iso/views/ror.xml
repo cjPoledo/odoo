@@ -64,6 +64,8 @@
                         <field name="ratings">
                             <tree>
                                 <field name="review_date" />
+                                <field name="risk_conclusion" />
+                                <field name="opportunity_conclusion" />
                                 <field name="progress" widget="progressbar" />
                             </tree>
                         </field>

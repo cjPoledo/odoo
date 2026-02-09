@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from datetime import date
 
 
 class RORRating(models.Model):
@@ -179,6 +180,7 @@ class RORRating(models.Model):
         string="Review Date",
         help="Review is done every quarter to determine if action/s is/are effective or not.",
         required=True,
+        default=lambda self: self._default_review_date(),
     )
     risk_status = fields.Html(
         string="Status/Results (Risk)",
@@ -306,3 +308,22 @@ class RORRating(models.Model):
                         "Review Date must be a quarter-end date:\n"
                         "• March 31\n• June 30\n• September 30\n• December 31"
                     )
+
+    def _default_review_date(self):
+        today = fields.Date.context_today(self)
+
+        year = today.year
+        quarter_ends = [
+            date(year, 3, 31),
+            date(year, 6, 30),
+            date(year, 9, 30),
+            date(year, 12, 31),
+        ]
+
+        # Find the nearest quarter-end that is today or in the future
+        for q_end in quarter_ends:
+            if q_end >= today:
+                return q_end
+
+        # If today is after Dec 31 (theoretical, but safe), go to next year's March 31
+        return date(year + 1, 3, 31)
