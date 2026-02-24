@@ -17,10 +17,4 @@ class CCARCorrectionEffectiveness(models.Model):
     verification = fields.Text(string="How was verification performed?")
     verified_by = fields.Many2one(comodel_name="hr.employee", string="Who verified?")
     verified_date = fields.Date(string="Verified Date")
-    approval = fields.Selection(
-        selection=[
-            ("approved", "Approved"),
-            ("rejected", "Rejected"),
-        ],
-        string="Approved/Rejected",
-    )
+    approval = fields.Text(string="Approved/Rejected")
