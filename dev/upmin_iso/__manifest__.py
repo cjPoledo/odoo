@@ -20,6 +20,7 @@
         "views/ccar.xml",
         "views/ror.xml",
         "views/menu.xml",
+        "report/ccar_report_template.xml",
     ],
     "assets": {
         "web.assets_backend": [

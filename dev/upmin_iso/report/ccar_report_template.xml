@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_upmin_iso_ccar_report" model="ir.actions.report">
+        <field name="name">Export CCAR</field>
+        <field name="model">upmin_iso.ccar</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">upmin_iso.ccar_report_template_doc</field>
+        <field name="report_file">upmin_iso.ccar_report_template_doc</field>
+        <field name="print_report_name">'CCAR-%s (%s)' % (object.ccar_no, object.office.name)</field>
+        <field name="binding_model_id" ref="model_upmin_iso_ccar" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="custom_header_footer" inherit_id="web.external_layout_standard">
+
+        <!-- HEADER -->
+        <xpath expr="//div[1]" position="replace">
+            <div class="header" style="font-family: Arial, sans-serif;">
+                <img src="/upmin_iso/static/src/img/qao_header.png" alt="Header Image"
+                    style="width:100%;" />
+                <h1 style="text-align:center; font-size:20px; font-weight:bold;">CORRECTION AND
+                    CORRECTIVE ACTION REPORT (CCAR)</h1>
+                <div style="display:flex; justify-content: space-between; padding: 0 8px;">
+                    <div style="font-size:15px;"> CCAR NO. <span t-field="o.ccar_no"
+                            style="text-decoration: underline;" /></div>
+                    <div style="font-size:15px;"> DATE <span t-field="o.date"
+                            style="text-decoration: underline;" /></div>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- FOOTER -->
+        <xpath expr="//div[hasclass('text-center')]" position="replace">
+            <div class="footer"
+                style="text-align:center; font-size:12px;">
+
+                <div> Page <span class="page" /> of <span class="topage" />
+                </div>
+
+                <div>
+                    Confidential Document - UPMin ISO
+                </div>
+
+            </div>
+        </xpath>
+
+    </template>
+
+    <template id="upmin_iso.ccar_report_template_doc">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: Arial, sans-serif; font-size:15px;">
+
+                        <style>
+                            table, th, td {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                            }
+
+                            table {
+                            width: 100%;
+                            }
+
+                            th, td {
+                            padding: 8px;
+                            text-align: left;
+                            vertical-align: top;
+                            }
+                        </style>
+
+                        <table>
+                            <tr>
+                                <td colspan="5">
+                                    <strong>NATURE:</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- Audit Nature -->
+                                <td style="width: 20%;">
+                                    <t t-set="audit" t-value="o.audit_nature" />
+                                    <p>
+                                        <span t-if="audit == 'internal'">☑</span><span t-else="">☐</span>
+                                        Internal Audit <br />
+                                        <span t-if="audit == 'external'">☑</span><span
+                                            t-else="">☐</span> External Audit </p>
+                                </td>
+
+                                <!-- Conformity Nature -->
+                                <td style="width: 20%;">
+                                    <t t-set="conformity" t-value="o.conformity_nature" />
+                                    <p>
+                                        <span t-if="conformity == 'nc'">☑</span><span t-else="">☐</span>
+                                        Nonconformity (NC)<br />
+
+                                        <span
+                                            t-if="conformity == 'observation'">☑</span><span
+                                            t-else="">☐</span> Observation/Potential NC<br />
+
+                                        <span
+                                            t-if="conformity == 'unmet'">☑</span><span t-else="">☐</span>
+                                        Unmet Target/Activity<br />
+
+                                        <span
+                                            t-if="conformity == 'nonconforming'">☑</span><span
+                                            t-else="">☐</span> Nonconforming Product/Services </p>
+                                </td>
+
+                                <!-- Complaint Nature A -->
+                                <td style="width: 20%;">
+                                    <t t-set="complaint_a" t-value="o.complaint_nature_a" />
+                                    <p>
+                                        <span t-if="complaint_a == 'external'">☑</span><span
+                                            t-else="">☐</span> External Complaint<br />
+
+                                        <span
+                                            t-if="complaint_a == 'internal'">☑</span><span t-else="">
+                                        ☐</span> Internal Complaint<br /> Department:<br />
+                                        <span
+                                            t-if="o.internal_complaint_dept">
+                                            <t t-esc="o.internal_complaint_dept.name" />
+                                        </span>
+                                        <span
+                                            t-else="">___________________</span>
+                                    </p>
+                                </td>
+
+                                <!-- Complaint Nature B -->
+                                <td style="width: 20%;">
+                                    <t t-set="complaint_b" t-value="o.complaint_nature_b" />
+                                    <p>
+                                        <span t-if="complaint_b == 'incidents'">☑</span><span
+                                            t-else="">☐</span> Incidents<br />
+
+                                        <span
+                                            t-if="complaint_b == 'customer'">☑</span><span t-else="">
+                                        ☐</span> Customer Complaint<br /> Customer Name:<br />
+                                        <span
+                                            t-if="o.customer_complaint_customer">
+                                            <t t-esc="o.customer_complaint_customer" />
+                                        </span>
+                                        <span
+                                            t-else="">___________________</span>
+                                    </p>
+                                </td>
+
+                                <!-- Complaint Nature C -->
+                                <td style="width: 20%;">
+                                    <t t-set="complaint_c" t-value="o.complaint_nature_c" />
+                                    <p>
+                                        <span t-if="complaint_c == 'laws'">☑</span><span t-else="">☐</span>
+                                        Laws/Regulations<br />
+
+                                        <span t-if="complaint_c == 'supplier'">
+                                        ☑</span><span t-else="">☐</span> Supplier Nonconformity<br />
+                                        Supplier Name:<br />
+                                        <span
+                                            t-if="o.supplier_nonconformity_supplier">
+                                            <t t-esc="o.supplier_nonconformity_supplier" />
+                                        </span>
+                                        <span
+                                            t-else="">_____________________</span>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
