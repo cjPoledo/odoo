@@ -101,13 +101,19 @@ class SWOTLine(models.Model):
         for rec in self:
             completed_ratings = rec.ratings.filtered(lambda r: r.progress == 100)
             incomplete_ratings = rec.ratings - completed_ratings
-            status = f"{len(completed_ratings)} rating(s) completed."
+            status = ""
+            if len(completed_ratings) > 0:
+                status = "Latest review completed: "
+                last_date = max(completed_ratings.mapped("review_date"))
+                status += last_date.strftime("%Y-%m-%d")
+                latest_rating = completed_ratings.filtered(
+                    lambda r: r.review_date == last_date
+                )[:1]
+                status += f"\n(Risk is {latest_rating.risk_conclusion})"
+            else:
+                status = "Risk not yet rated."
             if len(incomplete_ratings) > 0:
                 status += f"\n{len(incomplete_ratings)} rating(s) incomplete."
-            if len(completed_ratings) > 0:
-                status += "\n(Latest review completed: "
-                last_date = max(completed_ratings.mapped("review_date"))
-                status += last_date.strftime("%Y-%m-%d") + ")"
             rec.ratings_status = status
 
     @api.depends("swot_type", "swot_id")
