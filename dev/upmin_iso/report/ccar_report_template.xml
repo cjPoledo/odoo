@@ -71,97 +71,244 @@
                         </style>
 
                         <table>
+
+                            <!-- NATURE -->
+
                             <tr>
-                                <td colspan="5">
-                                    <strong>NATURE:</strong>
+                                <td style="padding: 0px;">
+                                    <table>
+                                        <tr>
+                                            <td colspan="5">
+                                                <strong>NATURE:</strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <!-- Audit Nature -->
+                                            <td style="width: 20%;">
+                                                <t t-set="audit" t-value="o.audit_nature" />
+                                                <p>
+                                                    <span t-if="audit == 'internal'">☑</span><span
+                                                        t-else="">☐</span> Internal Audit <br />
+                                        <span
+                                                        t-if="audit == 'external'">☑</span><span
+                                                        t-else="">☐</span> External Audit </p>
+                                            </td>
+
+                                            <!-- Conformity Nature -->
+                                            <td style="width: 20%;">
+                                                <t t-set="conformity" t-value="o.conformity_nature" />
+                                                <p>
+                                                    <span t-if="conformity == 'nc'">☑</span><span
+                                                        t-else="">☐</span> Nonconformity (NC)<br />
+
+                                        <span
+                                                        t-if="conformity == 'observation'">☑</span><span
+                                                        t-else="">☐</span> Observation/Potential NC<br />
+
+                                        <span
+                                                        t-if="conformity == 'unmet'">☑</span><span
+                                                        t-else="">☐</span> Unmet Target/Activity<br />
+
+                                        <span
+                                                        t-if="conformity == 'nonconforming'">☑</span><span
+                                                        t-else="">☐</span> Nonconforming
+                                                    Product/Services </p>
+                                            </td>
+
+                                            <!-- Complaint Nature A -->
+                                            <td style="width: 20%;">
+                                                <t t-set="complaint_a"
+                                                    t-value="o.complaint_nature_a" />
+                                                <p>
+                                                    <span t-if="complaint_a == 'external'">☑</span><span
+                                                        t-else="">☐</span> External Complaint<br />
+
+                                        <span
+                                                        t-if="complaint_a == 'internal'">☑</span><span
+                                                        t-else="">
+                                                        ☐</span> Internal Complaint<br />
+                                                    Department:<br />
+                                        <span
+                                                        t-if="o.internal_complaint_dept">
+                                                        <t t-esc="o.internal_complaint_dept.name" />
+                                                    </span>
+                                        <span
+                                                        t-else="">___________________</span>
+                                                </p>
+                                            </td>
+
+                                            <!-- Complaint Nature B -->
+                                            <td style="width: 20%;">
+                                                <t t-set="complaint_b"
+                                                    t-value="o.complaint_nature_b" />
+                                                <p>
+                                                    <span t-if="complaint_b == 'incidents'">☑</span><span
+                                                        t-else="">☐</span> Incidents<br />
+
+                                        <span
+                                                        t-if="complaint_b == 'customer'">☑</span><span
+                                                        t-else="">
+                                                        ☐</span> Customer Complaint<br /> Customer
+                                                    Name:<br />
+                                        <span
+                                                        t-if="o.customer_complaint_customer">
+                                                        <t t-esc="o.customer_complaint_customer" />
+                                                    </span>
+                                        <span
+                                                        t-else="">___________________</span>
+                                                </p>
+                                            </td>
+
+                                            <!-- Complaint Nature C -->
+                                            <td style="width: 20%;">
+                                                <t t-set="complaint_c"
+                                                    t-value="o.complaint_nature_c" />
+                                                <p>
+                                                    <span t-if="complaint_c == 'laws'">☑</span><span
+                                                        t-else="">☐</span> Laws/Regulations<br />
+
+                                        <span
+                                                        t-if="complaint_c == 'supplier'">
+                                                        ☑</span><span t-else="">☐</span> Supplier
+                                                    Nonconformity<br /> Supplier Name:<br />
+                                        <span
+                                                        t-if="o.supplier_nonconformity_supplier">
+                                                        <t t-esc="o.supplier_nonconformity_supplier" />
+                                                    </span>
+                                        <span
+                                                        t-else="">_____________________</span>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                             </tr>
+
+                            <!-- DETAILS -->
+
                             <tr>
-                                <!-- Audit Nature -->
-                                <td style="width: 20%;">
-                                    <t t-set="audit" t-value="o.audit_nature" />
-                                    <p>
-                                        <span t-if="audit == 'internal'">☑</span><span t-else="">☐</span>
-                                        Internal Audit <br />
-                                        <span t-if="audit == 'external'">☑</span><span
-                                            t-else="">☐</span> External Audit </p>
+                                <td style="padding: 0px;">
+                                    <table>
+                                        <tr>
+                                            <td colspan="3">
+                                                <strong>1. DETAILS:</strong>
+                                                <p style="padding-left: 16px;"> Clause/Source of
+                                                    Report: <span
+                                                        t-field="o.clause.clause_number" /> <span
+                                                        t-field="o.clause.clause_title" /> <br /><br />
+                                        <span
+                                                        t-field="o.details_scenario" /><br /><br />
+                                        <span
+                                                        t-field="o.details_statement" />
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <t t-foreach="o.auditors" t-as="auditor">
+                                            <tr>
+                                                <td>
+                                                    <p
+                                                        style="padding-left: 16px; margin-bottom: 0px;">
+                                                        Requestor/Auditor: <span
+                                                            t-field="auditor.name.name" />
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <p style="margin-bottom: 0px;"> Date: <span
+                                                            t-field="o.audit_date" />
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <p style="margin-bottom: 0px;"> Department: <span
+                                                            t-field="auditor.office.name" />
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                            <td>
+                                                <p style="padding-left: 16px; margin-bottom: 0px;">
+                                                    Responsible Person: <span
+                                                        t-field="o.responsible_person.name" />
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p style="margin-bottom: 0px;"> Date: <span
+                                                        t-field="o.date_received" />
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p style="margin-bottom: 0px;"> Department: <span
+                                                        t-field="o.office.name" />
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
+                            </tr>
 
-                                <!-- Conformity Nature -->
-                                <td style="width: 20%;">
-                                    <t t-set="conformity" t-value="o.conformity_nature" />
-                                    <p>
-                                        <span t-if="conformity == 'nc'">☑</span><span t-else="">☐</span>
-                                        Nonconformity (NC)<br />
+                            <!-- IMMEDIATE ACTION/CORRECTION TAKEN -->
 
-                                        <span
-                                            t-if="conformity == 'observation'">☑</span><span
-                                            t-else="">☐</span> Observation/Potential NC<br />
-
-                                        <span
-                                            t-if="conformity == 'unmet'">☑</span><span t-else="">☐</span>
-                                        Unmet Target/Activity<br />
-
-                                        <span
-                                            t-if="conformity == 'nonconforming'">☑</span><span
-                                            t-else="">☐</span> Nonconforming Product/Services </p>
+                            <tr>
+                                <td style="padding: 0px;">
+                                    <table>
+                                        <tr>
+                                            <td colspan="4">
+                                                <strong>2. IMMEDIATE ACTION/CORRECTION TAKEN:</strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">Description</td>
+                                            <td style="text-align: center;">Results</td>
+                                            <td style="text-align: center;">Responsibility</td>
+                                            <td style="text-align: center;">Completed Date</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p>
+                                                    <span t-field="o.description" />
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p>
+                                                    <span t-field="o.results" />
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p>
+                                                    <span t-field="o.responsibility" />
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p>
+                                                    <span t-field="o.completed_date" />
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
+                            </tr>
 
-                                <!-- Complaint Nature A -->
-                                <td style="width: 20%;">
-                                    <t t-set="complaint_a" t-value="o.complaint_nature_a" />
-                                    <p>
-                                        <span t-if="complaint_a == 'external'">☑</span><span
-                                            t-else="">☐</span> External Complaint<br />
+                            <!-- INVESTIGATION OF ROOT CAUSE-->
 
-                                        <span
-                                            t-if="complaint_a == 'internal'">☑</span><span t-else="">
-                                        ☐</span> Internal Complaint<br /> Department:<br />
-                                        <span
-                                            t-if="o.internal_complaint_dept">
-                                            <t t-esc="o.internal_complaint_dept.name" />
-                                        </span>
-                                        <span
-                                            t-else="">___________________</span>
-                                    </p>
-                                </td>
-
-                                <!-- Complaint Nature B -->
-                                <td style="width: 20%;">
-                                    <t t-set="complaint_b" t-value="o.complaint_nature_b" />
-                                    <p>
-                                        <span t-if="complaint_b == 'incidents'">☑</span><span
-                                            t-else="">☐</span> Incidents<br />
-
-                                        <span
-                                            t-if="complaint_b == 'customer'">☑</span><span t-else="">
-                                        ☐</span> Customer Complaint<br /> Customer Name:<br />
-                                        <span
-                                            t-if="o.customer_complaint_customer">
-                                            <t t-esc="o.customer_complaint_customer" />
-                                        </span>
-                                        <span
-                                            t-else="">___________________</span>
-                                    </p>
-                                </td>
-
-                                <!-- Complaint Nature C -->
-                                <td style="width: 20%;">
-                                    <t t-set="complaint_c" t-value="o.complaint_nature_c" />
-                                    <p>
-                                        <span t-if="complaint_c == 'laws'">☑</span><span t-else="">☐</span>
-                                        Laws/Regulations<br />
-
-                                        <span t-if="complaint_c == 'supplier'">
-                                        ☑</span><span t-else="">☐</span> Supplier Nonconformity<br />
-                                        Supplier Name:<br />
-                                        <span
-                                            t-if="o.supplier_nonconformity_supplier">
-                                            <t t-esc="o.supplier_nonconformity_supplier" />
-                                        </span>
-                                        <span
-                                            t-else="">_____________________</span>
-                                    </p>
+                            <tr>
+                                <td style="padding: 0px;">
+                                    <table>
+                                        <tr>
+                                            <td colspan="3"><strong>3. INVESTIGATION OF ROOT CAUSE:</strong>
+                                                (Attached detailed analysis via Tree Diagram)</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">
+                                                <span t-field="o.tree_diagram_link" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Investigated by: <span
+                                                    t-field="o.investigated_by.name" /></td>
+                                            <td>Date: <span t-field="o.date_investigated" /></td>
+                                            <td>Department: <span t-field="o.investigator_dept.name" /></td>
+                                        </tr>
+                                    </table>
                                 </td>
                             </tr>
                         </table>
