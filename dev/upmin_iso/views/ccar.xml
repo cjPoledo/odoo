@@ -180,6 +180,7 @@
                                     attrs="{'readonly': [('status', '!=', 'verification')]}"
                                     nolabel="1" colspan="2">
                                     <tree string="" editable="bottom">
+                                        <field name="allowed_verifiers" invisible="1" />
                                         <field name="correction" />
                                         <field name="verification" />
                                         <field name="verified_by" />
@@ -191,6 +192,7 @@
                                     attrs="{'readonly': [('status', '!=', 'verification')]}"
                                     nolabel="1" colspan="2">
                                     <tree string="" editable="bottom">
+                                        <field name="allowed_verifiers" invisible="1" />
                                         <field name="corrective_action" />
                                         <field name="verification" />
                                         <field name="verified_by" />
