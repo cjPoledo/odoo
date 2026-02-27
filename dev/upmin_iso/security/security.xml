@@ -28,6 +28,13 @@
         <field name="domain_force">[('office', '=', user.employee_id.department_id.id)]</field>
     </record>
 
+    <record id="rule_office_ror_staff" model="ir.rule">
+        <field name="name">Access ROR: Staff Full Access</field>
+        <field name="model_id" ref="model_upmin_iso_ror" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]" />
+        <field name="domain_force">[(1,'=',1)]</field>
+    </record>
+
     <record id="rule_audit_info_doc_controller" model="ir.rule">
         <field name="name">Doc Controller: See Audit Info of Own Office</field>
         <field name="model_id" ref="model_upmin_iso_audit_info" />
