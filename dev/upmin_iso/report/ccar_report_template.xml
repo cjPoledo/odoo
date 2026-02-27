@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="paperformat_ccar" model="report.paperformat">
+        <field name="name">CCAR Paper</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">50</field>
+        <field name="margin_bottom">32</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">50</field>
+        <field name="dpi">90</field>
+    </record>
+
+
     <record id="action_report_upmin_iso_ccar_report" model="ir.actions.report">
         <field name="name">Export CCAR</field>
         <field name="model">upmin_iso.ccar</field>
@@ -10,6 +27,7 @@
         <field name="print_report_name">'CCAR-%s (%s)' % (object.ccar_no, object.office.name)</field>
         <field name="binding_model_id" ref="model_upmin_iso_ccar" />
         <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="upmin_iso.paperformat_ccar" />
     </record>
 
     <template id="custom_header_footer" inherit_id="web.external_layout_standard">
@@ -21,26 +39,44 @@
                     style="width:100%;" />
                 <h1 style="text-align:center; font-size:20px; font-weight:bold;">CORRECTION AND
                     CORRECTIVE ACTION REPORT (CCAR)</h1>
-                <div style="display:flex; justify-content: space-between; padding: 0 8px;">
-                    <div style="font-size:15px;"> CCAR NO. <span t-field="o.ccar_no"
-                            style="text-decoration: underline;" /></div>
-                    <div style="font-size:15px;"> DATE <span t-field="o.date"
-                            style="text-decoration: underline;" /></div>
-                </div>
+                <table
+                    style="width:100%;
+                      font-size:15px;
+                      border-collapse:collapse; border: none; border-style: hidden!important;">
+                    <tr>
+                        <td style="text-align:left; width:50%; border: none;"> CCAR NO. <span
+                                t-field="o.ccar_no"
+                                style="text-decoration: underline;" />
+                        </td>
+
+                        <td style="text-align:right; width:50%; border: none;"> DATE <span
+                                t-field="o.date"
+                                style="text-decoration: underline;" />
+                        </td>
+                    </tr>
+                </table>
             </div>
         </xpath>
 
         <!-- FOOTER -->
-        <xpath expr="//div[hasclass('text-center')]" position="replace">
+        <xpath expr="//div[3]" position="replace">
             <div class="footer"
-                style="text-align:center; font-size:12px;">
+                style="font-family: Arial, sans-serif; font-size:12px; padding: 32px 0px;">
 
-                <div> Page <span class="page" /> of <span class="topage" />
-                </div>
+                <table
+                    style="width:100%;
+                      border-collapse:collapse; border: none; border-style: hidden!important;">
+                    <tr>
+                        <td style="text-align:left; width:50%; border: none;">
+                            QAO_ISO_0010_Rev_00
+                        </td>
 
-                <div>
-                    Confidential Document - UPMin ISO
-                </div>
+                        <td style="text-align:right; width:50%; border: none;"> Page <span
+                                class="page" /> of <span
+                                class="topage" />
+                        </td>
+                    </tr>
+                </table>
 
             </div>
         </xpath>
@@ -51,7 +87,8 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
-                    <div class="page" style="font-family: Arial, sans-serif; font-size:15px;">
+                    <div class="page"
+                        style="font-family: Arial, sans-serif; font-size:15px; margin-top: -3rem;">
 
                         <style>
                             table, th, td {
@@ -68,6 +105,10 @@
                             text-align: left;
                             vertical-align: top;
                             }
+
+                            thead { display: table-header-group }
+                            tfoot { display: table-row-group }
+                            tr { page-break-inside: avoid }
                         </style>
 
                         <table>
@@ -298,8 +339,11 @@
                                                 (Attached detailed analysis via Tree Diagram)</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
-                                                <span t-field="o.tree_diagram_link" />
+                                            <td colspan="3"> Tree diagram URL: <a href="#"
+                                                    t-att-href="o.tree_diagram_link" target="_blank">
+                                                    <span
+                                                        t-field="o.tree_diagram_link" />
+                                                </a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -307,6 +351,249 @@
                                                     t-field="o.investigated_by.name" /></td>
                                             <td>Date: <span t-field="o.date_investigated" /></td>
                                             <td>Department: <span t-field="o.investigator_dept.name" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <!-- AGREED CORRECTIVE ACTION PLAN -->
+
+                            <tr>
+                                <td style="padding: 0px;">
+                                    <table>
+                                        <tr>
+                                            <td colspan="5"><strong>4. AGREED CORRECTIVE ACTION
+                                                    PLAN:</strong> (Actions taken to eliminate root
+                                                cause, resolve issue, and prevent recurrence)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">Corrective
+                                                Action<br />(what was implemented)</td>
+                                            <td style="text-align: center; vertical-align: middle;">Measure
+                                                of Effectiveness
+                                                and Monitoring Period for
+                                                Corrective Action</td>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                Responsible <br />(who implemented)</td>
+                                            <td
+                                                style="text-align: center; text-decoration: underline; vertical-align: middle;">Start
+                                                Date</td>
+                                            <td
+                                                style="text-align: center; text-decoration: underline; vertical-align: middle;">Completion
+                                                or Effective
+                                                Date</td>
+                                        </tr>
+                                        <t t-foreach="o.corrective_action_plan" t-as="action">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="action.corrective_action" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="action.effectiveness" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="action.responsible" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="action.start_date" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="action.effective_date" />
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                            <td colspan="5"> Proposed by: <span
+                                                    t-field="o.proposed_by.name" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5"> Implementation/Target Date: <span
+                                                    t-field="o.target_date" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5"> Approved by: <span
+                                                    t-field="o.approved_by.name" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <!-- IMPACT ANALYSIS -->
+
+                            <tr>
+                                <td style="padding: 0px;">
+                                    <table>
+                                        <tr>
+                                            <td colspan="3"><strong>5. IMPACT ANALYSIS ON OTHER
+                                                SIMILAR PROCESSES/PRODUCTS:</strong> (if applicable)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: middle;">What
+                                                other areas may benefit or be affected by the
+                                                implemented actions?
+                                            </td>
+                                            <td style="text-align: center; vertical-align: middle;">Initiated
+                                                Date</td>
+                                            <td style="text-align: center; vertical-align: middle;">Effective
+                                                Date</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span t-field="o.affected_areas" />
+                                            </td>
+                                            <td>
+                                                <span t-field="o.initiated_date" />
+                                            </td>
+                                            <td>
+                                                <span t-field="o.effective_date" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <!-- VERIFICATION OF EFFECTIVENESS TAKEN -->
+
+                            <tr>
+                                <td style="padding: 0px;">
+                                    <table>
+                                        <tr>
+                                            <td colspan="5">
+                                                <strong>6. VERIFICATION OF EFFECTIVENESS TAKEN:</strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">
+                                                <em style="text-decoration: underline;">Correction:</em>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="text-align: center; vertical-align: middle; text-decoration: underline; width: 20%;">
+                                                Correction
+                                            </td>
+                                            <td
+                                                style="text-align: center; vertical-align: middle; text-decoration: underline; width: 20%;">How
+                                                was verification performed?</td>
+                                            <td
+                                                style="text-align: center; vertical-align: middle; text-decoration: underline; width: 20%;">Who
+                                                verified?</td>
+                                            <td
+                                                style="text-align: center; vertical-align: middle; text-decoration: underline; width: 20%;">Verified
+                                                Date
+                                            </td>
+                                            <td
+                                                style="text-align: center; vertical-align: middle; text-decoration: underline; width: 20%;">Approved
+                                                / Rejected</td>
+                                        </tr>
+                                        <t t-foreach="o.correction_effectiveness"
+                                            t-as="effectiveness">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="effectiveness.correction" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="effectiveness.verification" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="effectiveness.verified_by.name" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="effectiveness.verified_date" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="effectiveness.approval" />
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                            <td colspan="5">
+                                                <em style="text-decoration: underline;">Corrective
+                                                    Action:</em>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="text-align: center; vertical-align: middle; text-decoration: underline; width: 20%;">
+                                                Corrective Action
+                                            </td>
+                                            <td
+                                                style="text-align: center; vertical-align: middle; text-decoration: underline; width: 20%;">How
+                                                was verification performed?</td>
+                                            <td
+                                                style="text-align: center; vertical-align: middle; text-decoration: underline; width: 20%;">Who
+                                                verified?</td>
+                                            <td
+                                                style="text-align: center; vertical-align: middle; text-decoration: underline; width: 20%;">Verified
+                                                Date
+                                            </td>
+                                            <td
+                                                style="text-align: center; vertical-align: middle; text-decoration: underline; width: 20%;">Approved
+                                                / Rejected</td>
+                                        </tr>
+                                        <t t-foreach="o.corrective_action_effectiveness"
+                                            t-as="effectiveness">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="effectiveness.corrective_action" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="effectiveness.verification" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="effectiveness.verified_by.name" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="effectiveness.verified_date" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="effectiveness.approval" />
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <!-- DETAILS ON AFFECTED RELATED RISK AND OPPORTUNITIES -->
+
+                            <tr>
+                                <td style="padding: 0px;">
+                                    <table>
+                                        <tr>
+                                            <td><strong>7. DETAILS ON AFFECTED RELATED RISK AND
+                                                OPPORTUNITIES</strong> (if necessary)<br /><br />
+                                                <p
+                                                    style="padding-left: 16px;">
+                                                    <span
+                                                        t-field="o.affected_related_risks_opportunities" />
+                                                </p>
+                                                Updated by: <span t-field="o.updated_by" /><br />
+                                                Date: <span t-field="o.updated_date" /><br />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <!-- CHANGES TO THE QUALITY MANAGEMENT SYSTEM IF NECESSARY -->
+
+                            <tr>
+                                <td style="padding: 0px;">
+                                    <table>
+                                        <tr>
+                                            <td><strong>8. CHANGES TO THE QUALITY MANAGEMENT SYSTEM
+                                                IF NECESSARY</strong> (policy, procedures, job
+                                                descriptions, etc.)<br /><br />
+                                                <p
+                                                    style="padding-left: 16px;">
+                                                    <span
+                                                        t-field="o.changes_to_qms" />
+                                                </p>
+                                                Changes made completed by: <span
+                                                    t-field="o.changes_by" /><br /> Date: <span
+                                                    t-field="o.changes_date" /><br />
+                                            </td>
                                         </tr>
                                     </table>
                                 </td>

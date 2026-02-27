@@ -15,7 +15,6 @@ class CCARCorrectiveActionEffectiveness(models.Model):
     )
     corrective_action = fields.Text(string="Corrective Action")
     verification = fields.Text(string="How was verification performed?")
-    verification = fields.Text(string="How was verification performed?")
     allowed_verifiers = fields.Many2many(
         comodel_name="hr.employee",
         compute="_compute_allowed_verifiers",
