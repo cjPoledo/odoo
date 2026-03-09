@@ -30,9 +30,11 @@ class CCAR(models.Model):
         selection=[
             ("creation", "CCAR Creation"),
             ("checking1", "QAO Checking (1)"),
-            ("office", "For Office Accomplishment"),
+            ("office", "Office (1)"),
             ("checking2", "QAO Checking (2)"),
-            ("verification", "For IA Verification"),
+            ("verification", "IA Verification"),
+            ("checking3", "QAO Checking (3)"),
+            ("office2", "Office (2)"),
             ("completed", "Completed"),
         ],
         string="Status",
@@ -191,7 +193,11 @@ class CCAR(models.Model):
     affected_related_risks_opportunities = fields.Text(
         string="Details on affected related risks and opportunities (if necessary)"
     )
-    updated_by = fields.Many2one(comodel_name="hr.employee", string="Updated By")
+    updated_by = fields.Many2one(
+        comodel_name="hr.employee",
+        string="Updated By",
+        domain="[('department_id', '=', office)]",
+    )
     updated_date = fields.Date(string="Updated Date")
 
     # changes to the qms
@@ -199,7 +205,9 @@ class CCAR(models.Model):
         string="Changes to the Quality Management System If Necessary (policy, procedures, job descriptions, etc.)"
     )
     changes_by = fields.Many2one(
-        comodel_name="hr.employee", string="Changes Made Completed By"
+        comodel_name="hr.employee",
+        string="Changes Made Completed By",
+        domain="[('department_id', '=', office)]",
     )
     changes_date = fields.Date(string="Changes Date")
 
@@ -223,6 +231,8 @@ class CCAR(models.Model):
             "office",
             "checking2",
             "verification",
+            "checking3",
+            "office2",
             "completed",
         ]
 
@@ -239,6 +249,8 @@ class CCAR(models.Model):
             "office",
             "checking2",
             "verification",
+            "checking3",
+            "office2",
             "completed",
         ]
 

@@ -202,41 +202,43 @@
                                 </field>
                             </group>
                         </page>
+                    </notebook>
+                    <notebook>
                         <page name="related_risk"
                             string="7. DETAILS ON AFFECTED RELATED RISK AND OPPORTUNITIES"
                             help="if necessary"
-                            attrs="{'invisible': ['|', '|', '|', ('status', '=', 'creation'), ('status', '=', 'office'), ('status', '=', 'checking1'), ('status', '=', 'checking2')]}">
+                            attrs="{'invisible': ['|', '|', '|', '|', '|', ('status', '=', 'creation'), ('status', '=', 'office'), ('status', '=', 'checking1'), ('status', '=', 'checking2'), ('status', '=', 'verification'), ('status', '=', 'checking3')]}">
                             <group col="2">
                                 <group col="1" colspan="2">
                                     <field name="affected_related_risks_opportunities"
-                                        attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                        attrs="{'readonly': [('status', '!=', 'office2')]}" />
                                 </group>
                                 <group col="1">
                                     <field name="updated_by"
-                                        attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                        attrs="{'readonly': [('status', '!=', 'office2')]}" />
                                 </group>
                                 <group col="1">
                                     <field name="updated_date"
-                                        attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                        attrs="{'readonly': [('status', '!=', 'office2')]}" />
                                 </group>
                             </group>
                         </page>
                         <page name="changes_qms"
                             string="8. CHANGES TO THE QUALITY MANAGEMENT SYSTEM IF NECESSARY"
-                            attrs="{'invisible': ['|', '|', '|', ('status', '=', 'creation'), ('status', '=', 'office'), ('status', '=', 'checking1'), ('status', '=', 'checking2')]}"
+                            attrs="{'invisible': ['|', '|', '|', '|', '|', ('status', '=', 'creation'), ('status', '=', 'office'), ('status', '=', 'checking1'), ('status', '=', 'checking2'), ('status', '=', 'verification'), ('status', '=', 'checking3')]}"
                             help="policy, procedure, job descriptions, etc.">
                             <group col="2">
                                 <group col="1" colspan="2">
                                     <field name="changes_to_qms"
-                                        attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                        attrs="{'readonly': [('status', '!=', 'office2')]}" />
                                 </group>
                                 <group col="1">
                                     <field name="changes_by"
-                                        attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                        attrs="{'readonly': [('status', '!=', 'office2')]}" />
                                 </group>
                                 <group col="1">
                                     <field name="changes_date"
-                                        attrs="{'readonly': [('status', '!=', 'verification')]}" />
+                                        attrs="{'readonly': [('status', '!=', 'office2')]}" />
                                 </group>
                             </group>
                         </page>
