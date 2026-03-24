@@ -78,6 +78,7 @@ class RORExportWizard(models.TransientModel):
         f_cell_right     = fmt(border=1, align="right")
         f_cell_light     = fmt(border=1, bg_color="#EFEFEF")
         f_cell_light_ctr = fmt(border=1, align="center", bg_color="#EFEFEF")
+        f_cell_bold      = fmt(border=1, bold=True)
         f_red_highlight  = workbook.add_format({"bg_color": "#E6B8AF"})
 
         # ── One sheet per year ───────────────────────────────────────────────
@@ -155,10 +156,10 @@ class RORExportWizard(models.TransientModel):
                 sheet.merge_range(row, 2, row + 1, 2, _strip_html(issue.interested_parties), f_cell)
                 sheet.merge_range(row, 3, row + 1, 3, _strip_html(issue.needs_and_exp), f_cell)
                 sheet.merge_range(row, 4, row + 1, 4, _strip_html(issue.compliance), f_cell)
-                sheet.write(row,     5, f"Risk: {_strip_html(issue.risks)}", f_cell)
-                sheet.write(row + 1, 5, f"Opportunity: {_strip_html(issue.opportunities)}", f_cell)
-                sheet.write(row,     6, f"Consequence: {_strip_html(issue.consequence)}", f_cell)
-                sheet.write(row + 1, 6, f"Benefit: {_strip_html(issue.benefit)}", f_cell)
+                sheet.write_rich_string(row,     5, f_cell_bold, "Risk: ",         f_cell, _strip_html(issue.risks) or " ",         f_cell)
+                sheet.write_rich_string(row + 1, 5, f_cell_bold, "Opportunity: ",  f_cell, _strip_html(issue.opportunities) or " ", f_cell)
+                sheet.write_rich_string(row,     6, f_cell_bold, "Consequence: ",  f_cell, _strip_html(issue.consequence) or " ",   f_cell)
+                sheet.write_rich_string(row + 1, 6, f_cell_bold, "Benefit: ",      f_cell, _strip_html(issue.benefit) or " ",       f_cell)
                 sheet.write(row,     7, _strip_html(issue.risk_existing_control), f_cell)
                 sheet.write(row + 1, 7, _strip_html(issue.opportunities_existing_control), f_cell)
 
