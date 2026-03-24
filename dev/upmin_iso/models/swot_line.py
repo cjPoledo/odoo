@@ -1,14 +1,18 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class SWOTLine(models.Model):
     _name = "upmin_iso.swot_line"
     _description = "SWOT Line"
     _rec_name = "label"
-    _order = "swot_id,label"
+    _order = "swot_id,ror_id,label"
 
     swot_id = fields.Many2one(
-        comodel_name="upmin_iso.swot", string="SWOT", required=True
+        comodel_name="upmin_iso.swot", string="SWOT"
+    )
+    ror_id = fields.Many2one(
+        comodel_name="upmin_iso.ror", string="ROR", ondelete="cascade"
     )
     description = fields.Text(string="Description", required=True)
     swot_type = fields.Selection(
@@ -26,7 +30,7 @@ class SWOTLine(models.Model):
         string="Label", compute="_compute_label", store=True, readonly=True
     )
 
-    # ROR stuff
+    # Risk and Opportunity fields (filled in ROR context)
     interested_parties = fields.Char(
         string="Interested Parties", help="Who are those affected by the issue?"
     )
@@ -67,12 +71,17 @@ class SWOTLine(models.Model):
 
     # remarks
     fields_status = fields.Text(
-        string="Fields Status", compute="_compute_fields_status"
+        string="Fields Status", compute="_compute_fields_status",
     )
     ratings_status = fields.Text(
-        string="Ratings Status", compute="_compute_ratings_status"
+        string="Ratings Status", compute="_compute_ratings_status",
     )
 
+    @api.depends(
+        "interested_parties", "needs_and_exp", "compliance", "risks",
+        "opportunities", "consequence", "benefit",
+        "risk_existing_control", "opportunities_existing_control",
+    )
     def _compute_fields_status(self):
         for rec in self:
             status_list = []
@@ -97,6 +106,7 @@ class SWOTLine(models.Model):
             else:
                 rec.fields_status = "Missing: " + ", ".join(status_list)
 
+    @api.depends("ratings", "ratings.progress", "ratings.review_date", "ratings.risk_conclusion")
     def _compute_ratings_status(self):
         for rec in self:
             completed_ratings = rec.ratings.filtered(lambda r: r.progress == 100)
@@ -116,11 +126,17 @@ class SWOTLine(models.Model):
                 status += f"\n{len(incomplete_ratings)} rating(s) incomplete."
             rec.ratings_status = status
 
+    @api.constrains("swot_id", "ror_id")
+    def _check_parent(self):
+        for rec in self:
+            if not rec.swot_id and not rec.ror_id:
+                raise ValidationError("A SWOT line must belong to either a SWOT or a ROR.")
+
     @api.depends("swot_type", "swot_id")
     def _compute_label(self):
         for rec in self:
 
-            # Always empty if missing type or parent
+            # Always empty if missing type or parent (standalone ROR lines have no swot_id)
             if not rec.swot_type or not rec.swot_id:
                 rec.label = False
                 continue
@@ -149,8 +165,11 @@ class SWOTLine(models.Model):
 
     def unlink(self):
         # Group records by type so we process per type only once
+        # Only recompute labels for lines that belong to a SWOT
         type_groups = {}
         for rec in self:
+            if not rec.swot_id:
+                continue
             type_groups.setdefault(rec.swot_type, self.env[self._name].browse())
             type_groups[rec.swot_type] |= rec
 
@@ -158,7 +177,6 @@ class SWOTLine(models.Model):
             if swot_type not in ["S", "W", "O", "T"]:
                 continue
 
-            # Get the correct One2many list
             field = {
                 "S": "strengths",
                 "W": "weaknesses",
@@ -167,11 +185,8 @@ class SWOTLine(models.Model):
             }[swot_type]
 
             all_related = recs_to_delete[0].swot_id[field]
-
-            # Exclude ALL records being deleted at once
             remaining = (all_related - recs_to_delete).sorted("id")
 
-            # Recompute labels once
             for idx, line in enumerate(remaining, start=1):
                 line.label = f"{swot_type}{idx}"
 

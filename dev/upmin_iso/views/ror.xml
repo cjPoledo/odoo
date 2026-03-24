@@ -8,18 +8,24 @@
                 <sheet>
                     <group>
                         <field name="office" attrs="{'readonly':[('id','!=', False)]}" />
-                        <field name="related_swot" attrs="{'readonly':[('id','!=', False)]}" />
+                        <field name="related_swot" />
+                    </group>
+                    <div attrs="{'invisible': [('related_swot', '=', False)]}">
+                        <button string="Import Issues from SWOT" name="action_import_from_swot"
+                            type="object" class="btn-secondary mb-3" />
+                    </div>
+                    <group>
                         <field name="internal_issues" mode="tree,form"
-                            context="{'form_view_ref': 'upmin_iso.swot_line_view_form_ror'}">
-                            <tree create="false" edit="false" delete="false">
+                            context="{'form_view_ref': 'upmin_iso.swot_line_view_form_ror_direct'}">
+                            <tree>
                                 <field name="description" />
                                 <field name="fields_status" />
                                 <field name="ratings_status" />
                             </tree>
                         </field>
                         <field name="external_issues" mode="tree,form"
-                            context="{'form_view_ref': 'upmin_iso.swot_line_view_form_ror'}">
-                            <tree create="false" edit="false" delete="false">
+                            context="{'form_view_ref': 'upmin_iso.swot_line_view_form_ror_direct'}">
+                            <tree>
                                 <field name="description" />
                                 <field name="fields_status" />
                                 <field name="ratings_status" />
@@ -45,6 +51,50 @@
                     <group col="1">
                         <field name="description" string="Issue" readonly="1"
                             help="What could affect the attainment of goals? Internal issues are Weaknesses in your SWOT. External issues are Threats in your SWOT" />
+                        <field name="interested_parties" />
+                        <field name="needs_and_exp" />
+                        <field name="compliance" />
+                    </group>
+                    <notebook>
+                        <page name="risk_consequence" string="Risks and Consequence">
+                            <group>
+                                <field name="risks" />
+                                <field name="consequence" />
+                                <field name="risk_existing_control" />
+                            </group>
+                        </page>
+                        <page name="opportunities_benefit" string="Opportunities and Benefit">
+                            <group>
+                                <field name="opportunities" />
+                                <field name="benefit" />
+                                <field name="opportunities_existing_control" />
+                            </group>
+                        </page>
+                    </notebook>
+                    <group col="1">
+                        <field name="ratings">
+                            <tree>
+                                <field name="review_date" />
+                                <field name="risk_conclusion" />
+                                <field name="opportunity_conclusion" />
+                                <field name="progress" widget="progressbar" />
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upmin_iso.swot_line_view_form_ror_direct" model="ir.ui.view">
+        <field name="name">upmin_iso.swot_line.view.form.ror.direct</field>
+        <field name="model">upmin_iso.swot_line</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group col="1">
+                        <field name="description" string="Issue"
+                            help="Describe the internal/external issue." />
                         <field name="interested_parties" />
                         <field name="needs_and_exp" />
                         <field name="compliance" />
