@@ -35,4 +35,4 @@ class CCARCorrectiveActionEffectiveness(models.Model):
                     rec.ccar.related_nc.audit_info.internal_auditors.mapped("name")
                 )
             else:
-                rec.allowed_verifiers = False
+                rec.allowed_verifiers = self.env["hr.employee"]
