@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class CCAR(models.Model):
@@ -221,6 +222,65 @@ class CCAR(models.Model):
         ),
     ]
 
+    def _validate_next_step(self):
+        if self.status == "creation":
+            missing = []
+            if not self.responsible_person:
+                missing.append("Responsible Person")
+            if not self.date_received:
+                missing.append("Date Received")
+            if missing:
+                raise ValidationError(
+                    "Please fill in the following before submitting:\n• "
+                    + "\n• ".join(missing)
+                )
+
+        elif self.status == "office":
+            missing = []
+            # Page 2
+            if not self.description:
+                missing.append("[2] Description")
+            if not self.results:
+                missing.append("[2] Results")
+            if not self.responsibility:
+                missing.append("[2] Responsibility")
+            if not self.completed_date:
+                missing.append("[2] Completed Date")
+            # Page 3
+            if not self.tree_diagram_link:
+                missing.append("[3] Tree Diagram Link")
+            if not self.investigated_by:
+                missing.append("[3] Investigated By")
+            if not self.date_investigated:
+                missing.append("[3] Date Investigated")
+            # Page 4
+            if not self.corrective_action_plan:
+                missing.append("[4] At least one Corrective Action entry")
+            if not self.proposed_by:
+                missing.append("[4] Proposed By")
+            if not self.target_date:
+                missing.append("[4] Implementation/Target Date")
+            if not self.approved_by:
+                missing.append("[4] Approved By")
+            if missing:
+                raise ValidationError(
+                    "Please fill in the following required fields before submitting:\n• "
+                    + "\n• ".join(missing)
+                    + "\n\nNote: Page 5 (Impact Analysis) is if applicable and not required."
+                )
+
+        elif self.status == "verification":
+            missing = []
+            if not self.correction_effectiveness:
+                missing.append("Correction Effectiveness (at least one entry)")
+            if not self.corrective_action_effectiveness:
+                missing.append("Corrective Action Effectiveness (at least one entry)")
+            if missing:
+                raise ValidationError(
+                    "Please fill in the following before submitting:\n• "
+                    + "\n• ".join(missing)
+                )
+
     def next_step(self):
         flow = [
             "creation",
@@ -234,6 +294,7 @@ class CCAR(models.Model):
         ]
 
         for record in self:
+            record._validate_next_step()
             if record.status in flow:
                 idx = flow.index(record.status)
                 if idx < len(flow) - 1:

@@ -150,8 +150,7 @@
                             </group>
                         </page>
                         <page name="impact_analysis"
-                            string="5. IMPACT ANALYSIS ON OTHER SIMILAR PROCESSES/PRODUCTS"
-                            help="if applicable"
+                            string="5. IMPACT ANALYSIS ON OTHER SIMILAR PROCESSES/PRODUCTS (If Applicable)"
                             attrs="{'invisible': ['|', ('status', '=', 'creation'), ('status', '=', 'checking1')]}">
                             <group col="2">
                                 <group col="1" colspan="2">
@@ -202,8 +201,7 @@
                     </notebook>
                     <notebook>
                         <page name="related_risk"
-                            string="7. DETAILS ON AFFECTED RELATED RISK AND OPPORTUNITIES"
-                            help="if necessary"
+                            string="7. DETAILS ON AFFECTED RELATED RISK AND OPPORTUNITIES (If Necessary)"
                             attrs="{'invisible': ['|', '|', '|', '|', '|', ('status', '=', 'creation'), ('status', '=', 'office'), ('status', '=', 'checking1'), ('status', '=', 'checking2'), ('status', '=', 'verification'), ('status', '=', 'checking3')]}">
                             <group col="2">
                                 <group col="1" colspan="2">
@@ -221,9 +219,8 @@
                             </group>
                         </page>
                         <page name="changes_qms"
-                            string="8. CHANGES TO THE QUALITY MANAGEMENT SYSTEM IF NECESSARY"
-                            attrs="{'invisible': ['|', '|', '|', '|', '|', ('status', '=', 'creation'), ('status', '=', 'office'), ('status', '=', 'checking1'), ('status', '=', 'checking2'), ('status', '=', 'verification'), ('status', '=', 'checking3')]}"
-                            help="policy, procedure, job descriptions, etc.">
+                            string="8. CHANGES TO THE QUALITY MANAGEMENT SYSTEM (If Necessary)"
+                            attrs="{'invisible': ['|', '|', '|', '|', '|', ('status', '=', 'creation'), ('status', '=', 'office'), ('status', '=', 'checking1'), ('status', '=', 'checking2'), ('status', '=', 'verification'), ('status', '=', 'checking3')]}">
                             <group col="2">
                                 <group col="1" colspan="2">
                                     <field name="changes_to_qms"
