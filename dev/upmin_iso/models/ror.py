@@ -59,6 +59,17 @@ class ROR(models.Model):
     )
 
 
+    def action_export_xlsx(self):
+        wizard = self.env["upmin_iso.ror_export_wizard"].create({"ror_id": self.id})
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Export ROR",
+            "res_model": "upmin_iso.ror_export_wizard",
+            "res_id": wizard.id,
+            "view_mode": "form",
+            "target": "new",
+        }
+
     def action_import_from_swot(self):
         for rec in self:
             if not rec.related_swot:

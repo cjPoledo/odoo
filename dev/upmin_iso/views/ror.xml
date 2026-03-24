@@ -6,6 +6,12 @@
         <field name="arch" type="xml">
             <form string="">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button string="Export to XLSX" type="object"
+                            name="action_export_xlsx"
+                            class="oe_stat_button" icon="fa-file-excel-o"
+                            attrs="{'invisible': [('id', '=', False)]}" />
+                    </div>
                     <group>
                         <field name="office" attrs="{'readonly':[('id','!=', False)]}" />
                         <field name="related_swot" />

@@ -19,6 +19,7 @@
         "views/audit_info.xml",
         "views/ccar.xml",
         "views/ror.xml",
+        "views/ror_export_wizard.xml",
         "views/menu.xml",
         "report/ccar_report_template.xml",
     ],
