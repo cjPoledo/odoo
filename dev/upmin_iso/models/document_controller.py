@@ -19,6 +19,7 @@ class DocumentController(models.Model):
         store=True,
     )
     trained = fields.Boolean(string="Trained", default=False)
+    is_unit_head = fields.Boolean(string="Unit Head", default=False)
     have_doc_control_perms = fields.Boolean(
         string="Have Document Control Permissions?",
         readonly=True,

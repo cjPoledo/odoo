@@ -11,6 +11,7 @@
                         <field name="email" widget="email" />
                         <field name="office" />
                         <field name="trained" />
+                        <field name="is_unit_head" groups="upmin_iso.group_iso_staff" />
                         <field name="have_doc_control_perms" groups="upmin_iso.group_iso_staff" />
                     </group>
                 </sheet>
@@ -27,6 +28,7 @@
                 <field name="email" widget="email" />
                 <field name="office" />
                 <field name="trained" />
+                <field name="is_unit_head" groups="upmin_iso.group_iso_staff" />
             </tree>
         </field>
     </record>

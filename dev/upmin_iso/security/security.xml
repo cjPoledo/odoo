@@ -174,4 +174,21 @@
         <field name="perm_write" eval="1" />
     </record>
 
+
+    <record id="rule_document_controller_staff_all" model="ir.rule">
+        <field name="name">Document Controller: Staff See All</field>
+        <field name="model_id" ref="model_upmin_iso_document_controller" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <record id="rule_document_controller_general_trained_only" model="ir.rule">
+        <field name="name">Document Controller: Non-Staff See Trained Only</field>
+        <field name="model_id" ref="model_upmin_iso_document_controller" />
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="domain_force">[('trained', '=', True)]</field>
+        <field name="perm_read" eval="1" />
+    </record>
+
 </odoo>
