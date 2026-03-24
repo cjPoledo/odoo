@@ -11,6 +11,11 @@ class RORRating(models.Model):
     issue = fields.Many2one(
         comodel_name="upmin_iso.swot_line", string="Issue", required=True, readonly=True
     )
+    office_name = fields.Char(
+        string="Office",
+        compute="_compute_office",
+        store=True,
+    )
     issue_description = fields.Text(
         string="Issue Description", related="issue.description", readonly=True
     )
@@ -123,13 +128,15 @@ class RORRating(models.Model):
         string="Benefit Severity",
     )
     risk_rating = fields.Integer(
-        string="Risk Rating", readonly=True, compute="_compute_risk_rating", store=True
+        string="Risk Rating", readonly=True, compute="_compute_risk_rating", store=True,
+        group_operator=False,
     )
     opportunity_rating = fields.Integer(
         string="Opportunity Rating",
         readonly=True,
         compute="_compute_opportunity_rating",
         store=True,
+        group_operator=False,
     )
     risk_conclusion = fields.Selection(
         string="Risk Conclusion",
@@ -215,6 +222,16 @@ class RORRating(models.Model):
             "A rating for this issue with the same review date already exists.",
         )
     ]
+
+    @api.depends("issue.ror_id.office", "issue.swot_id.office")
+    def _compute_office(self):
+        for rec in self:
+            if rec.issue.ror_id:
+                rec.office_name = rec.issue.ror_id.office.name
+            elif rec.issue.swot_id:
+                rec.office_name = rec.issue.swot_id.office.name
+            else:
+                rec.office_name = False
 
     @api.depends("risk_likelihood", "risk_frequency", "consequence_severity")
     def _compute_risk_rating(self):

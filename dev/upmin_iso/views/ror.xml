@@ -205,5 +205,44 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <record id="upmin_iso.significant_risks_view_tree" model="ir.ui.view">
+        <field name="name">upmin_iso.significant_risks.view.tree</field>
+        <field name="model">upmin_iso.ror_rating</field>
+        <field name="arch" type="xml">
+            <tree string="Significant Risks">
+                <field name="review_date" />
+                <field name="office_name" />
+                <field name="issue_description" />
+                <field name="risk_rating" />
+                <field name="risk_required_action" />
+                <field name="risk_responsible" />
+                <field name="risk_due_date" />
+                <field name="risk_status" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="upmin_iso.significant_risks_search" model="ir.ui.view">
+        <field name="name">upmin_iso.significant_risks.search</field>
+        <field name="model">upmin_iso.ror_rating</field>
+        <field name="arch" type="xml">
+            <search>
+                <group expand="1" string="Group By">
+                    <filter name="group_by_review_date" string="Quarter" context="{'group_by': 'review_date'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="upmin_iso.significant_risks_action" model="ir.actions.act_window">
+        <field name="name">Significant Risks (Quarterly)</field>
+        <field name="res_model">upmin_iso.ror_rating</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('risk_conclusion', '=', 'significant')]</field>
+        <field name="context">{"search_default_group_by_review_date": 1}</field>
+        <field name="search_view_id" ref="upmin_iso.significant_risks_search" />
+        <field name="view_id" ref="upmin_iso.significant_risks_view_tree" />
+    </record>
+
 
 </odoo>
