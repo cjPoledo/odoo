@@ -58,4 +58,3 @@ class TOWSLine(models.Model):
                 lines |= getattr(swot, field_name)
 
             rec.allowed_swot_line_ids = lines
-            print("Allowed SWOT Lines:", rec.allowed_swot_line_ids)
