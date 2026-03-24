@@ -54,6 +54,13 @@ class AuditFinding(models.Model):
     def name_get(self):
         result = []
         for record in self:
-            name = f"{record.audit_info.office_to_audit.name}({record.rating}) - {record.clause.clause_number} {record.clause.clause_title}"
+            office = record.audit_info.office_to_audit.name or ""
+            rating = record.rating or ""
+            clause = (
+                f"{record.clause.clause_number} {record.clause.clause_title}".strip()
+                if record.clause
+                else ""
+            )
+            name = f"{office} ({rating}) - {clause}" if clause else f"{office} ({rating})"
             result.append((record.id, name))
         return result
