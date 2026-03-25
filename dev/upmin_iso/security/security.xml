@@ -29,10 +29,14 @@
     </record>
 
     <record id="rule_office_ror_staff" model="ir.rule">
-        <field name="name">Access ROR: Staff Full Access</field>
+        <field name="name">Access ROR: Staff Read All</field>
         <field name="model_id" ref="model_upmin_iso_ror" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]" />
         <field name="domain_force">[(1,'=',1)]</field>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
     </record>
 
     <record id="rule_audit_info_doc_controller" model="ir.rule">
@@ -189,6 +193,113 @@
         <field name="groups" eval="[(4, ref('base.group_user'))]"/>
         <field name="domain_force">[('trained', '=', True)]</field>
         <field name="perm_read" eval="1" />
+    </record>
+
+    <!-- ROR Rating: Staff read all -->
+    <record id="rule_ror_rating_staff" model="ir.rule">
+        <field name="name">ISO Staff: ROR Rating Read All</field>
+        <field name="model_id" ref="model_upmin_iso_ror_rating" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+
+    <!-- ROR Rating: DC restricted to own office (via issue → ror/swot → office) -->
+    <record id="rule_ror_rating_doc_controller" model="ir.rule">
+        <field name="name">Doc Controller: ROR Rating Own Office Only</field>
+        <field name="model_id" ref="model_upmin_iso_ror_rating" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
+        <field name="domain_force">['|',
+            ('issue.ror_id.office', '=', user.employee_id.department_id.id),
+            ('issue.swot_id.office', '=', user.employee_id.department_id.id)]</field>
+    </record>
+
+    <!-- Audit Finding: Staff read all -->
+    <record id="rule_audit_finding_staff" model="ir.rule">
+        <field name="name">ISO Staff: Audit Finding Read All</field>
+        <field name="model_id" ref="model_upmin_iso_audit_finding" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+
+    <!-- Audit Finding: IA restricted to assigned audit_infos -->
+    <record id="rule_audit_finding_internal_auditor" model="ir.rule">
+        <field name="name">Internal Auditor: Audit Finding Assigned Only</field>
+        <field name="model_id" ref="model_upmin_iso_audit_finding" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_internal_auditor'))]" />
+        <field name="domain_force">[('audit_info.internal_auditors.name.user_id', '=', user.id)]</field>
+    </record>
+
+    <!-- CCAR Corrective Action: Staff read all -->
+    <record id="rule_ccar_corrective_action_staff" model="ir.rule">
+        <field name="name">ISO Staff: CCAR Corrective Action Read All</field>
+        <field name="model_id" ref="model_upmin_iso_ccar_corrective_action" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+
+    <!-- CCAR Corrective Action: DC own office, IA assigned only -->
+    <record id="rule_ccar_corrective_action_doc_controller" model="ir.rule">
+        <field name="name">Doc Controller: CCAR Corrective Action Own Office</field>
+        <field name="model_id" ref="model_upmin_iso_ccar_corrective_action" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
+        <field name="domain_force">[('ccar.office', '=', user.employee_id.department_id.id)]</field>
+    </record>
+
+    <record id="rule_ccar_corrective_action_internal_auditor" model="ir.rule">
+        <field name="name">Internal Auditor: CCAR Corrective Action Assigned Only</field>
+        <field name="model_id" ref="model_upmin_iso_ccar_corrective_action" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_internal_auditor'))]" />
+        <field name="domain_force">[('ccar.auditors.name.user_id', '=', user.id)]</field>
+    </record>
+
+    <!-- CCAR Effectiveness: Staff read all -->
+    <record id="rule_ccar_correction_effectiveness_staff" model="ir.rule">
+        <field name="name">ISO Staff: Correction Effectiveness Read All</field>
+        <field name="model_id" ref="model_upmin_iso_ccar_correction_effectiveness" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+
+    <record id="rule_ccar_corrective_action_effectiveness_staff" model="ir.rule">
+        <field name="name">ISO Staff: Corrective Action Effectiveness Read All</field>
+        <field name="model_id" ref="model_upmin_iso_ccar_corrective_action_effectiveness" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+
+    <!-- CCAR Effectiveness: IA restricted to assigned CCARs -->
+    <record id="rule_ccar_correction_effectiveness_internal_auditor" model="ir.rule">
+        <field name="name">Internal Auditor: Correction Effectiveness Assigned Only</field>
+        <field name="model_id" ref="model_upmin_iso_ccar_correction_effectiveness" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_internal_auditor'))]" />
+        <field name="domain_force">[('ccar.auditors.name.user_id', '=', user.id)]</field>
+    </record>
+
+    <record id="rule_ccar_corrective_action_effectiveness_internal_auditor" model="ir.rule">
+        <field name="name">Internal Auditor: Corrective Action Effectiveness Assigned Only</field>
+        <field name="model_id" ref="model_upmin_iso_ccar_corrective_action_effectiveness" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_internal_auditor'))]" />
+        <field name="domain_force">[('ccar.auditors.name.user_id', '=', user.id)]</field>
     </record>
 
 </odoo>
