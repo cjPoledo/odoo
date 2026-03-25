@@ -11,6 +11,12 @@
                             name="action_export_xlsx"
                             class="oe_stat_button" icon="fa-file-excel-o"
                             attrs="{'invisible': [('id', '=', False)]}" />
+                        <button name="action_generate_quarter_ratings" type="object"
+                            class="oe_stat_button" icon="fa-calendar-plus-o"
+                            attrs="{'invisible': ['|', ('id', '=', False), ('pending_this_quarter', '=', 0)]}">
+                            <field name="pending_this_quarter" widget="statinfo"
+                                string="Pending This Quarter" />
+                        </button>
                     </div>
                     <group>
                         <field name="office" attrs="{'readonly':[('id','!=', False)]}" />
@@ -23,18 +29,34 @@
                     <group>
                         <field name="internal_issues" mode="tree,form"
                             context="{'form_view_ref': 'upmin_iso.swot_line_view_form_ror_direct'}">
-                            <tree>
+                            <tree decoration-danger="fields_missing_count &gt; 0 or current_quarter_rated == 'no'">
                                 <field name="description" />
-                                <field name="fields_status" />
-                                <field name="ratings_status" />
+                                <field name="fields_missing_count" invisible="1" />
+                                <field name="fields_missing_label" string="Fields"
+                                    widget="badge"
+                                    decoration-danger="fields_missing_count &gt; 0" />
+                                <field name="current_quarter_rated" string="This Quarter"
+                                    widget="badge"
+                                    decoration-success="current_quarter_rated == 'complete'"
+                                    decoration-warning="current_quarter_rated == 'incomplete'"
+                                    decoration-danger="current_quarter_rated == 'no'" />
+                                <field name="ratings_status" string="Ratings Summary" />
                             </tree>
                         </field>
                         <field name="external_issues" mode="tree,form"
                             context="{'form_view_ref': 'upmin_iso.swot_line_view_form_ror_direct'}">
-                            <tree>
+                            <tree decoration-danger="fields_missing_count &gt; 0 or current_quarter_rated == 'no'">
                                 <field name="description" />
-                                <field name="fields_status" />
-                                <field name="ratings_status" />
+                                <field name="fields_missing_count" invisible="1" />
+                                <field name="fields_missing_label" string="Fields"
+                                    widget="badge"
+                                    decoration-danger="fields_missing_count &gt; 0" />
+                                <field name="current_quarter_rated" string="This Quarter"
+                                    widget="badge"
+                                    decoration-success="current_quarter_rated == 'complete'"
+                                    decoration-warning="current_quarter_rated == 'incomplete'"
+                                    decoration-danger="current_quarter_rated == 'no'" />
+                                <field name="ratings_status" string="Ratings Summary" />
                             </tree>
                         </field>
                     </group>
@@ -208,9 +230,10 @@
         <field name="name">upmin_iso.ror.view.tree</field>
         <field name="model">upmin_iso.ror</field>
         <field name="arch" type="xml">
-            <tree string="">
+            <tree string="" decoration-warning="pending_this_quarter &gt; 0">
                 <field name="office" />
                 <field name="related_swot" />
+                <field name="pending_this_quarter" string="Pending This Quarter" />
             </tree>
         </field>
     </record>

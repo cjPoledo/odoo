@@ -1,3 +1,5 @@
+from datetime import date as _date
+
 from odoo import models, fields, api
 
 _COPY_FIELDS = [
@@ -41,6 +43,11 @@ class ROR(models.Model):
             else []
         ),
     )
+    pending_this_quarter = fields.Integer(
+        string="Pending This Quarter",
+        compute="_compute_pending_this_quarter",
+    )
+
     internal_issues = fields.One2many(
         comodel_name="upmin_iso.swot_line",
         inverse_name="ror_id",
@@ -58,6 +65,51 @@ class ROR(models.Model):
         help="What could affect the attainment of goals?\nExternal issues are threats.",
     )
 
+
+    def _current_quarter_end(self):
+        today = fields.Date.context_today(self)
+        year = today.year
+        for month, day in [(3, 31), (6, 30), (9, 30), (12, 31)]:
+            q = _date(year, month, day)
+            if q >= today:
+                return q
+        return _date(year + 1, 3, 31)
+
+    def _compute_pending_this_quarter(self):
+        RORRating = self.env["upmin_iso.ror_rating"]
+        for rec in self:
+            q_end = rec._current_quarter_end()
+            issues = rec.internal_issues + rec.external_issues
+            if not issues:
+                rec.pending_this_quarter = 0
+                continue
+            rated_ids = set(
+                RORRating.search([
+                    ("issue", "in", issues.ids),
+                    ("review_date", "=", q_end),
+                ]).mapped("issue").ids
+            )
+            rec.pending_this_quarter = sum(1 for i in issues if i.id not in rated_ids)
+
+    def action_generate_quarter_ratings(self):
+        RORRating = self.env["upmin_iso.ror_rating"]
+        for rec in self:
+            q_end = rec._current_quarter_end()
+            issues = rec.internal_issues + rec.external_issues
+            if not issues:
+                continue
+            existing_ids = set(
+                RORRating.search([
+                    ("issue", "in", issues.ids),
+                    ("review_date", "=", q_end),
+                ]).mapped("issue").ids
+            )
+            to_create = [
+                {"issue": issue.id, "review_date": q_end}
+                for issue in issues if issue.id not in existing_ids
+            ]
+            if to_create:
+                RORRating.create(to_create)
 
     @api.model_create_multi
     def create(self, vals_list):

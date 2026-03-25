@@ -76,6 +76,21 @@ class SWOTLine(models.Model):
     ratings_status = fields.Text(
         string="Ratings Status", compute="_compute_ratings_status",
     )
+    fields_missing_count = fields.Integer(
+        string="Fields Missing", compute="_compute_fields_missing_count", store=True,
+    )
+    fields_missing_label = fields.Char(
+        string="Fields Missing", compute="_compute_fields_missing_label",
+    )
+    current_quarter_rated = fields.Selection(
+        selection=[
+            ("complete", "Completed"),
+            ("incomplete", "In Progress"),
+            ("no", "Not Rated"),
+        ],
+        string="This Quarter",
+        compute="_compute_current_quarter_rated",
+    )
 
     _HTML_FIELDS = {"compliance"}
 
@@ -116,23 +131,87 @@ class SWOTLine(models.Model):
 
     @api.depends("ratings", "ratings.progress", "ratings.review_date", "ratings.risk_conclusion")
     def _compute_ratings_status(self):
+        from datetime import date as _date
+
+        def past_required_quarters(create_date):
+            """Quarter-ends that have already passed since the issue was created."""
+            today = _date.today()
+            result = []
+            for year in range(create_date.year, today.year + 1):
+                for month, day in [(3, 31), (6, 30), (9, 30), (12, 31)]:
+                    q = _date(year, month, day)
+                    if q >= create_date and q < today:
+                        result.append(q)
+            return result
+
         for rec in self:
             completed_ratings = rec.ratings.filtered(lambda r: r.progress == 100)
             incomplete_ratings = rec.ratings - completed_ratings
-            status = ""
-            if len(completed_ratings) > 0:
-                status = "Latest review completed: "
+            lines = []
+
+            if completed_ratings:
                 last_date = max(completed_ratings.mapped("review_date"))
-                status += last_date.strftime("%Y-%m-%d")
-                latest_rating = completed_ratings.filtered(
-                    lambda r: r.review_date == last_date
-                )[:1]
-                status += f"\n(Risk is {latest_rating.risk_conclusion})"
+                latest = completed_ratings.filtered(lambda r: r.review_date == last_date)[:1]
+                lines.append(f"Last: {last_date.strftime('%b %d, %Y')} ({latest.risk_conclusion or 'unrated'})")
             else:
-                status = "Risk not yet rated."
-            if len(incomplete_ratings) > 0:
-                status += f"\n{len(incomplete_ratings)} rating(s) incomplete."
-            rec.ratings_status = status
+                lines.append("Never rated.")
+
+            if incomplete_ratings:
+                lines.append(f"Incomplete: {len(incomplete_ratings)}")
+
+            # Skipped: past quarters with no entry at all (not even incomplete)
+            create_date = rec.create_date.date() if rec.create_date else _date.today()
+            all_required = past_required_quarters(create_date)
+            entry_dates = set(rec.ratings.mapped("review_date"))
+            skipped = [q for q in all_required if q not in entry_dates]
+            if skipped:
+                skipped_labels = ", ".join(q.strftime("%b %Y") for q in skipped)
+                lines.append(f"Skipped: {skipped_labels}")
+
+            rec.ratings_status = "\n".join(lines)
+
+    @api.depends(
+        "interested_parties", "needs_and_exp", "compliance", "risks",
+        "opportunities", "consequence", "benefit",
+        "risk_existing_control", "opportunities_existing_control",
+    )
+    def _compute_fields_missing_count(self):
+        field_names = [
+            "interested_parties", "needs_and_exp", "compliance", "risks",
+            "opportunities", "consequence", "benefit",
+            "risk_existing_control", "opportunities_existing_control",
+        ]
+        for rec in self:
+            rec.fields_missing_count = sum(
+                1 for f in field_names if not rec._is_filled(f, rec[f])
+            )
+
+    @api.depends("fields_missing_count")
+    def _compute_fields_missing_label(self):
+        for rec in self:
+            rec.fields_missing_label = f"{rec.fields_missing_count} missing" if rec.fields_missing_count else False
+
+    @api.depends("ratings", "ratings.review_date", "ratings.progress")
+    def _compute_current_quarter_rated(self):
+        from datetime import date as _date
+        today = fields.Date.context_today(self)
+        year = today.year
+        q_end = None
+        for month, day in [(3, 31), (6, 30), (9, 30), (12, 31)]:
+            q = _date(year, month, day)
+            if q >= today:
+                q_end = q
+                break
+        if not q_end:
+            q_end = _date(year + 1, 3, 31)
+        for rec in self:
+            rating = rec.ratings.filtered(lambda r: r.review_date == q_end)[:1]
+            if not rating:
+                rec.current_quarter_rated = "no"
+            elif rating.progress == 100:
+                rec.current_quarter_rated = "complete"
+            else:
+                rec.current_quarter_rated = "incomplete"
 
     @api.constrains("swot_id", "ror_id")
     def _check_parent(self):
