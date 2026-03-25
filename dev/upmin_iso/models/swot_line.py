@@ -77,6 +77,14 @@ class SWOTLine(models.Model):
         string="Ratings Status", compute="_compute_ratings_status",
     )
 
+    _HTML_FIELDS = {"compliance"}
+
+    def _is_filled(self, field_name, value):
+        if field_name in self._HTML_FIELDS:
+            import re
+            return bool(re.sub(r"<[^>]+>", "", str(value or "")).strip())
+        return bool(value)
+
     @api.depends(
         "interested_parties", "needs_and_exp", "compliance", "risks",
         "opportunities", "consequence", "benefit",
@@ -97,7 +105,7 @@ class SWOTLine(models.Model):
                 "opportunities_existing_control",
             ]
             for field_name in field_names:
-                if not rec[field_name]:
+                if not rec._is_filled(field_name, rec[field_name]):
                     field_label = rec._fields[field_name].string
                     status_list.append(field_label)
 

@@ -1,5 +1,13 @@
 from odoo import models, fields, api
 from datetime import date
+import re
+
+
+def _html_is_filled(value):
+    """Return True only if an HTML field contains visible text."""
+    if not value:
+        return False
+    return bool(re.sub(r"<[^>]+>", "", value).strip())
 
 
 class RORRating(models.Model):
@@ -87,45 +95,33 @@ class RORRating(models.Model):
     )
     consequence_severity = fields.Selection(
         selection=[
-            (
-                "4",
-                "4 - Severe/Catastrophic (May result to stoppage of operations, dissolution of program, or irreparable damage to public image or reputation)",
-            ),
-            (
-                "3",
-                "3 - Serious/Major (May result to major disallowances/government/regulatory findings or nonavailment of government benefits, considerable damage to public image or reputation, or major delays in the delivery of outputs)",
-            ),
-            (
-                "2",
-                "2 - Moderate (May result to minor government/regulatory findings or minor delays in the delivery of outputs)",
-            ),
-            (
-                "1",
-                "1 - Low/Insignificant (Not likely to result in client (internal or external) complaints or government/regulatory findings)",
-            ),
+            ("4", "4 - Severe/Catastrophic"),
+            ("3", "3 - Serious/Major"),
+            ("2", "2 - Moderate"),
+            ("1", "1 - Low/Insignificant"),
         ],
         string="Consequence Severity",
+        help=(
+            "4 - Severe/Catastrophic: May result to stoppage of operations, dissolution of program, or irreparable damage to public image or reputation.\n"
+            "3 - Serious/Major: May result to major disallowances/government/regulatory findings or nonavailment of government benefits, considerable damage to public image or reputation, or major delays in delivery of outputs.\n"
+            "2 - Moderate: May result to minor government/regulatory findings or minor delays in delivery of outputs.\n"
+            "1 - Low/Insignificant: Not likely to result in client complaints or government/regulatory findings."
+        ),
     )
     benefit_severity = fields.Selection(
         selection=[
-            (
-                "4",
-                "4 - Highly Advantageous (Significant contribution in meeting at least 75% of objectives/KRAs/KPIs or OPCR)",
-            ),
-            (
-                "3",
-                "3 - Major (Can contribute in meeting 50% of objectives/KRAs/KPIs or OPCR)",
-            ),
-            (
-                "2",
-                "2 - Minor (Can contribute in meeting 25% of objectives/KRAs/KPIs or OPCR)",
-            ),
-            (
-                "1",
-                "1 - Little or No Advantage (Contribution to meeting any objective is not significant)",
-            ),
+            ("4", "4 - Highly Advantageous"),
+            ("3", "3 - Major"),
+            ("2", "2 - Minor"),
+            ("1", "1 - Little or No Advantage"),
         ],
         string="Benefit Severity",
+        help=(
+            "4 - Highly Advantageous: Significant contribution in meeting at least 75% of objectives/KRAs/KPIs or OPCR.\n"
+            "3 - Major: Can contribute in meeting 50% of objectives/KRAs/KPIs or OPCR.\n"
+            "2 - Minor: Can contribute in meeting 25% of objectives/KRAs/KPIs or OPCR.\n"
+            "1 - Little or No Advantage: Contribution to meeting any objective is not significant."
+        ),
     )
     risk_rating = fields.Integer(
         string="Risk Rating", readonly=True, compute="_compute_risk_rating", store=True,
@@ -307,12 +303,15 @@ class RORRating(models.Model):
         ]
         total_fields = len(tracked_fields)
 
+        html_fields = {"risk_status", "opportunity_status"}
         for rec in self:
             filled = 0
             for field in tracked_fields:
-                if rec[field]:  # field has a value
+                value = rec[field]
+                if field in html_fields:
+                    filled += 1 if _html_is_filled(value) else 0
+                elif value:
                     filled += 1
-            # convert to percentage
             rec.progress = int((filled / total_fields) * 100) if total_fields else 0
 
     @api.constrains("review_date")

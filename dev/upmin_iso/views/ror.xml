@@ -142,30 +142,34 @@
         <field name="arch" type="xml">
             <form string="">
                 <sheet>
-                    <group col="1">
+                    <div class="oe_title">
                         <field name="progress" widget="progressbar" />
-                    </group>
+                    </div>
                     <group col="2">
                         <group>
-                            <field name="issue_description" string="Issue" />
-                            <!-- <field name="prev_rating" /> -->
+                            <field name="issue_description" string="Issue" readonly="1" />
                         </group>
                         <group>
                             <field name="review_date" />
-                            <!-- <field name="next_rating" /> -->
                         </group>
                     </group>
                     <notebook>
                         <page name="risk_rating" string="Risk Rating">
-                            <group>
-                                <field name="risks" />
-                                <field name="consequence" />
-                                <field name="risk_existing_control" />
-                                <field name="risk_likelihood" widget="radio" />
-                                <field name="risk_frequency" widget="radio" />
-                                <field name="consequence_severity" widget="radio" />
+                            <group string="Reference (from Issue)">
+                                <field name="risks" readonly="1" />
+                                <field name="consequence" readonly="1" />
+                                <field name="risk_existing_control" readonly="1" />
+                            </group>
+                            <group string="Rating">
+                                <field name="risk_likelihood" />
+                                <field name="risk_frequency" />
+                                <field name="consequence_severity" />
                                 <field name="risk_rating" />
-                                <field name="risk_conclusion" />
+                                <field name="risk_conclusion" widget="badge"
+                                    decoration-danger="risk_conclusion == 'significant'"
+                                    decoration-success="risk_conclusion == 'not significant'" />
+                            </group>
+                            <group string="Action">
                                 <field name="risk_required_action" />
                                 <field name="risk_responsible" />
                                 <field name="risk_due_date" />
@@ -173,15 +177,21 @@
                             </group>
                         </page>
                         <page name="opportunity_rating" string="Opportunity Rating">
-                            <group>
-                                <field name="opportunities" />
-                                <field name="benefit" />
-                                <field name="opportunities_existing_control" />
-                                <field name="opportunity_likelihood" widget="radio" />
-                                <field name="opportunity_frequency" widget="radio" />
-                                <field name="benefit_severity" widget="radio" />
+                            <group string="Reference (from Issue)">
+                                <field name="opportunities" readonly="1" />
+                                <field name="benefit" readonly="1" />
+                                <field name="opportunities_existing_control" readonly="1" />
+                            </group>
+                            <group string="Rating">
+                                <field name="opportunity_likelihood" />
+                                <field name="opportunity_frequency" />
+                                <field name="benefit_severity" />
                                 <field name="opportunity_rating" />
-                                <field name="opportunity_conclusion" />
+                                <field name="opportunity_conclusion" widget="badge"
+                                    decoration-danger="opportunity_conclusion == 'significant'"
+                                    decoration-success="opportunity_conclusion == 'not significant'" />
+                            </group>
+                            <group string="Action">
                                 <field name="opportunity_required_action" />
                                 <field name="opportunity_responsible" />
                                 <field name="opportunity_due_date" />
