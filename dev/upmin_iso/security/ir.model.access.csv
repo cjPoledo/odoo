@@ -40,3 +40,4 @@ upmin_iso_swot_line_access_doc_controller,UPMin ISO SWOT Line Access - Doc Contr
 upmin_iso_tows_line_access_doc_controller,UPMin ISO TOWS Line Access - Doc Controller,model_upmin_iso_tows_line,group_iso_doc_controller,1,1,1,1
 upmin_iso_ror_export_wizard_access_staff,UPMin ISO ROR Export Wizard - Staff,model_upmin_iso_ror_export_wizard,group_iso_staff,1,1,1,1
 upmin_iso_ror_export_wizard_access_doc_controller,UPMin ISO ROR Export Wizard - Doc Controller,model_upmin_iso_ror_export_wizard,group_iso_doc_controller,1,1,1,1
+upmin_iso_significant_risks_export_wizard_access_staff,UPMin ISO Significant Risks Export Wizard - Staff,model_upmin_iso_significant_risks_export_wizard,group_iso_staff,1,1,1,1

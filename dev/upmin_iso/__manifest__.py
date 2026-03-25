@@ -20,6 +20,7 @@
         "views/ccar.xml",
         "views/ror.xml",
         "views/ror_export_wizard.xml",
+        "views/significant_risks_export_wizard.xml",
         "views/menu.xml",
         "report/ccar_report_template.xml",
     ],

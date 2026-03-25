@@ -1,6 +1,7 @@
 from . import ror
 from . import ror_rating
 from . import ror_export_wizard
+from . import significant_risks_export_wizard
 from . import audit_period
 from . import audit_info
 from . import iso_clause
