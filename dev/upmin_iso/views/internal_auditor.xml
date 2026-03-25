@@ -12,7 +12,10 @@
                         <field name="office" />
                         <field name="trained" />
                         <field name="certified" />
-                        <field name="have_internal_auditor_perms" groups="upmin_iso.group_iso_staff" />
+                        <field name="perms_label" widget="badge"
+                            decoration-success="perms_label == 'active'"
+                            decoration-danger="perms_label == 'inactive'"
+                            groups="upmin_iso.group_iso_staff" />
                     </group>
                 </sheet>
             </form>
@@ -23,7 +26,9 @@
         <field name="name">upmin_iso.internal_auditor.view.tree</field>
         <field name="model">upmin_iso.internal_auditor</field>
         <field name="arch" type="xml">
-            <tree string="">
+            <tree string=""
+                decoration-muted="not trained"
+                decoration-success="certified">
                 <field name="name" />
                 <field name="email" widget="email" />
                 <field name="office" />

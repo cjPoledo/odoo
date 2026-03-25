@@ -12,7 +12,10 @@
                         <field name="office" />
                         <field name="trained" />
                         <field name="is_unit_head" groups="upmin_iso.group_iso_staff" />
-                        <field name="have_doc_control_perms" groups="upmin_iso.group_iso_staff" />
+                        <field name="perms_label" widget="badge"
+                            decoration-success="perms_label == 'active'"
+                            decoration-danger="perms_label == 'inactive'"
+                            groups="upmin_iso.group_iso_staff" />
                     </group>
                 </sheet>
             </form>
@@ -23,7 +26,8 @@
         <field name="name">upmin_iso.document_controller.view.tree</field>
         <field name="model">upmin_iso.document_controller</field>
         <field name="arch" type="xml">
-            <tree string="">
+            <tree string=""
+                decoration-muted="not trained">
                 <field name="name" />
                 <field name="email" widget="email" />
                 <field name="office" />

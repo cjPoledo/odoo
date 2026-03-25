@@ -25,6 +25,12 @@ class DocumentController(models.Model):
         readonly=True,
         compute="_compute_have_doc_control_perms",
     )
+    perms_label = fields.Selection(
+        selection=[("active", "Access Active"), ("inactive", "No Access")],
+        string="System Access",
+        readonly=True,
+        compute="_compute_have_doc_control_perms",
+    )
 
     _sql_constraints = [
         (
@@ -38,7 +44,9 @@ class DocumentController(models.Model):
         group = self.env.ref("upmin_iso.group_iso_doc_controller")
         for rec in self:
             user = rec.name.user_id
-            rec.have_doc_control_perms = user and group in user.groups_id
+            has = bool(user and group in user.groups_id)
+            rec.have_doc_control_perms = has
+            rec.perms_label = "active" if has else "inactive"
 
     def _grant_group(self, user):
         group = self.env.ref("upmin_iso.group_iso_doc_controller")
