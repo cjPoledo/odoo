@@ -103,10 +103,13 @@
             <tree string="">
                 <field name="auditor" />
                 <field name="clause" />
-                <field name="question" />
-                <field name="evidence" />
-                <field name="rating" />
-                <field name="statement" />
+                <field name="rating" widget="badge"
+                    decoration-success="rating == 'c'"
+                    decoration-danger="rating == 'nc'"
+                    decoration-warning="rating == 'ofi'" />
+                <field name="question" optional="show" />
+                <field name="evidence" optional="hide" />
+                <field name="statement" optional="hide" />
             </tree>
         </field>
     </record>
