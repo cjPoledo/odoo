@@ -1,5 +1,5 @@
 from datetime import date
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class SWOT(models.Model):
@@ -49,6 +49,19 @@ class SWOT(models.Model):
         context={"default_swot_type": "T"},
         domain=[("swot_type", "=", "T")],
     )
+
+    strengths_count = fields.Integer(compute="_compute_counts", store=True)
+    weaknesses_count = fields.Integer(compute="_compute_counts", store=True)
+    opportunities_count = fields.Integer(compute="_compute_counts", store=True)
+    threats_count = fields.Integer(compute="_compute_counts", store=True)
+
+    @api.depends("strengths", "weaknesses", "opportunities", "threats")
+    def _compute_counts(self):
+        for rec in self:
+            rec.strengths_count = len(rec.strengths)
+            rec.weaknesses_count = len(rec.weaknesses)
+            rec.opportunities_count = len(rec.opportunities)
+            rec.threats_count = len(rec.threats)
 
     _sql_constraints = [
         (

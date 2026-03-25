@@ -13,36 +13,37 @@
                         <group col="1">
                             <field name="office" />
                         </group>
-                        <h2 colspan="2">SWOT Analysis</h2>
-                        <group col="2">
+                    </group>
+                    <group col="2">
+                        <group string="Strengths">
                             <field name="strengths" nolabel="1" colspan="2">
                                 <tree editable="bottom">
                                     <field name="label" />
-                                    <field name="description" string="Strengths" />
+                                    <field name="description" string="Strength" />
                                 </tree>
                             </field>
                         </group>
-                        <group col="2">
+                        <group string="Weaknesses">
                             <field name="weaknesses" nolabel="1" colspan="2">
                                 <tree editable="bottom">
                                     <field name="label" />
-                                    <field name="description" string="Weaknesses" />
+                                    <field name="description" string="Weakness" />
                                 </tree>
                             </field>
                         </group>
-                        <group col="2">
+                        <group string="Opportunities">
                             <field name="opportunities" nolabel="1" colspan="2">
                                 <tree editable="bottom">
                                     <field name="label" />
-                                    <field name="description" string="Opportunities" />
+                                    <field name="description" string="Opportunity" />
                                 </tree>
                             </field>
                         </group>
-                        <group col="2">
+                        <group string="Threats">
                             <field name="threats" nolabel="1" colspan="2">
                                 <tree editable="bottom">
                                     <field name="label" />
-                                    <field name="description" string="Threats" />
+                                    <field name="description" string="Threat" />
                                 </tree>
                             </field>
                         </group>
@@ -59,6 +60,10 @@
             <tree string="">
                 <field name="year" />
                 <field name="office" />
+                <field name="strengths_count" string="S" />
+                <field name="weaknesses_count" string="W" />
+                <field name="opportunities_count" string="O" />
+                <field name="threats_count" string="T" />
             </tree>
         </field>
     </record>
