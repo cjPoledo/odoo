@@ -7,10 +7,16 @@
         <field name="arch" type="xml">
             <form string="">
                 <sheet>
+                    <group col="2">
+                        <group>
+                            <field name="clause_number" />
+                        </group>
+                        <group>
+                            <field name="clause_title" />
+                        </group>
+                    </group>
                     <group>
-                        <field name="clause_number" />
-                        <field name="clause_title" />
-                        <field name="clause_description" />
+                        <field name="clause_description" colspan="2" />
                     </group>
                 </sheet>
             </form>
@@ -24,7 +30,6 @@
             <tree string="">
                 <field name="clause_number" />
                 <field name="clause_title" />
-                <field name="clause_description" />
             </tree>
         </field>
     </record>

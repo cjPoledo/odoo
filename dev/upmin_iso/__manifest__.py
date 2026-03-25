@@ -10,6 +10,7 @@
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
+        "data/iso_clause_data.xml",
         "views/internal_auditor.xml",
         "views/document_controller.xml",
         "views/swot.xml",
