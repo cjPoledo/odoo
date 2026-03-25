@@ -21,7 +21,7 @@
     <record id="action_report_upmin_iso_ccar_report" model="ir.actions.report">
         <field name="name">Export CCAR</field>
         <field name="model">upmin_iso.ccar</field>
-        <field name="report_type">qweb-html</field>
+        <field name="report_type">qweb-pdf</field>
         <field name="report_name">upmin_iso.ccar_report_template_doc</field>
         <field name="report_file">upmin_iso.ccar_report_template_doc</field>
         <field name="print_report_name">'CCAR-%s (%s)' % (object.ccar_no, object.office.name)</field>
