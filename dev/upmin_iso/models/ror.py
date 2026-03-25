@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 _COPY_FIELDS = [
     "description",
@@ -58,6 +58,33 @@ class ROR(models.Model):
         help="What could affect the attainment of goals?\nExternal issues are threats.",
     )
 
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for rec in records:
+            rec._subscribe_default_followers()
+        return records
+
+    def _subscribe_default_followers(self):
+        partner_ids = set()
+
+        # Document controllers in the same office (sudo to bypass trained-only rules)
+        doc_controllers = self.env["upmin_iso.document_controller"].sudo().search(
+            [("office", "=", self.office.id)]
+        )
+        for dc in doc_controllers:
+            if dc.name.user_id and dc.name.user_id.partner_id:
+                partner_ids.add(dc.name.user_id.partner_id.id)
+
+        # All ISO Staff
+        staff_group = self.env.ref("upmin_iso.group_iso_staff")
+        for user in staff_group.users:
+            if user.partner_id:
+                partner_ids.add(user.partner_id.id)
+
+        if partner_ids:
+            self.message_subscribe(partner_ids=list(partner_ids))
 
     def action_export_xlsx(self):
         wizard = self.env["upmin_iso.ror_export_wizard"].create({"ror_id": self.id})
