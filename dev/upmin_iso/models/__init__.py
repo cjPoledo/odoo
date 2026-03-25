@@ -1,3 +1,4 @@
+from . import hr_department
 from . import ror
 from . import ror_rating
 from . import ror_export_wizard

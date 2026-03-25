@@ -260,10 +260,36 @@
         </field>
     </record>
 
+    <record id="upmin_iso.ccar_search" model="ir.ui.view">
+        <field name="name">upmin_iso.ccar.search</field>
+        <field name="model">upmin_iso.ccar</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="ccar_no" />
+                <field name="office" />
+                <field name="audit_period" />
+                <separator />
+                <filter name="filter_open" string="Open"
+                    domain="[('status', '!=', 'completed')]" />
+                <filter name="filter_completed" string="Completed"
+                    domain="[('status', '=', 'completed')]" />
+                <group expand="1" string="Group By">
+                    <filter name="group_by_audit_period" string="Audit Period"
+                        context="{'group_by': 'audit_period'}" />
+                    <filter name="group_by_status" string="Status"
+                        context="{'group_by': 'status'}" />
+                    <filter name="group_by_office" string="Office"
+                        context="{'group_by': 'office'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="upmin_iso.ccar_action" model="ir.actions.act_window">
         <field name="name">Correction and Corrective Action Report</field>
         <field name="res_model">upmin_iso.ccar</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{"search_default_filter_open": 1, "search_default_group_by_audit_period": 1}</field>
     </record>
 
 </odoo>

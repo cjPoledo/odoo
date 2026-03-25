@@ -9,12 +9,13 @@ class TOWS(models.Model):
     _order = "swot"
 
     swot = fields.Many2one(comodel_name="upmin_iso.swot", string="SWOT", required=True)
-    year = fields.Char(string="Year", related="swot.year", readonly=True)
+    year = fields.Char(string="Year", related="swot.year", readonly=True, store=True)
     office = fields.Many2one(
         comodel_name="hr.department",
         string="Office",
         related="swot.office",
         readonly=True,
+        store=True,
     )
     so = fields.One2many(
         comodel_name="upmin_iso.tows_line",

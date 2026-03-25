@@ -127,6 +127,7 @@ class CCAR(models.Model):
         string="Office",
         readonly=True,
         related="related_nc.audit_info.office_to_audit",
+        store=True,
     )
 
     # Immediate Action/Correction Taken

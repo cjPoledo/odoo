@@ -215,6 +215,19 @@
         </field>
     </record>
 
+    <record id="upmin_iso.ror_search" model="ir.ui.view">
+        <field name="name">upmin_iso.ror.search</field>
+        <field name="model">upmin_iso.ror</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="office" />
+                <group expand="1" string="Group By">
+                    <filter name="group_by_office" string="Office" context="{'group_by': 'office'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="upmin_iso.ror_action" model="ir.actions.act_window">
         <field name="name">Risk and Opportunities Register</field>
         <field name="res_model">upmin_iso.ror</field>
@@ -243,6 +256,8 @@
         <field name="model">upmin_iso.ror_rating</field>
         <field name="arch" type="xml">
             <search>
+                <field name="office_name" string="Office" />
+                <field name="issue_description" string="Issue" />
                 <group expand="1" string="Group By">
                     <filter name="group_by_review_date" string="Quarter" context="{'group_by': 'review_date'}" />
                 </group>

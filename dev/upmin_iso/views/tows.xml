@@ -92,10 +92,26 @@
         </field>
     </record>
 
+    <record id="upmin_iso.tows_search" model="ir.ui.view">
+        <field name="name">upmin_iso.tows.search</field>
+        <field name="model">upmin_iso.tows</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="year" />
+                <field name="office" />
+                <group expand="1" string="Group By">
+                    <filter name="group_by_year" string="Year" context="{'group_by': 'year'}" />
+                    <filter name="group_by_office" string="Office" context="{'group_by': 'office'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="upmin_iso.tows_action" model="ir.actions.act_window">
         <field name="name">TOWS Analysis</field>
         <field name="res_model">upmin_iso.tows</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{"search_default_group_by_year": 1}</field>
     </record>
 
 </odoo>
