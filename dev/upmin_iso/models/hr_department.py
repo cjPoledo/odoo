@@ -3,7 +3,11 @@ from odoo import models
 
 class HrDepartment(models.Model):
     _inherit = "hr.department"
-    _rec_name = "name"
+
+    def name_get(self):
+        if self.env.context.get("upmin_iso_dept_short"):
+            return [(dept.id, dept.name) for dept in self]
+        return super().name_get()
 
 
 class HrEmployee(models.Model):
@@ -18,4 +22,9 @@ class HrEmployee(models.Model):
                 )
                 if dc:
                     dc._grant_group(emp.user_id)
+                ia = self.env["upmin_iso.internal_auditor"].search(
+                    [("name", "=", emp.id)], limit=1
+                )
+                if ia:
+                    ia._grant_group(emp.user_id)
         return result

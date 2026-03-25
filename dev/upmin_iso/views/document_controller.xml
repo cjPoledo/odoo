@@ -59,6 +59,7 @@
         <field name="name">Document Controllers</field>
         <field name="res_model">upmin_iso.document_controller</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{"upmin_iso_dept_short": True}</field>
     </record>
 
 </odoo>

@@ -232,6 +232,7 @@
         <field name="name">Risk and Opportunities Register</field>
         <field name="res_model">upmin_iso.ror</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{"upmin_iso_dept_short": True}</field>
     </record>
 
     <record id="upmin_iso.significant_risks_view_tree" model="ir.ui.view">
@@ -270,7 +271,7 @@
         <field name="res_model">upmin_iso.ror_rating</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('risk_conclusion', '=', 'significant')]</field>
-        <field name="context">{"search_default_group_by_review_date": 1}</field>
+        <field name="context">{"search_default_group_by_review_date": 1, "upmin_iso_dept_short": True}</field>
         <field name="search_view_id" ref="upmin_iso.significant_risks_search" />
         <field name="view_id" ref="upmin_iso.significant_risks_view_tree" />
     </record>
