@@ -28,58 +28,45 @@
                         <group col="1">
                             <field name="office" />
                         </group>
-                        <h2 colspan="2">TOWS Analysis</h2>
-                        <p colspan="2">
-                            <strong>Steps:</strong><br/>
-                            1. Assess your department/unit of your internal issues (strengths and weaknesses).<br/>
-                            2. Assess your department/unit of your external issues (opportunities and threats).<br/>
-                            3. Identify actionable strategies.<br/>
-                            3.1 Match strengths and opportunities (SO).<br/>
-                            How can you use your strengths to take advantage of opportunities?<br/>
-                            3.2 Match strengths and threats (ST).<br/>
-                            How can you use your strengths to minimize threats? <br/>
-                            3.3 Match opportunities and weaknesses (OW).<br/>
-                            How can you take advantage of opportunities to reduce your weaknesses? <br/>
-                            4. Match weaknesses and threats (WT).<br/>
-                            How can you reduce your weaknesses to avoid threats?<br/>
-                            5. In identifying external issues, you may look at issues related to political, economic, social, technological, legal and environmental. <br/><br/>
-
-                            Note: It's not necessary to match all first or second..e.g. S1 with O1 or S1 with T1. It can be between S1 and O2 or S2 with T3. <br/>
-                            Also, the number of actional strategies is dependent on the number of matches that can be made between two quadrants. 
-                        </p>
-                        <group col="2">
-                            <field name="so" nolabel="1" colspan="2"
-                                attrs="{'invisible': [('id','=',False)]}">
+                    </group>
+                    <div class="alert alert-info" role="alert" attrs="{'invisible': [('id','!=',False)]}">
+                        <strong>How to use TOWS:</strong> Select a SWOT above and save first, then add strategies below by matching quadrant pairs.
+                        SO — use strengths to exploit opportunities.
+                        ST — use strengths to minimise threats.
+                        WO — exploit opportunities to overcome weaknesses.
+                        WT — reduce weaknesses to avoid threats.
+                        Matches don't need to be sequential (e.g. S1 can match O3).
+                    </div>
+                    <group col="2" attrs="{'invisible': [('id','=',False)]}">
+                        <group string="SO — Strengths × Opportunities">
+                            <field name="so" nolabel="1" colspan="2">
                                 <tree>
                                     <field name="related_swot_line_ids" widget="many2many_tags" />
-                                    <field name="description" string="Strengths-Opportunities" />
+                                    <field name="description" string="Strategy" />
                                 </tree>
                             </field>
                         </group>
-                        <group col="2">
-                            <field name="wo" nolabel="1" colspan="2"
-                                attrs="{'invisible': [('id','=',False)]}">
+                        <group string="WO — Weaknesses × Opportunities">
+                            <field name="wo" nolabel="1" colspan="2">
                                 <tree>
                                     <field name="related_swot_line_ids" widget="many2many_tags" />
-                                    <field name="description" string="Weaknesses-Opportunities" />
+                                    <field name="description" string="Strategy" />
                                 </tree>
                             </field>
                         </group>
-                        <group col="2">
-                            <field name="st" nolabel="1" colspan="2"
-                                attrs="{'invisible': [('id','=',False)]}">
+                        <group string="ST — Strengths × Threats">
+                            <field name="st" nolabel="1" colspan="2">
                                 <tree>
                                     <field name="related_swot_line_ids" widget="many2many_tags" />
-                                    <field name="description" string="Strengths-Threats" />
+                                    <field name="description" string="Strategy" />
                                 </tree>
                             </field>
                         </group>
-                        <group col="2">
-                            <field name="wt" nolabel="1" colspan="2"
-                                attrs="{'invisible': [('id','=',False)]}">
+                        <group string="WT — Weaknesses × Threats">
+                            <field name="wt" nolabel="1" colspan="2">
                                 <tree>
                                     <field name="related_swot_line_ids" widget="many2many_tags" />
-                                    <field name="description" string="Weaknesses-Threats" />
+                                    <field name="description" string="Strategy" />
                                 </tree>
                             </field>
                         </group>
