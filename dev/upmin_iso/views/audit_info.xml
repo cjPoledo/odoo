@@ -72,7 +72,6 @@
                 <field name="c" decoration-success="True" />
                 <field name="nc" decoration-danger="True" />
                 <field name="ofi" decoration-warning="True" />
-                <field name="audit_findings" />
             </tree>
         </field>
     </record>
