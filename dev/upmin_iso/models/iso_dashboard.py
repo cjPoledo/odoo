@@ -30,6 +30,8 @@ class IsoDashboard(models.TransientModel):
     # ── Audit (current period) ─────────────────────────────────────────────
     current_period = fields.Many2one("upmin_iso.audit_period", compute="_compute_all")
     has_period = fields.Boolean(compute="_compute_all")
+    audit_offices = fields.Integer(compute="_compute_all")
+    year_offices = fields.Integer(compute="_compute_all")
     audit_c = fields.Integer(compute="_compute_all")
     audit_nc = fields.Integer(compute="_compute_all")
     audit_ofi = fields.Integer(compute="_compute_all")
@@ -81,8 +83,12 @@ class IsoDashboard(models.TransientModel):
         # Current audit period (latest)
         period = Period.search([], order="audit_start_date desc", limit=1)
 
+        audit_offices = 0
         audit_c = audit_nc = audit_ofi = 0
         if period:
+            audit_offices = self.env["upmin_iso.audit_info"].search_count(
+                [("audit_period", "=", period.id)]
+            )
             findings = Finding.search([("audit_info.audit_period", "=", period.id)])
             audit_c = sum(1 for f in findings if f.rating == "c")
             audit_nc = sum(1 for f in findings if f.rating == "nc")
@@ -107,6 +113,9 @@ class IsoDashboard(models.TransientModel):
         year_c = sum(1 for f in year_findings if f.rating == "c")
         year_nc = sum(1 for f in year_findings if f.rating == "nc")
         year_ofi = sum(1 for f in year_findings if f.rating == "ofi")
+        year_offices = self.env["upmin_iso.audit_info"].search_count(
+            [("audit_period", "in", year_periods.ids)]
+        ) if year_periods else 0
 
         # NCs without a CCAR
         all_nc = Finding.search([("rating", "=", "nc")])
@@ -152,6 +161,7 @@ class IsoDashboard(models.TransientModel):
             rec.ccar_completed_year = ccar_completed_year
             rec.current_period = period.id if period else False
             rec.has_period = bool(period)
+            rec.audit_offices = audit_offices
             rec.audit_c = audit_c
             rec.audit_nc = audit_nc
             rec.audit_ofi = audit_ofi
@@ -160,6 +170,7 @@ class IsoDashboard(models.TransientModel):
             rec.year_c = year_c
             rec.year_nc = year_nc
             rec.year_ofi = year_ofi
+            rec.year_offices = year_offices
             rec.ror_pending_offices = ror_pending_offices
             rec.significant_risks = significant_risks
             rec.ror_with_skipped = ror_with_skipped
@@ -245,6 +256,19 @@ class IsoDashboard(models.TransientModel):
             "context": {"upmin_iso_dept_short": True},
         }
 
+    def action_audit_offices(self):
+        period = self.env["upmin_iso.audit_period"].search(
+            [], order="audit_start_date desc", limit=1
+        )
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Offices Audited This Period",
+            "res_model": "upmin_iso.audit_info",
+            "view_mode": "tree,form",
+            "domain": [("audit_period", "=", period.id)] if period else [("id", "=", False)],
+            "context": {"upmin_iso_dept_short": True},
+        }
+
     def action_ia_not_assigned(self):
         period = self.env["upmin_iso.audit_period"].search(
             [], order="audit_start_date desc", limit=1
@@ -303,6 +327,16 @@ class IsoDashboard(models.TransientModel):
             "res_model": "upmin_iso.audit_finding",
             "view_mode": "tree,form",
             "domain": [("audit_info.audit_period", "in", self._year_period_ids()), ("rating", "=", "ofi")],
+            "context": {"upmin_iso_dept_short": True},
+        }
+
+    def action_year_offices(self):
+        return {
+            "type": "ir.actions.act_window",
+            "name": f"Offices Audited {_date.today().year}",
+            "res_model": "upmin_iso.audit_info",
+            "view_mode": "tree,form",
+            "domain": [("audit_period", "in", self._year_period_ids())],
             "context": {"upmin_iso_dept_short": True},
         }
 

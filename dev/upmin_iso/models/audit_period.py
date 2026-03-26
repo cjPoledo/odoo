@@ -1,4 +1,5 @@
 from odoo import models, fields
+from odoo.exceptions import UserError
 
 
 class AuditPeriod(models.Model):
@@ -67,6 +68,8 @@ class AuditPeriod(models.Model):
     def action_generate_ccar(self):
         CCAR = self.env["upmin_iso.ccar"]
         for record in self:
+            if not record.related_nc:
+                raise UserError("No Non-Conformities found in this audit period. Nothing to generate.")
             for nc in record.related_nc:
                 year = fields.Date.today().year
                 count = (

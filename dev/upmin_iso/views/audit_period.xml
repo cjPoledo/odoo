@@ -15,7 +15,7 @@
                         class="btn-secondary"
                         confirm="Unfinalize this audit period? Audit schedules and findings will become editable again." />
                     <button name="action_generate_ccar" string="GENERATE CCAR" type="object"
-                        attrs="{'invisible': ['|', ('is_finalized', '=', False), ('ccars', '!=', [])]}"
+                        attrs="{'invisible': ['|', '|', ('is_finalized', '=', False), ('ccars', '!=', []), ('related_nc', '=', [])]}"
                         class="btn-primary"
                         confirm="Generate CCARs for all Non-Conformities in this period? This action will create CCAR records for each NC finding." />
                     <button name="action_undo_generate_ccar" string="UNDO CCAR GENERATION"

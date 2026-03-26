@@ -49,6 +49,10 @@
                     </p>
                     <div class="oe_button_box" name="audit_box"
                         attrs="{'invisible': [('has_period', '=', False)]}">
+                        <button name="action_audit_offices" type="object"
+                            class="oe_stat_button" icon="fa-building">
+                            <field name="audit_offices" widget="statinfo" string="Offices Audited" />
+                        </button>
                         <button class="oe_stat_button" icon="fa-check" style="color: green;">
                             <field name="audit_c" widget="statinfo" string="Conformities" />
                         </button>
@@ -78,6 +82,10 @@
                     <!-- Yearly audit stats -->
                     <div class="o_horizontal_separator mb-3">Internal Audit (This Year)</div>
                     <div class="oe_button_box" name="year_audit_box">
+                        <button name="action_year_offices" type="object"
+                            class="oe_stat_button" icon="fa-building">
+                            <field name="year_offices" widget="statinfo" string="Offices Audited" />
+                        </button>
                         <button name="action_year_c" type="object"
                             class="oe_stat_button" icon="fa-check" style="color: green;">
                             <field name="year_c" widget="statinfo" string="Conformities" />
