@@ -8,6 +8,14 @@
         web_icon="upmin_iso,static/description/icon.svg" />
 
     <menuitem
+        id="dashboard_menu"
+        name="Dashboard"
+        action="upmin_iso.iso_dashboard_action"
+        groups="group_iso_staff"
+        parent="upmin_iso_menu"
+        sequence="10" />
+
+    <menuitem
         id="swot_main_menu"
         name="SWOT"
         groups="group_iso_staff,group_iso_doc_controller"

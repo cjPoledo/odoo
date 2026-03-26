@@ -30,9 +30,14 @@ class CCARCorrectiveActionEffectiveness(models.Model):
 
     def _compute_allowed_verifiers(self):
         for rec in self:
-            if rec.ccar.related_nc and rec.ccar.related_nc.audit_info:
+            ccar = rec.ccar
+            if not ccar:
+                ccar_id = self.env.context.get("default_ccar")
+                if ccar_id:
+                    ccar = self.env["upmin_iso.ccar"].browse(ccar_id)
+            if ccar and ccar.related_nc and ccar.related_nc.audit_info:
                 rec.allowed_verifiers = (
-                    rec.ccar.related_nc.audit_info.internal_auditors.mapped("name")
+                    ccar.related_nc.audit_info.internal_auditors.mapped("name")
                 )
             else:
                 rec.allowed_verifiers = self.env["hr.employee"]

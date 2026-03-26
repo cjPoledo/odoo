@@ -83,13 +83,14 @@ class ROR(models.Model):
             if not issues:
                 rec.pending_this_quarter = 0
                 continue
-            rated_ids = set(
+            completed_ids = set(
                 RORRating.search([
                     ("issue", "in", issues.ids),
                     ("review_date", "=", q_end),
+                    ("progress", "=", 100),
                 ]).mapped("issue").ids
             )
-            rec.pending_this_quarter = sum(1 for i in issues if i.id not in rated_ids)
+            rec.pending_this_quarter = sum(1 for i in issues if i.id not in completed_ids)
 
     def action_generate_quarter_ratings(self):
         RORRating = self.env["upmin_iso.ror_rating"]

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="upmin_iso.iso_dashboard_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.iso_dashboard.view.form</field>
+        <field name="model">upmin_iso.iso_dashboard</field>
+        <field name="arch" type="xml">
+            <form string="ISO Dashboard" create="false" edit="false" delete="false">
+                <sheet>
+
+                    <!-- CCAR Pipeline -->
+                    <div class="o_horizontal_separator mt-0 mb-3">CCAR Pipeline</div>
+                    <div class="oe_button_box" name="ccar_box">
+                        <button name="action_ccar_open" type="object"
+                            class="oe_stat_button" icon="fa-exclamation-circle">
+                            <field name="ccar_open" widget="statinfo" string="Open" />
+                        </button>
+                        <button name="action_ccar_creation" type="object"
+                            class="oe_stat_button" icon="fa-pencil-square-o">
+                            <field name="ccar_creation" widget="statinfo" string="Pending Submission" />
+                        </button>
+                        <button name="action_ccar_awaiting_qao" type="object"
+                            class="oe_stat_button" icon="fa-search">
+                            <field name="ccar_awaiting_qao" widget="statinfo" string="Awaiting QAO" />
+                        </button>
+                        <button name="action_ccar_awaiting_office" type="object"
+                            class="oe_stat_button" icon="fa-building">
+                            <field name="ccar_awaiting_office" widget="statinfo" string="Awaiting Office" />
+                        </button>
+                        <button name="action_ccar_in_verification" type="object"
+                            class="oe_stat_button" icon="fa-check-square-o">
+                            <field name="ccar_in_verification" widget="statinfo" string="In Verification" />
+                        </button>
+                        <button name="action_ccar_completed_year" type="object"
+                            class="oe_stat_button" icon="fa-check-circle">
+                            <field name="ccar_completed_year" widget="statinfo" string="Completed This Year" />
+                        </button>
+                    </div>
+
+                    <!-- Internal Audit -->
+                    <field name="has_period" invisible="1" />
+                    <div class="o_horizontal_separator mb-3">Internal Audit</div>
+                    <group attrs="{'invisible': [('has_period', '=', False)]}">
+                        <field name="current_period" string="Latest Period" readonly="1" />
+                    </group>
+                    <p class="text-muted fst-italic"
+                        attrs="{'invisible': [('has_period', '=', True)]}">
+                        No audit period found. Create one under Configuration → Audit Period.
+                    </p>
+                    <div class="oe_button_box" name="audit_box"
+                        attrs="{'invisible': [('has_period', '=', False)]}">
+                        <button class="oe_stat_button" icon="fa-check" style="color: green;">
+                            <field name="audit_c" widget="statinfo" string="Conformities" />
+                        </button>
+                        <button class="oe_stat_button" icon="fa-times" style="color: red;">
+                            <field name="audit_nc" widget="statinfo" string="Nonconformities" />
+                        </button>
+                        <button class="oe_stat_button" icon="fa-lightbulb-o" style="color: orange;">
+                            <field name="audit_ofi" widget="statinfo" string="Opportunities" />
+                        </button>
+                        <button name="action_nc_without_ccar" type="object"
+                            class="oe_stat_button" icon="fa-unlink">
+                            <field name="nc_without_ccar" widget="statinfo" string="NCs Without CCAR" />
+                        </button>
+                        <button name="action_ia_not_assigned" type="object"
+                            class="oe_stat_button" icon="fa-user-times">
+                            <field name="ia_not_assigned" widget="statinfo" string="IAs Not Assigned" />
+                        </button>
+                    </div>
+                    <div class="oe_button_box" name="audit_box_no_period"
+                        attrs="{'invisible': [('has_period', '=', True)]}">
+                        <button name="action_nc_without_ccar" type="object"
+                            class="oe_stat_button" icon="fa-unlink">
+                            <field name="nc_without_ccar" widget="statinfo" string="NCs Without CCAR" />
+                        </button>
+                    </div>
+
+                    <!-- Yearly audit stats -->
+                    <div class="o_horizontal_separator mb-3">Internal Audit (This Year)</div>
+                    <div class="oe_button_box" name="year_audit_box">
+                        <button name="action_year_c" type="object"
+                            class="oe_stat_button" icon="fa-check" style="color: green;">
+                            <field name="year_c" widget="statinfo" string="Conformities" />
+                        </button>
+                        <button name="action_year_nc" type="object"
+                            class="oe_stat_button" icon="fa-times" style="color: red;">
+                            <field name="year_nc" widget="statinfo" string="Nonconformities" />
+                        </button>
+                        <button name="action_year_ofi" type="object"
+                            class="oe_stat_button" icon="fa-lightbulb-o" style="color: orange;">
+                            <field name="year_ofi" widget="statinfo" string="Opportunities" />
+                        </button>
+                    </div>
+
+                    <!-- Directory -->
+                    <div class="o_horizontal_separator mb-3">Directory</div>
+                    <div class="oe_button_box" name="directory_box">
+                        <button name="action_ia_trained_certified" type="object"
+                            class="oe_stat_button" icon="fa-user-circle">
+                            <field name="ia_trained_certified" widget="statinfo" string="IA Trained &amp; Certified" />
+                        </button>
+                        <button name="action_ia_trained_not_certified" type="object"
+                            class="oe_stat_button" icon="fa-user-circle-o">
+                            <field name="ia_trained_not_certified" widget="statinfo" string="IA Trained, Not Certified" />
+                        </button>
+                        <button name="action_dc_trained" type="object"
+                            class="oe_stat_button" icon="fa-id-badge">
+                            <field name="dc_trained" widget="statinfo" string="DC Trained" />
+                        </button>
+                    </div>
+
+                    <!-- ROR Compliance -->
+                    <div class="o_horizontal_separator mb-3">ROR Compliance</div>
+                    <div class="oe_button_box" name="ror_box">
+                        <button name="action_ror_pending" type="object"
+                            class="oe_stat_button" icon="fa-clock-o">
+                            <field name="ror_pending_offices" widget="statinfo" string="Pending This Quarter" />
+                        </button>
+                        <button name="action_significant_risks" type="object"
+                            class="oe_stat_button" icon="fa-warning">
+                            <field name="significant_risks" widget="statinfo" string="Significant Risks" />
+                        </button>
+                        <button name="action_ror_skipped" type="object"
+                            class="oe_stat_button" icon="fa-calendar-times-o">
+                            <field name="ror_with_skipped" widget="statinfo" string="Skipped Quarters" />
+                        </button>
+                    </div>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upmin_iso.iso_dashboard_action" model="ir.actions.server">
+        <field name="name">ISO Dashboard</field>
+        <field name="model_id" ref="upmin_iso.model_upmin_iso_iso_dashboard" />
+        <field name="state">code</field>
+        <field name="code">action = model.action_open()</field>
+    </record>
+
+</odoo>
