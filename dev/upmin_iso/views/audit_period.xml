@@ -8,27 +8,34 @@
             <form string="">
                 <header>
                     <button name="action_finalize" string="Finalize" type="object"
-                        attrs="{'invisible': [('is_finalized', '=', True)]}" class="btn-primary" />
+                        attrs="{'invisible': [('is_finalized', '=', True)]}" class="btn-primary"
+                        confirm="Finalize this audit period? This will lock all audit schedules and findings." />
                     <button name="action_unfinalize" string="Unfinalize" type="object"
-                        attrs="{'invisible': [('is_finalized', '=', False)]}" class="btn-secondary" />
+                        attrs="{'invisible': ['|', ('is_finalized', '=', False), ('ccars', '!=', [])]}"
+                        class="btn-secondary"
+                        confirm="Unfinalize this audit period? Audit schedules and findings will become editable again." />
                     <button name="action_generate_ccar" string="GENERATE CCAR" type="object"
                         attrs="{'invisible': ['|', ('is_finalized', '=', False), ('ccars', '!=', [])]}"
-                        class="btn-primary" />
+                        class="btn-primary"
+                        confirm="Generate CCARs for all Non-Conformities in this period? This action will create CCAR records for each NC finding." />
                     <button name="action_undo_generate_ccar" string="UNDO CCAR GENERATION"
                         type="object"
                         attrs="{'invisible': ['|', ('is_finalized', '=', False), ('ccars', '=', [])]}"
-                        class="btn-secondary" />
+                        class="btn-secondary"
+                        confirm="Delete all generated CCARs for this period? This cannot be undone." />
                     <field name="is_finalized" invisible="1" />
                 </header>
                 <sheet>
                     <group col="2">
                         <group>
                             <field name="audit_start_date" widget="daterange"
-                                options="{'related_end_date': 'audit_end_date'}" />
+                                options="{'related_end_date': 'audit_end_date'}"
+                                attrs="{'readonly': [('is_finalized', '=', True)]}" />
                         </group>
                         <group>
                             <field name="audit_end_date" widget="daterange"
-                                options="{'related_start_date': 'audit_start_date'}" />
+                                options="{'related_start_date': 'audit_start_date'}"
+                                attrs="{'readonly': [('is_finalized', '=', True)]}" />
                         </group>
                     </group>
                     <group col="1">

@@ -98,6 +98,18 @@ class AuditInfo(models.Model):
                 1 for finding in record.audit_findings if finding.rating == "ofi"
             )
 
+    @api.constrains("audit_date", "audit_period")
+    def _check_audit_date_in_period(self):
+        for rec in self:
+            if not rec.audit_date or not rec.audit_period:
+                continue
+            period = rec.audit_period
+            if not (period.audit_start_date <= rec.audit_date <= period.audit_end_date):
+                raise ValidationError(
+                    "Audit date (%s) must be within the audit period (%s to %s)."
+                    % (rec.audit_date, period.audit_start_date, period.audit_end_date)
+                )
+
     @api.constrains("internal_auditors", "office_to_audit")
     def _check_auditor_office_conflict(self):
         for rec in self:
