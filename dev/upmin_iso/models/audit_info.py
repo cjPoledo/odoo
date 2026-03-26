@@ -106,6 +106,8 @@ class AuditInfo(models.Model):
 
             conflicted_auditors = rec.internal_auditors.filtered(
                 lambda a: a.office == rec.office_to_audit
+                or getattr(a.name, "admin_department_id", False) == rec.office_to_audit
+                or a.name.department_id == rec.office_to_audit
             )
 
             if conflicted_auditors:

@@ -121,7 +121,7 @@
             <form string="">
                 <sheet>
                     <group col="1">
-                        <field name="description" string="Issue"
+                        <field name="description" string="Issue" default_focus="1"
                             help="Describe the internal/external issue." />
                         <field name="interested_parties" />
                         <field name="needs_and_exp" />

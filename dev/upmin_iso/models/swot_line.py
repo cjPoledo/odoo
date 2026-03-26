@@ -133,8 +133,15 @@ class SWOTLine(models.Model):
     def _compute_ratings_status(self):
         from datetime import date as _date
 
+        def current_quarter_end():
+            today = _date.today()
+            for month, day in [(3, 31), (6, 30), (9, 30), (12, 31)]:
+                q = _date(today.year, month, day)
+                if today <= q:
+                    return q
+            return _date(today.year + 1, 3, 31)
+
         def past_required_quarters(create_date):
-            """Quarter-ends that have already passed since the issue was created."""
             today = _date.today()
             result = []
             for year in range(create_date.year, today.year + 1):
@@ -144,22 +151,28 @@ class SWOTLine(models.Model):
                         result.append(q)
             return result
 
+        q_end = current_quarter_end()
+
         for rec in self:
             completed_ratings = rec.ratings.filtered(lambda r: r.progress == 100)
-            incomplete_ratings = rec.ratings - completed_ratings
             lines = []
 
+            # CTA: current quarter status
+            this_quarter = rec.ratings.filtered(lambda r: r.review_date == q_end)
+            if not this_quarter:
+                lines.append("[ Rate this quarter ]")
+            elif this_quarter[:1].progress < 100:
+                lines.append("[ Complete this quarter's rating ]")
+
+            # Latest completed rating
             if completed_ratings:
                 last_date = max(completed_ratings.mapped("review_date"))
                 latest = completed_ratings.filtered(lambda r: r.review_date == last_date)[:1]
-                lines.append(f"Last: {last_date.strftime('%b %d, %Y')} ({latest.risk_conclusion or 'unrated'})")
+                lines.append(f"Last: {last_date.strftime('%b %d, %Y')} — {latest.risk_conclusion or 'unrated'}")
             else:
-                lines.append("Never rated.")
+                lines.append("No completed ratings yet")
 
-            if incomplete_ratings:
-                lines.append(f"Incomplete: {len(incomplete_ratings)}")
-
-            # Skipped: past quarters with no entry at all (not even incomplete)
+            # Skipped quarters
             create_date = rec.create_date.date() if rec.create_date else _date.today()
             all_required = past_required_quarters(create_date)
             entry_dates = set(rec.ratings.mapped("review_date"))
