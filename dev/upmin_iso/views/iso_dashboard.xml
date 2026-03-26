@@ -45,7 +45,7 @@
                     </group>
                     <p class="text-muted fst-italic"
                         attrs="{'invisible': [('has_period', '=', True)]}">
-                        No audit period found. Create one under Configuration → Audit Period.
+                        No audit period found. Create one under Internal Audit → Audit Periods.
                     </p>
                     <div class="oe_button_box" name="audit_box"
                         attrs="{'invisible': [('has_period', '=', False)]}">

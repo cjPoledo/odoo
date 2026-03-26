@@ -48,6 +48,16 @@
         <field name="clause_title">Quality management system and its processes</field>
         <field name="clause_description">The organization shall establish, implement, maintain, and continually improve a QMS including the processes needed and their interactions. This includes determining inputs/outputs, sequence and interaction, criteria and methods, resources, responsibilities, and risks and opportunities for each process.</field>
     </record>
+    <record id="iso_clause_4_4_1" model="upmin_iso.iso_clause">
+        <field name="clause_number">4.4.1</field>
+        <field name="clause_title">Quality management system and its processes (general)</field>
+        <field name="clause_description">The organization shall establish, implement, maintain, and continually improve a QMS, including the processes needed and their interactions. For each process, the organization shall determine required inputs and expected outputs, sequence and interaction, criteria and methods (including measurements and related performance indicators), resources needed, responsibilities and authorities, risks and opportunities, and methods for monitoring, measuring, and evaluating processes.</field>
+    </record>
+    <record id="iso_clause_4_4_2" model="upmin_iso.iso_clause">
+        <field name="clause_number">4.4.2</field>
+        <field name="clause_title">Quality management system and its processes (documented information)</field>
+        <field name="clause_description">To the extent necessary, the organization shall maintain documented information to support the operation of its processes and retain documented information to have confidence that the processes are being carried out as planned.</field>
+    </record>
 
     <!-- Clause 5 -->
     <record id="iso_clause_5" model="upmin_iso.iso_clause">
@@ -102,10 +112,30 @@
         <field name="clause_title">Actions to address risks and opportunities</field>
         <field name="clause_description">When planning for the QMS, the organization shall consider context issues and interested party requirements to determine risks and opportunities that need to be addressed. The organization shall plan actions to address these risks and opportunities and evaluate the effectiveness of these actions.</field>
     </record>
+    <record id="iso_clause_6_1_1" model="upmin_iso.iso_clause">
+        <field name="clause_number">6.1.1</field>
+        <field name="clause_title">Actions to address risks and opportunities (determination)</field>
+        <field name="clause_description">When planning for the QMS, the organization shall consider the issues referred to in 4.1 and the requirements referred to in 4.2, and determine the risks and opportunities that need to be addressed to give assurance that the QMS can achieve its intended results, enhance desirable effects, prevent or reduce undesired effects, and achieve improvement.</field>
+    </record>
+    <record id="iso_clause_6_1_2" model="upmin_iso.iso_clause">
+        <field name="clause_number">6.1.2</field>
+        <field name="clause_title">Actions to address risks and opportunities (planning)</field>
+        <field name="clause_description">The organization shall plan actions to address the identified risks and opportunities, and how to integrate and implement these actions into its QMS processes, and evaluate the effectiveness of these actions. Actions taken shall be proportionate to the potential impact on conformity of products and services.</field>
+    </record>
     <record id="iso_clause_6_2" model="upmin_iso.iso_clause">
         <field name="clause_number">6.2</field>
         <field name="clause_title">Quality objectives and planning to achieve them</field>
         <field name="clause_description">The organization shall establish quality objectives at relevant functions, levels, and processes. Objectives shall be measurable, consistent with the quality policy, monitored, communicated, and updated as appropriate. The organization shall maintain documented information on quality objectives and determine what will be done, resources required, responsible persons, completion timelines, and how results will be evaluated.</field>
+    </record>
+    <record id="iso_clause_6_2_1" model="upmin_iso.iso_clause">
+        <field name="clause_number">6.2.1</field>
+        <field name="clause_title">Quality objectives (establishment)</field>
+        <field name="clause_description">The organization shall establish quality objectives at relevant functions, levels, and processes needed for the QMS. Quality objectives shall be consistent with the quality policy, measurable, take into account applicable requirements, be relevant to conformity of products and services and customer satisfaction, be monitored, be communicated, and be updated as appropriate. Documented information on quality objectives shall be maintained.</field>
+    </record>
+    <record id="iso_clause_6_2_2" model="upmin_iso.iso_clause">
+        <field name="clause_number">6.2.2</field>
+        <field name="clause_title">Quality objectives (planning to achieve them)</field>
+        <field name="clause_description">When planning how to achieve its quality objectives, the organization shall determine what will be done, what resources will be required, who will be responsible, when it will be completed, and how the results will be evaluated.</field>
     </record>
     <record id="iso_clause_6_3" model="upmin_iso.iso_clause">
         <field name="clause_number">6.3</field>
@@ -148,6 +178,16 @@
         <field name="clause_number">7.1.5</field>
         <field name="clause_title">Monitoring and measuring resources</field>
         <field name="clause_description">The organization shall determine and provide resources needed to ensure valid and reliable results when monitoring or measuring is used to verify conformity. Resources shall be suitable, maintained, and — where measurement traceability is required — calibrated or verified at specified intervals against traceable standards.</field>
+    </record>
+    <record id="iso_clause_7_1_5_1" model="upmin_iso.iso_clause">
+        <field name="clause_number">7.1.5.1</field>
+        <field name="clause_title">Monitoring and measuring resources — General</field>
+        <field name="clause_description">The organization shall determine and provide resources needed to ensure valid and reliable monitoring and measurement results are obtained. The organization shall ensure that the resources provided are suitable for the specific type of monitoring and measurement activities being undertaken and are maintained to ensure their continuing fitness for purpose.</field>
+    </record>
+    <record id="iso_clause_7_1_5_2" model="upmin_iso.iso_clause">
+        <field name="clause_number">7.1.5.2</field>
+        <field name="clause_title">Measurement traceability</field>
+        <field name="clause_description">When measurement traceability is a requirement, or is considered by the organization to be an essential part of providing confidence in the validity of measurement results, measuring equipment shall be calibrated or verified at specified intervals against measurement standards traceable to international or national standards, identified to determine their status, and safeguarded from adjustments that would invalidate calibration. Documented information shall be retained as evidence.</field>
     </record>
     <record id="iso_clause_7_1_6" model="upmin_iso.iso_clause">
         <field name="clause_number">7.1.6</field>
@@ -220,6 +260,16 @@
         <field name="clause_number">8.2.3</field>
         <field name="clause_title">Review of the requirements for products and services</field>
         <field name="clause_description">The organization shall conduct a review before committing to supply products and services, covering customer-specified requirements, unstated requirements, organizational requirements, statutory/regulatory requirements, and any contract requirements differing from previous expressions. Documented information on review results shall be retained.</field>
+    </record>
+    <record id="iso_clause_8_2_3_1" model="upmin_iso.iso_clause">
+        <field name="clause_number">8.2.3.1</field>
+        <field name="clause_title">Review of requirements for products and services (conduct review)</field>
+        <field name="clause_description">The organization shall ensure it has the ability to meet requirements for products and services to be offered to customers. The organization shall conduct a review before committing to supply products and services to a customer, to include requirements specified by the customer, requirements not stated by the customer but necessary for intended use, requirements specified by the organization, statutory and regulatory requirements applicable to the products and services, and contract or order requirements differing from those previously expressed.</field>
+    </record>
+    <record id="iso_clause_8_2_3_2" model="upmin_iso.iso_clause">
+        <field name="clause_number">8.2.3.2</field>
+        <field name="clause_title">Review of requirements for products and services (documented information)</field>
+        <field name="clause_description">The organization shall retain documented information as evidence of the results of the review. Where the customer provides no documented statement of their requirements, the customer requirements shall be confirmed by the organization before acceptance. Where product and service requirements are changed, the organization shall ensure that relevant documented information is amended and that relevant persons are made aware of the changed requirements.</field>
     </record>
     <record id="iso_clause_8_2_4" model="upmin_iso.iso_clause">
         <field name="clause_number">8.2.4</field>
@@ -326,6 +376,16 @@
         <field name="clause_title">Control of nonconforming outputs</field>
         <field name="clause_description">The organization shall ensure that outputs not conforming to requirements are identified and controlled to prevent unintended use or delivery. Actions include correction, segregation, informing the customer, or obtaining authorization for acceptance under concession. Conformity shall be verified when nonconforming outputs are corrected. Documented information describing the nonconformity, actions taken, concessions, and decision authority shall be retained.</field>
     </record>
+    <record id="iso_clause_8_7_1" model="upmin_iso.iso_clause">
+        <field name="clause_number">8.7.1</field>
+        <field name="clause_title">Control of nonconforming outputs (identification and control)</field>
+        <field name="clause_description">The organization shall ensure that outputs that do not conform to their requirements are identified and controlled to prevent their unintended use or delivery. The organization shall take appropriate action based on the nature of the nonconformity and its effect on conformity of products and services, including correction, segregation or containment, return or suspension of provision, informing the customer, and obtaining authorization for acceptance under concession. Conformity to requirements shall be verified when nonconforming outputs are corrected.</field>
+    </record>
+    <record id="iso_clause_8_7_2" model="upmin_iso.iso_clause">
+        <field name="clause_number">8.7.2</field>
+        <field name="clause_title">Control of nonconforming outputs (documented information)</field>
+        <field name="clause_description">The organization shall retain documented information that describes the nonconformity, the actions taken, any concessions obtained, and identifies the authority deciding the action in respect of the nonconformity.</field>
+    </record>
 
     <!-- Clause 9 -->
     <record id="iso_clause_9" model="upmin_iso.iso_clause">
@@ -357,6 +417,16 @@
         <field name="clause_number">9.2</field>
         <field name="clause_title">Internal audit</field>
         <field name="clause_description">The organization shall conduct internal audits at planned intervals to provide information on whether the QMS conforms to its own requirements and this standard's requirements, and is effectively implemented and maintained. The organization shall plan, establish, implement, and maintain an audit programme, define audit criteria and scope, select auditors to ensure objectivity, report results to relevant management, take corrections without undue delay, and retain documented information as evidence.</field>
+    </record>
+    <record id="iso_clause_9_2_1" model="upmin_iso.iso_clause">
+        <field name="clause_number">9.2.1</field>
+        <field name="clause_title">Internal audit (conduct audits)</field>
+        <field name="clause_description">The organization shall conduct internal audits at planned intervals to provide information on whether the QMS conforms to the organization's own requirements for its QMS and the requirements of this standard, and is effectively implemented and maintained.</field>
+    </record>
+    <record id="iso_clause_9_2_2" model="upmin_iso.iso_clause">
+        <field name="clause_number">9.2.2</field>
+        <field name="clause_title">Internal audit (programme requirements)</field>
+        <field name="clause_description">The organization shall plan, establish, implement, and maintain an audit programme, including frequency, methods, responsibilities, planning requirements, and reporting. The programme shall take into account the importance of the processes concerned, changes affecting the organization, and results of previous audits. The organization shall define audit criteria and scope, select auditors that ensure objectivity and impartiality, report results to relevant management, take appropriate corrections without undue delay, and retain documented information as evidence.</field>
     </record>
     <record id="iso_clause_9_3" model="upmin_iso.iso_clause">
         <field name="clause_number">9.3</field>
@@ -394,6 +464,16 @@
         <field name="clause_number">10.2</field>
         <field name="clause_title">Nonconformity and corrective action</field>
         <field name="clause_description">When a nonconformity occurs, the organization shall react to it, evaluate the need for action to eliminate causes so it does not recur, implement needed actions, review the effectiveness of corrective actions, update risks and opportunities if necessary, and make QMS changes if needed. Documented information shall be retained as evidence of the nonconformity, actions taken, and results of corrective action.</field>
+    </record>
+    <record id="iso_clause_10_2_1" model="upmin_iso.iso_clause">
+        <field name="clause_number">10.2.1</field>
+        <field name="clause_title">Nonconformity and corrective action (react and take action)</field>
+        <field name="clause_description">When a nonconformity occurs, the organization shall react to the nonconformity by taking action to control and correct it and dealing with the consequences; evaluate the need for action to eliminate the cause(s) so it does not recur or occur elsewhere; implement any actions needed; review the effectiveness of any corrective action taken; update risks and opportunities determined during planning if necessary; and make changes to the QMS if necessary. Corrective actions shall be appropriate to the effects of the nonconformities encountered.</field>
+    </record>
+    <record id="iso_clause_10_2_2" model="upmin_iso.iso_clause">
+        <field name="clause_number">10.2.2</field>
+        <field name="clause_title">Nonconformity and corrective action (documented information)</field>
+        <field name="clause_description">The organization shall retain documented information as evidence of the nature of the nonconformities and any subsequent actions taken, and the results of any corrective action.</field>
     </record>
     <record id="iso_clause_10_3" model="upmin_iso.iso_clause">
         <field name="clause_number">10.3</field>
