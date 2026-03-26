@@ -9,7 +9,7 @@ class SWOTLine(models.Model):
     _order = "swot_id,ror_id,label"
 
     swot_id = fields.Many2one(
-        comodel_name="upmin_iso.swot", string="SWOT"
+        comodel_name="upmin_iso.swot", string="SWOT", ondelete="cascade"
     )
     ror_id = fields.Many2one(
         comodel_name="upmin_iso.ror", string="ROR", ondelete="cascade"

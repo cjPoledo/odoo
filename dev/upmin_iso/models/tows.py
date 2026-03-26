@@ -8,7 +8,7 @@ class TOWS(models.Model):
     _rec_name = "swot"
     _order = "swot"
 
-    swot = fields.Many2one(comodel_name="upmin_iso.swot", string="SWOT", required=True)
+    swot = fields.Many2one(comodel_name="upmin_iso.swot", string="SWOT", required=True, ondelete="cascade")
     year = fields.Char(string="Year", related="swot.year", readonly=True, store=True)
     office = fields.Many2one(
         comodel_name="hr.department",

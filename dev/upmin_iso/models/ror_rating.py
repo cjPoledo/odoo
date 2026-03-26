@@ -17,7 +17,8 @@ class RORRating(models.Model):
     _order = "review_date"
 
     issue = fields.Many2one(
-        comodel_name="upmin_iso.swot_line", string="Issue", required=True, readonly=True
+        comodel_name="upmin_iso.swot_line", string="Issue", required=True, readonly=True,
+        ondelete="cascade",
     )
     office_name = fields.Char(
         string="Office",

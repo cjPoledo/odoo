@@ -29,6 +29,7 @@
     "assets": {
         "web.assets_backend": [
             "upmin_iso/static/src/js/ror_tree_extend.js",
+            "upmin_iso/static/src/js/delete_confirm.js",
             "upmin_iso/static/src/xml/ror_list_button.xml",
             "upmin_iso/static/src/scss/ror_button.scss",
         ],

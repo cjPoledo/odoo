@@ -7,7 +7,7 @@ class TOWSLine(models.Model):
     _rec_name = "description"
     _order = "tows_id"
 
-    tows_id = fields.Many2one("upmin_iso.tows", string="TOWS", required=True)
+    tows_id = fields.Many2one("upmin_iso.tows", string="TOWS", required=True, ondelete="cascade")
     description = fields.Text(string="Description", required=True)
     tows_type = fields.Selection(
         string="Type",
