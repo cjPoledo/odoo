@@ -256,6 +256,45 @@ class IsoDashboard(models.TransientModel):
             "context": {"upmin_iso_dept_short": True},
         }
 
+    def action_audit_c(self):
+        period = self.env["upmin_iso.audit_period"].search(
+            [], order="audit_start_date desc", limit=1
+        )
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Conformities This Period",
+            "res_model": "upmin_iso.audit_finding",
+            "view_mode": "tree,form",
+            "domain": [("audit_info.audit_period", "=", period.id), ("rating", "=", "c")] if period else [("id", "=", False)],
+            "context": {"upmin_iso_dept_short": True},
+        }
+
+    def action_audit_nc(self):
+        period = self.env["upmin_iso.audit_period"].search(
+            [], order="audit_start_date desc", limit=1
+        )
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Nonconformities This Period",
+            "res_model": "upmin_iso.audit_finding",
+            "view_mode": "tree,form",
+            "domain": [("audit_info.audit_period", "=", period.id), ("rating", "=", "nc")] if period else [("id", "=", False)],
+            "context": {"upmin_iso_dept_short": True},
+        }
+
+    def action_audit_ofi(self):
+        period = self.env["upmin_iso.audit_period"].search(
+            [], order="audit_start_date desc", limit=1
+        )
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Opportunities This Period",
+            "res_model": "upmin_iso.audit_finding",
+            "view_mode": "tree,form",
+            "domain": [("audit_info.audit_period", "=", period.id), ("rating", "=", "ofi")] if period else [("id", "=", False)],
+            "context": {"upmin_iso_dept_short": True},
+        }
+
     def action_audit_offices(self):
         period = self.env["upmin_iso.audit_period"].search(
             [], order="audit_start_date desc", limit=1

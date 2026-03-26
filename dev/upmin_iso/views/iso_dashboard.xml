@@ -53,13 +53,16 @@
                             class="oe_stat_button" icon="fa-building">
                             <field name="audit_offices" widget="statinfo" string="Offices Audited" />
                         </button>
-                        <button class="oe_stat_button" icon="fa-check" style="color: green;">
+                        <button name="action_audit_c" type="object"
+                            class="oe_stat_button" icon="fa-check" style="color: green;">
                             <field name="audit_c" widget="statinfo" string="Conformities" />
                         </button>
-                        <button class="oe_stat_button" icon="fa-times" style="color: red;">
+                        <button name="action_audit_nc" type="object"
+                            class="oe_stat_button" icon="fa-times" style="color: red;">
                             <field name="audit_nc" widget="statinfo" string="Nonconformities" />
                         </button>
-                        <button class="oe_stat_button" icon="fa-lightbulb-o" style="color: orange;">
+                        <button name="action_audit_ofi" type="object"
+                            class="oe_stat_button" icon="fa-lightbulb-o" style="color: orange;">
                             <field name="audit_ofi" widget="statinfo" string="Opportunities" />
                         </button>
                         <button name="action_nc_without_ccar" type="object"
