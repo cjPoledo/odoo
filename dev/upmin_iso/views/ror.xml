@@ -262,7 +262,7 @@
         <field name="name">upmin_iso.significant_risks.view.tree</field>
         <field name="model">upmin_iso.ror_rating</field>
         <field name="arch" type="xml">
-            <tree string="Significant Risks">
+            <tree string="Significant Risks" create="false" edit="false" delete="false">
                 <field name="review_date" />
                 <field name="office_name" />
                 <field name="issue_description" />
@@ -289,14 +289,28 @@
         </field>
     </record>
 
+    <record id="upmin_iso.ror_rating_view_form_readonly" model="ir.ui.view">
+        <field name="name">upmin_iso.ror_rating.view.form.readonly</field>
+        <field name="model">upmin_iso.ror_rating</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="upmin_iso.ror_rating_view_form" />
+        <field name="arch" type="xml">
+            <form position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+                <attribute name="delete">false</attribute>
+            </form>
+        </field>
+    </record>
+
     <record id="upmin_iso.significant_risks_action" model="ir.actions.act_window">
         <field name="name">Significant Risks (Quarterly)</field>
         <field name="res_model">upmin_iso.ror_rating</field>
         <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5,), (0, 0, {'view_mode': 'tree', 'view_id': ref('upmin_iso.significant_risks_view_tree'), 'sequence': 1}), (0, 0, {'view_mode': 'form', 'view_id': ref('upmin_iso.ror_rating_view_form_readonly'), 'sequence': 2})]" />
         <field name="domain">[('risk_conclusion', '=', 'significant')]</field>
         <field name="context">{"search_default_group_by_review_date": 1, "upmin_iso_dept_short": True}</field>
         <field name="search_view_id" ref="upmin_iso.significant_risks_search" />
-        <field name="view_id" ref="upmin_iso.significant_risks_view_tree" />
     </record>
 
 
