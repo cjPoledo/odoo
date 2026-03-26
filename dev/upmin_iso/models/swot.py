@@ -16,8 +16,11 @@ class SWOT(models.Model):
         string="Office",
         required=True,
         domain=lambda self: (
-            [("id", "=", self.env.user.employee_id.department_id.id)]
-            if self.env.user.employee_id and self.env.user.employee_id.department_id
+            [("id", "in", list(filter(None, [
+                self.env.user.employee_id.department_id.id,
+                self.env.user.employee_id.admin_department_id.id,
+            ])))]
+            if self.env.user.employee_id
             else []
         ),
     )

@@ -49,3 +49,5 @@ package.json
 /man/
 /share/
 /src/
+# UPMin HR Extensions (managed separately)
+dev/upmin_hr_ext/

@@ -25,7 +25,7 @@
         <field name="name">Restrict ROR Access to Own Office</field>
         <field name="model_id" ref="model_upmin_iso_ror" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">[('office', '=', user.employee_id.department_id.id)]</field>
+        <field name="domain_force">['|', ('office', '=', user.employee_id.department_id.id), ('office', '=', user.employee_id.admin_department_id.id)]</field>
     </record>
 
     <record id="rule_office_ror_staff" model="ir.rule">
@@ -43,7 +43,7 @@
         <field name="name">Doc Controller: See Audit Info of Own Office</field>
         <field name="model_id" ref="model_upmin_iso_audit_info" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">[('office_to_audit', '=', user.employee_id.department_id.id)]</field>
+        <field name="domain_force">['|', ('office_to_audit', '=', user.employee_id.department_id.id), ('office_to_audit', '=', user.employee_id.admin_department_id.id)]</field>
     </record>
 
 
@@ -75,7 +75,7 @@
         <field name="name">Doc Controller: CRUD Own Office SWOT</field>
         <field name="model_id" ref="model_upmin_iso_swot" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">[('office', '=', user.employee_id.department_id.id)]</field>
+        <field name="domain_force">['|', ('office', '=', user.employee_id.department_id.id), ('office', '=', user.employee_id.admin_department_id.id)]</field>
         <field name="perm_read" eval="1" />
         <field name="perm_write" eval="1" />
         <field name="perm_create" eval="1" />
@@ -97,7 +97,7 @@
         <field name="name">Doc Controller: CRUD Own Office TOWS</field>
         <field name="model_id" ref="model_upmin_iso_tows" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">[('office', '=', user.employee_id.department_id.id)]</field>
+        <field name="domain_force">['|', ('office', '=', user.employee_id.department_id.id), ('office', '=', user.employee_id.admin_department_id.id)]</field>
         <field name="perm_read" eval="1" />
         <field name="perm_write" eval="1" />
         <field name="perm_create" eval="1" />
@@ -130,9 +130,7 @@
         <field name="name">Doc Controller - Read Own Office</field>
         <field name="model_id" ref="model_upmin_iso_ccar" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">
-            [('office', '=', user.employee_id.department_id.id)]
-        </field>
+        <field name="domain_force">['|', ('office', '=', user.employee_id.department_id.id), ('office', '=', user.employee_id.admin_department_id.id)]</field>
         <field name="perm_read" eval="1" />
         <field name="perm_write" eval="0" />
     </record>
@@ -141,12 +139,7 @@
         <field name="name">Doc Controller - Write Office Status</field>
         <field name="model_id" ref="model_upmin_iso_ccar" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">
-            [
-            ('office', '=', user.employee_id.department_id.id),
-            ('status', 'in', ('office', 'office2'))
-            ]
-        </field>
+        <field name="domain_force">['&amp;', '|', ('office', '=', user.employee_id.department_id.id), ('office', '=', user.employee_id.admin_department_id.id), ('status', 'in', ('office', 'office2'))]</field>
         <field name="perm_read" eval="1" />
         <field name="perm_write" eval="1" />
     </record>
@@ -212,9 +205,11 @@
         <field name="name">Doc Controller: ROR Rating Own Office Only</field>
         <field name="model_id" ref="model_upmin_iso_ror_rating" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['|',
+        <field name="domain_force">['|', '|', '|',
             ('issue.ror_id.office', '=', user.employee_id.department_id.id),
-            ('issue.swot_id.office', '=', user.employee_id.department_id.id)]</field>
+            ('issue.ror_id.office', '=', user.employee_id.admin_department_id.id),
+            ('issue.swot_id.office', '=', user.employee_id.department_id.id),
+            ('issue.swot_id.office', '=', user.employee_id.admin_department_id.id)]</field>
     </record>
 
     <!-- Audit Finding: Staff read all -->
@@ -254,7 +249,7 @@
         <field name="name">Doc Controller: CCAR Corrective Action Own Office</field>
         <field name="model_id" ref="model_upmin_iso_ccar_corrective_action" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">[('ccar.office', '=', user.employee_id.department_id.id)]</field>
+        <field name="domain_force">['|', ('ccar.office', '=', user.employee_id.department_id.id), ('ccar.office', '=', user.employee_id.admin_department_id.id)]</field>
     </record>
 
     <record id="rule_ccar_corrective_action_internal_auditor" model="ir.rule">

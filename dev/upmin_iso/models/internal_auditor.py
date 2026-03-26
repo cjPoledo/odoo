@@ -15,9 +15,15 @@ class InternalAuditor(models.Model):
         comodel_name="hr.department",
         string="Office",
         readonly=True,
-        related="name.department_id",
+        compute="_compute_office",
         store=True,
     )
+
+    @api.depends("name")
+    def _compute_office(self):
+        for rec in self:
+            emp = rec.name
+            rec.office = getattr(emp, "admin_department_id", emp.department_id) or emp.department_id
     trained = fields.Boolean(string="Trained", default=False)
     certified = fields.Boolean(string="Certified", default=False)
     have_internal_auditor_perms = fields.Boolean(

@@ -119,7 +119,7 @@ class CCAR(models.Model):
     responsible_person = fields.Many2one(
         comodel_name="hr.employee",
         string="Responsible Person",
-        domain="[('department_id', '=', office)]",
+        domain="['|', ('department_id', '=', office), ('admin_department_id', '=', office)]",
     )
     date_received = fields.Date(string="Date Received")
     office = fields.Many2one(
@@ -141,7 +141,7 @@ class CCAR(models.Model):
     investigated_by = fields.Many2one(
         comodel_name="hr.employee",
         string="Investigated By",
-        domain="[('department_id', '=', investigator_dept)]",
+        domain="['|', ('department_id', '=', investigator_dept), ('admin_department_id', '=', investigator_dept)]",
     )
     date_investigated = fields.Date(string="Date Investigated")
     investigator_dept = fields.Many2one(
@@ -160,13 +160,13 @@ class CCAR(models.Model):
     proposed_by = fields.Many2one(
         comodel_name="hr.employee",
         string="Proposed By",
-        domain="[('department_id', '=', office)]",
+        domain="['|', ('department_id', '=', office), ('admin_department_id', '=', office)]",
     )
     target_date = fields.Date(string="Implementation/Target Date")
     approved_by = fields.Many2one(
         comodel_name="hr.employee",
         string="Approved By",
-        domain="[('department_id', '=', office)]",
+        domain="['|', ('department_id', '=', office), ('admin_department_id', '=', office)]",
     )
 
     # impact analysis
@@ -195,7 +195,7 @@ class CCAR(models.Model):
     updated_by = fields.Many2one(
         comodel_name="hr.employee",
         string="Updated By",
-        domain="[('department_id', '=', office)]",
+        domain="['|', ('department_id', '=', office), ('admin_department_id', '=', office)]",
     )
     updated_date = fields.Date(string="Updated Date")
 
@@ -206,7 +206,7 @@ class CCAR(models.Model):
     changes_by = fields.Many2one(
         comodel_name="hr.employee",
         string="Changes Made Completed By",
-        domain="[('department_id', '=', office)]",
+        domain="['|', ('department_id', '=', office), ('admin_department_id', '=', office)]",
     )
     changes_date = fields.Date(string="Changes Date")
 

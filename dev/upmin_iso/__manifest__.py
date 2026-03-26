@@ -6,6 +6,7 @@
     "application": True,
     "depends": [
         "hr",
+        "upmin_hr_ext",
     ],
     "data": [
         "security/security.xml",

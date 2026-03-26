@@ -15,9 +15,15 @@ class DocumentController(models.Model):
         comodel_name="hr.department",
         string="Office",
         readonly=True,
-        related="name.department_id",
+        compute="_compute_office",
         store=True,
     )
+
+    @api.depends("name")
+    def _compute_office(self):
+        for rec in self:
+            emp = rec.name
+            rec.office = getattr(emp, "admin_department_id", emp.department_id) or emp.department_id
     trained = fields.Boolean(string="Trained", default=False)
     is_unit_head = fields.Boolean(string="Unit Head", default=False)
     have_doc_control_perms = fields.Boolean(
