@@ -77,7 +77,7 @@ class SWOTLine(models.Model):
         string="Ratings Status", compute="_compute_ratings_status",
     )
     fields_missing_count = fields.Integer(
-        string="Fields Missing", compute="_compute_fields_missing_count", store=True,
+        string="Fields Missing Count", compute="_compute_fields_missing_count", store=True,
     )
     fields_missing_label = fields.Char(
         string="Fields Missing", compute="_compute_fields_missing_label",
