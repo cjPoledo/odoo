@@ -26,6 +26,11 @@ class DocumentController(models.Model):
             rec.office = getattr(emp, "admin_department_id", emp.department_id) or emp.department_id
     trained = fields.Boolean(string="Trained", default=False)
     is_unit_head = fields.Boolean(string="Unit Head", default=False)
+    allow_college_access = fields.Boolean(
+        string="Allow College Access",
+        default=True,
+        help="When disabled, this DC's ISO access is restricted to their department and admin office only — no college-level documents.",
+    )
     have_doc_control_perms = fields.Boolean(
         string="Have Document Control Permissions?",
         readonly=True,
@@ -81,6 +86,9 @@ class DocumentController(models.Model):
             for rec in self:
                 self._revoke_group(old_users[rec.id])
                 self._grant_group(rec.name.user_id)
+
+        if "allow_college_access" in vals:
+            self.env.registry.clear_caches()
 
         return result
 

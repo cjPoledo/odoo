@@ -24,6 +24,7 @@
         "views/ror_export_wizard.xml",
         "views/significant_risks_export_wizard.xml",
         "views/iso_dashboard.xml",
+        "views/iso_access_group.xml",
         "views/menu.xml",
         "report/ccar_report_template.xml",
     ],

@@ -1,4 +1,5 @@
 from . import hr_department
+from . import iso_access_group
 from . import iso_dashboard
 from . import ror
 from . import ror_rating

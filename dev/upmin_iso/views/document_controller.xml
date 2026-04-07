@@ -12,6 +12,8 @@
                         <field name="office" />
                         <field name="trained" />
                         <field name="is_unit_head" groups="upmin_iso.group_iso_staff" />
+                        <field name="allow_college_access" groups="upmin_iso.group_iso_staff"
+                            attrs="{'invisible': [('is_unit_head', '=', False)]}" />
                         <field name="perms_label" widget="badge"
                             decoration-success="perms_label == 'active'"
                             decoration-danger="perms_label == 'inactive'"

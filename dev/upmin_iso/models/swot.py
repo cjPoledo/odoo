@@ -19,7 +19,7 @@ class SWOT(models.Model):
             [("id", "in", list(filter(None, [
                 self.env.user.employee_id.department_id.id,
                 self.env.user.employee_id.admin_department_id.id,
-            ])))]
+            ])) + self.env.user.employee_id.iso_ancestor_ids.ids)]
             if self.env.user.employee_id
             else []
         ),

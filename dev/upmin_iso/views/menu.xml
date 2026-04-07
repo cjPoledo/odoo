@@ -101,6 +101,21 @@
         sequence="60" />
 
     <menuitem
+        id="config_menu"
+        name="Configuration"
+        groups="group_iso_staff"
+        parent="upmin_iso_menu"
+        sequence="70" />
+
+    <menuitem
+        id="iso_access_group_menu"
+        name="Access Groups"
+        action="upmin_iso.iso_access_group_action"
+        groups="group_iso_staff"
+        parent="config_menu"
+        sequence="10" />
+
+    <menuitem
         id="directory_menu"
         name="Directory"
         groups="base.group_user"
