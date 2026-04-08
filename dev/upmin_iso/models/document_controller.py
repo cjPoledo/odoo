@@ -18,12 +18,30 @@ class DocumentController(models.Model):
         compute="_compute_office",
         store=True,
     )
+    secondary_office = fields.Many2one(
+        comodel_name="hr.department",
+        string="Secondary Office",
+        readonly=True,
+        compute="_compute_secondary_office",
+        store=False,
+    )
 
     @api.depends("name")
     def _compute_office(self):
         for rec in self:
             emp = rec.name
             rec.office = getattr(emp, "admin_department_id", emp.department_id) or emp.department_id
+
+    @api.depends("name", "is_unit_head")
+    def _compute_secondary_office(self):
+        for rec in self:
+            emp = rec.name
+            admin = getattr(emp, "admin_department_id", False)
+            if rec.is_unit_head and admin and admin != emp.department_id:
+                rec.secondary_office = emp.department_id
+            else:
+                rec.secondary_office = False
+
     trained = fields.Boolean(string="Trained", default=False)
     is_unit_head = fields.Boolean(string="Unit Head", default=False)
     allow_college_access = fields.Boolean(

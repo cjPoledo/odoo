@@ -299,9 +299,13 @@ class CCAR(models.Model):
         auditors = audit_info.internal_auditors if audit_info else []
 
         # Document controllers in the same office (sudo to bypass trained-only rules)
+        # Also includes unit heads whose academic dept matches, and DCs whose college is this office.
         if office:
-            doc_controllers = self.env["upmin_iso.document_controller"].sudo().search(
-                [("office", "=", office.id)]
+            all_dcs = self.env["upmin_iso.document_controller"].sudo().search([])
+            doc_controllers = all_dcs.filtered(
+                lambda dc: dc.office == office
+                or (dc.is_unit_head and dc.name.department_id == office)
+                or office in dc.name.iso_ancestor_ids
             )
             for dc in doc_controllers:
                 if dc.name.user_id and dc.name.user_id.partner_id:

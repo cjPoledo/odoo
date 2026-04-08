@@ -10,6 +10,7 @@
                         <field name="name" />
                         <field name="email" widget="email" />
                         <field name="office" />
+                        <field name="secondary_office" attrs="{'invisible': [('secondary_office', '=', False)]}" />
                         <field name="trained" attrs="{'readonly': [('certified', '=', True)]}" />
                         <field name="certified" attrs="{'invisible': [('trained', '=', False)]}" />
                         <field name="perms_label" widget="badge"
@@ -32,6 +33,7 @@
                 <field name="name" />
                 <field name="email" widget="email" />
                 <field name="office" />
+                <field name="secondary_office" optional="hide" />
                 <field name="trained" />
                 <field name="certified" />
             </tree>

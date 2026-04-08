@@ -129,8 +129,12 @@ class ROR(models.Model):
         partner_ids = set()
 
         # Document controllers in the same office (sudo to bypass trained-only rules)
-        doc_controllers = self.env["upmin_iso.document_controller"].sudo().search(
-            [("office", "=", self.office.id)]
+        # Also includes unit heads whose academic dept matches, and DCs whose college is this office.
+        all_dcs = self.env["upmin_iso.document_controller"].sudo().search([])
+        doc_controllers = all_dcs.filtered(
+            lambda dc: dc.office == self.office
+            or (dc.is_unit_head and dc.name.department_id == self.office)
+            or self.office in dc.name.iso_ancestor_ids
         )
         for dc in doc_controllers:
             if dc.name.user_id and dc.name.user_id.partner_id:

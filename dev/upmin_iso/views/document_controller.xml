@@ -10,6 +10,7 @@
                         <field name="name" />
                         <field name="email" widget="email" />
                         <field name="office" />
+                        <field name="secondary_office" attrs="{'invisible': [('secondary_office', '=', False)]}" />
                         <field name="trained" />
                         <field name="is_unit_head" groups="upmin_iso.group_iso_staff" />
                         <field name="allow_college_access" groups="upmin_iso.group_iso_staff"
@@ -33,6 +34,7 @@
                 <field name="name" />
                 <field name="email" widget="email" />
                 <field name="office" />
+                <field name="secondary_office" optional="hide" />
                 <field name="trained" />
                 <field name="is_unit_head" groups="upmin_iso.group_iso_staff" />
             </tree>

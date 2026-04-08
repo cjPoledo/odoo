@@ -100,20 +100,32 @@ class AuditInfo(models.Model):
 
     @api.constrains("internal_auditors", "office_to_audit")
     def _check_auditor_office_conflict(self):
+        group_ids = set(
+            self.env["upmin_iso.iso_access_group"].sudo().search([]).mapped("department_id").ids
+        )
+
+        def college_ancestors(emp):
+            result, dept = [], emp.department_id
+            while dept:
+                if dept.id in group_ids:
+                    result.append(dept)
+                dept = dept.parent_id
+            return result
+
         for rec in self:
             if not rec.office_to_audit or not rec.internal_auditors:
                 continue
 
             conflicted_auditors = rec.internal_auditors.filtered(
                 lambda a: a.office == rec.office_to_audit
-                or getattr(a.name, "admin_department_id", False) == rec.office_to_audit
                 or a.name.department_id == rec.office_to_audit
+                or rec.office_to_audit in college_ancestors(a.name)
             )
 
             if conflicted_auditors:
                 raise ValidationError(
                     (
-                        "An internal auditor cannot audit their own office.\n\n"
+                        "An internal auditor cannot audit their own office or college.\n\n"
                         "Conflicted auditor(s): %s"
                     )
                     % ", ".join(conflicted_auditors.mapped("name.name"))

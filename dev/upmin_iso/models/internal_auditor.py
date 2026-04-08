@@ -18,12 +18,30 @@ class InternalAuditor(models.Model):
         compute="_compute_office",
         store=True,
     )
+    secondary_office = fields.Many2one(
+        comodel_name="hr.department",
+        string="Secondary Office",
+        readonly=True,
+        compute="_compute_secondary_office",
+        store=False,
+    )
 
     @api.depends("name")
     def _compute_office(self):
         for rec in self:
             emp = rec.name
             rec.office = getattr(emp, "admin_department_id", emp.department_id) or emp.department_id
+
+    @api.depends("name")
+    def _compute_secondary_office(self):
+        for rec in self:
+            emp = rec.name
+            admin = getattr(emp, "admin_department_id", False)
+            if admin and admin != emp.department_id:
+                rec.secondary_office = emp.department_id
+            else:
+                rec.secondary_office = False
+
     trained = fields.Boolean(string="Trained", default=False)
     certified = fields.Boolean(string="Certified", default=False)
     have_internal_auditor_perms = fields.Boolean(
