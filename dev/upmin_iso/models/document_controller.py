@@ -5,50 +5,39 @@ class DocumentController(models.Model):
     _name = "upmin_iso.document_controller"
     _description = "Document Controller"
     _rec_name = "name"
-    _order = "office,name,trained"
+    _order = "name,trained"
 
     name = fields.Many2one(comodel_name="hr.employee", string="Name", required=True)
     email = fields.Char(
         string="Email", related="name.work_email", readonly=True, store=True
     )
-    office = fields.Many2one(
+    office = fields.Many2many(
         comodel_name="hr.department",
         string="Office",
         readonly=True,
         compute="_compute_office",
         store=True,
-    )
-    secondary_office = fields.Many2one(
-        comodel_name="hr.department",
-        string="Secondary Office",
-        readonly=True,
-        compute="_compute_secondary_office",
-        store=False,
+        relation="upmin_iso_dc_office_rel",
+        column1="dc_id",
+        column2="dept_id",
     )
 
-    @api.depends("name")
+    @api.depends("name", "name.department_id", "name.admin_department_id")
     def _compute_office(self):
         for rec in self:
             emp = rec.name
-            rec.office = getattr(emp, "admin_department_id", emp.department_id) or emp.department_id
-
-    @api.depends("name", "is_unit_head")
-    def _compute_secondary_office(self):
-        for rec in self:
-            emp = rec.name
+            if not emp:
+                rec.office = self.env["hr.department"]
+                continue
+            office_ids = set()
+            if emp.department_id:
+                office_ids.add(emp.department_id.id)
             admin = getattr(emp, "admin_department_id", False)
-            if rec.is_unit_head and admin and admin != emp.department_id:
-                rec.secondary_office = emp.department_id
-            else:
-                rec.secondary_office = False
+            if admin:
+                office_ids.add(admin.id)
+            rec.office = self.env["hr.department"].browse(list(office_ids))
 
     trained = fields.Boolean(string="Trained", default=False)
-    is_unit_head = fields.Boolean(string="Unit Head", default=False)
-    allow_college_access = fields.Boolean(
-        string="Allow College Access",
-        default=True,
-        help="When disabled, this DC's ISO access is restricted to their department and admin office only — no college-level documents.",
-    )
     have_doc_control_perms = fields.Boolean(
         string="Have Document Control Permissions?",
         readonly=True,
@@ -84,8 +73,13 @@ class DocumentController(models.Model):
 
     def _revoke_group(self, user):
         group = self.env.ref("upmin_iso.group_iso_doc_controller")
-        if user and group in user.groups_id:
-            user.sudo().write({"groups_id": [(3, group.id)]})
+        if not user or group not in user.groups_id:
+            return
+        # Keep perms if the employee still has an active Unit Head record
+        emp = user.employee_id
+        if emp and self.env["upmin_iso.unit_head"].sudo().search_count([("name", "=", emp.id)]):
+            return
+        user.sudo().write({"groups_id": [(3, group.id)]})
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -104,9 +98,6 @@ class DocumentController(models.Model):
             for rec in self:
                 self._revoke_group(old_users[rec.id])
                 self._grant_group(rec.name.user_id)
-
-        if "allow_college_access" in vals:
-            self.env.registry.clear_caches()
 
         return result
 

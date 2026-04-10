@@ -30,6 +30,8 @@ upmin_iso_internal_auditor_access_staff,UPMin ISO Internal Auditor Access - Staf
 upmin_iso_internal_auditor_access_general,UPMin ISO Internal Auditor Access - General,model_upmin_iso_internal_auditor,base.group_user,1,0,0,0
 upmin_iso_document_controller_access_staff,UPMin ISO Document Controller Access - Staff,model_upmin_iso_document_controller,group_iso_staff,1,1,1,1
 upmin_iso_document_controller_access_general,UPMin ISO Document Controller Access - General,model_upmin_iso_document_controller,base.group_user,1,0,0,0
+upmin_iso_unit_head_access_staff,UPMin ISO Unit Head Access - Staff,model_upmin_iso_unit_head,group_iso_staff,1,1,1,1
+upmin_iso_unit_head_access_general,UPMin ISO Unit Head Access - General,model_upmin_iso_unit_head,base.group_user,1,0,0,0
 upmin_iso_swot_access_staff,UPMin ISO SWOT Access - Staff,model_upmin_iso_swot,group_iso_staff,1,0,0,0
 upmin_iso_tows_access_staff,UPMin ISO TOWS Access - Staff,model_upmin_iso_tows,group_iso_staff,1,0,0,0
 upmin_iso_swot_line_access_staff,UPMin ISO SWOT Line Access - Staff,model_upmin_iso_swot_line,group_iso_staff,1,0,0,0

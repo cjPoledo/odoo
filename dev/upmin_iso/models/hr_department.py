@@ -17,34 +17,33 @@ class HrEmployee(models.Model):
         comodel_name="hr.department",
         string="ISO Access Groups",
         compute="_compute_iso_ancestor_ids",
-        help="Configured access group departments found in this employee's department chain.",
+        help="College-level access group departments derived from this employee's directory offices.",
     )
 
-    @api.depends(
-        "department_id",
-        "department_id.parent_id",
-        "department_id.parent_id.parent_id",
-        "department_id.parent_id.parent_id.parent_id",
-    )
+    @api.depends("department_id")
     def _compute_iso_ancestor_ids(self):
         group_ids = set(
             self.env["upmin_iso.iso_access_group"].sudo().search([]).mapped("department_id").ids
         )
-        blocked_emp_ids = set(
-            self.env["upmin_iso.document_controller"].sudo()
-                .search([("allow_college_access", "=", False)])
-                .mapped("name").ids
-        )
         for rec in self:
-            if rec.id in blocked_emp_ids:
-                rec.iso_ancestor_ids = self.env["hr.department"]
-                continue
+            # Collect all offices from DC and Unit Head directory records
+            dc = self.env["upmin_iso.document_controller"].sudo().search(
+                [("name", "=", rec.id)], limit=1
+            )
+            uh = self.env["upmin_iso.unit_head"].sudo().search(
+                [("name", "=", rec.id)], limit=1
+            )
+            offices = dc.office | uh.office
+
             ancestors = []
-            dept = rec.department_id
-            while dept:
-                if dept.id in group_ids:
-                    ancestors.append(dept.id)
-                dept = dept.parent_id
+            seen = set()
+            for dept in offices:
+                d = dept
+                while d:
+                    if d.id in group_ids and d.id not in seen:
+                        ancestors.append(d.id)
+                        seen.add(d.id)
+                    d = d.parent_id
             rec.iso_ancestor_ids = self.env["hr.department"].browse(ancestors)
 
     def write(self, vals):
@@ -56,6 +55,11 @@ class HrEmployee(models.Model):
                 )
                 if dc:
                     dc._grant_group(emp.user_id)
+                uh = self.env["upmin_iso.unit_head"].search(
+                    [("name", "=", emp.id)], limit=1
+                )
+                if uh:
+                    uh._grant_group(emp.user_id)
                 ia = self.env["upmin_iso.internal_auditor"].search(
                     [("name", "=", emp.id)], limit=1
                 )

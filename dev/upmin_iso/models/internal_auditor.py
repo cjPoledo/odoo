@@ -5,42 +5,39 @@ class InternalAuditor(models.Model):
     _name = "upmin_iso.internal_auditor"
     _description = "Internal Auditor"
     _rec_name = "name"
-    _order = "office,name,certified,trained"
+    _order = "name,certified,trained"
 
     name = fields.Many2one(comodel_name="hr.employee", string="Name", required=True)
     email = fields.Char(
         string="Email", related="name.work_email", readonly=True, store=True
     )
-    office = fields.Many2one(
+    office = fields.Many2many(
         comodel_name="hr.department",
         string="Office",
         readonly=True,
         compute="_compute_office",
         store=True,
-    )
-    secondary_office = fields.Many2one(
-        comodel_name="hr.department",
-        string="Secondary Office",
-        readonly=True,
-        compute="_compute_secondary_office",
-        store=False,
+        relation="upmin_iso_ia_office_rel",
+        column1="ia_id",
+        column2="dept_id",
     )
 
-    @api.depends("name")
+    @api.depends("name", "name.department_id", "name.admin_department_id")
     def _compute_office(self):
         for rec in self:
             emp = rec.name
-            rec.office = getattr(emp, "admin_department_id", emp.department_id) or emp.department_id
-
-    @api.depends("name")
-    def _compute_secondary_office(self):
-        for rec in self:
-            emp = rec.name
+            if not emp:
+                rec.office = self.env["hr.department"]
+                continue
+            office_ids = set()
+            if emp.department_id:
+                office_ids.add(emp.department_id.id)
             admin = getattr(emp, "admin_department_id", False)
-            if admin and admin != emp.department_id:
-                rec.secondary_office = emp.department_id
-            else:
-                rec.secondary_office = False
+            if admin:
+                office_ids.add(admin.id)
+            managed = self.env["hr.department"].sudo().search([("manager_id", "=", emp.id)])
+            office_ids.update(managed.ids)
+            rec.office = self.env["hr.department"].browse(list(office_ids))
 
     trained = fields.Boolean(string="Trained", default=False)
     certified = fields.Boolean(string="Certified", default=False)

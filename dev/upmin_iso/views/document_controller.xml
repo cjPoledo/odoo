@@ -9,12 +9,8 @@
                     <group>
                         <field name="name" />
                         <field name="email" widget="email" />
-                        <field name="office" />
-                        <field name="secondary_office" attrs="{'invisible': [('secondary_office', '=', False)]}" />
+                        <field name="office" widget="many2many_tags" />
                         <field name="trained" />
-                        <field name="is_unit_head" groups="upmin_iso.group_iso_staff" />
-                        <field name="allow_college_access" groups="upmin_iso.group_iso_staff"
-                            attrs="{'invisible': [('is_unit_head', '=', False)]}" />
                         <field name="perms_label" widget="badge"
                             decoration-success="perms_label == 'active'"
                             decoration-danger="perms_label == 'inactive'"
@@ -33,10 +29,8 @@
                 decoration-muted="not trained">
                 <field name="name" />
                 <field name="email" widget="email" />
-                <field name="office" />
-                <field name="secondary_office" optional="hide" />
+                <field name="office" widget="many2many_tags" />
                 <field name="trained" />
-                <field name="is_unit_head" groups="upmin_iso.group_iso_staff" />
             </tree>
         </field>
     </record>
@@ -51,10 +45,6 @@
                 <separator />
                 <filter name="filter_trained" string="Trained"
                     domain="[('trained', '=', True)]" />
-                <group expand="1" string="Group By">
-                    <filter name="group_by_office" string="Office"
-                        context="{'group_by': 'office'}" />
-                </group>
             </search>
         </field>
     </record>

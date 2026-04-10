@@ -9,8 +9,7 @@
                     <group>
                         <field name="name" />
                         <field name="email" widget="email" />
-                        <field name="office" />
-                        <field name="secondary_office" attrs="{'invisible': [('secondary_office', '=', False)]}" />
+                        <field name="office" widget="many2many_tags" />
                         <field name="trained" attrs="{'readonly': [('certified', '=', True)]}" />
                         <field name="certified" attrs="{'invisible': [('trained', '=', False)]}" />
                         <field name="perms_label" widget="badge"
@@ -32,8 +31,7 @@
                 decoration-success="certified">
                 <field name="name" />
                 <field name="email" widget="email" />
-                <field name="office" />
-                <field name="secondary_office" optional="hide" />
+                <field name="office" widget="many2many_tags" />
                 <field name="trained" />
                 <field name="certified" />
             </tree>
@@ -52,10 +50,6 @@
                     domain="[('trained', '=', True)]" />
                 <filter name="filter_certified" string="Certified"
                     domain="[('certified', '=', True)]" />
-                <group expand="1" string="Group By">
-                    <filter name="group_by_office" string="Office"
-                        context="{'group_by': 'office'}" />
-                </group>
             </search>
         </field>
     </record>

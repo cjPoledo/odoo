@@ -14,6 +14,7 @@
         "data/iso_clause_data.xml",
         "views/internal_auditor.xml",
         "views/document_controller.xml",
+        "views/unit_head.xml",
         "views/swot.xml",
         "views/tows.xml",
         "views/iso_clause.xml",
