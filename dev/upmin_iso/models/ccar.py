@@ -30,11 +30,10 @@ class CCAR(models.Model):
     status = fields.Selection(
         selection=[
             ("creation", "CCAR Creation"),
-            ("checking1", "QAO Checking (1)"),
             ("office", "Office (1)"),
-            ("checking2", "QAO Checking (2)"),
+            ("checking2", "QAO Checking (1)"),
             ("verification", "IA Verification"),
-            ("checking3", "QAO Checking (3)"),
+            ("checking3", "QAO Checking (2)"),
             ("office2", "Office (2)"),
             ("completed", "Completed"),
         ],
@@ -119,7 +118,6 @@ class CCAR(models.Model):
     responsible_person = fields.Many2one(
         comodel_name="hr.employee",
         string="Responsible Person",
-        domain="['|', ('department_id', '=', office), ('admin_department_id', '=', office)]",
     )
     date_received = fields.Date(string="Date Received")
     office = fields.Many2one(
@@ -141,7 +139,6 @@ class CCAR(models.Model):
     investigated_by = fields.Many2one(
         comodel_name="hr.employee",
         string="Investigated By",
-        domain="['|', ('department_id', '=', investigator_dept), ('admin_department_id', '=', investigator_dept)]",
     )
     date_investigated = fields.Date(string="Date Investigated")
     investigator_dept = fields.Many2one(
@@ -160,13 +157,11 @@ class CCAR(models.Model):
     proposed_by = fields.Many2one(
         comodel_name="hr.employee",
         string="Proposed By",
-        domain="['|', ('department_id', '=', office), ('admin_department_id', '=', office)]",
     )
     target_date = fields.Date(string="Implementation/Target Date")
     approved_by = fields.Many2one(
         comodel_name="hr.employee",
         string="Approved By",
-        domain="['|', ('department_id', '=', office), ('admin_department_id', '=', office)]",
     )
 
     # impact analysis
@@ -195,7 +190,6 @@ class CCAR(models.Model):
     updated_by = fields.Many2one(
         comodel_name="hr.employee",
         string="Updated By",
-        domain="['|', ('department_id', '=', office), ('admin_department_id', '=', office)]",
     )
     updated_date = fields.Date(string="Updated Date")
 
@@ -206,7 +200,6 @@ class CCAR(models.Model):
     changes_by = fields.Many2one(
         comodel_name="hr.employee",
         string="Changes Made Completed By",
-        domain="['|', ('department_id', '=', office), ('admin_department_id', '=', office)]",
     )
     changes_date = fields.Date(string="Changes Date")
 
@@ -223,13 +216,24 @@ class CCAR(models.Model):
         ),
     ]
 
+    @api.onchange("related_nc")
+    def _onchange_related_nc_responsible(self):
+        if not self.related_nc or not self.related_nc.audit_info:
+            return
+        office = self.related_nc.audit_info.office_to_audit
+        if not office:
+            return
+        unit_head = self.env["upmin_iso.unit_head"].sudo().search(
+            [("office", "in", [office.id])], limit=1
+        )
+        if unit_head:
+            self.responsible_person = unit_head.name
+
     def _validate_next_step(self):
         if self.status == "creation":
             missing = []
             if not self.responsible_person:
                 missing.append("Responsible Person")
-            if not self.date_received:
-                missing.append("Date Received")
             if missing:
                 raise ValidationError(
                     "Please fill in the following before submitting:\n• "
@@ -238,6 +242,8 @@ class CCAR(models.Model):
 
         elif self.status == "office":
             missing = []
+            if not self.date_received:
+                missing.append("[1] Date Received")
             # Page 2
             if not self.description:
                 missing.append("[2] Description")
@@ -331,7 +337,6 @@ class CCAR(models.Model):
     def next_step(self):
         flow = [
             "creation",
-            "checking1",
             "office",
             "checking2",
             "verification",
@@ -350,7 +355,6 @@ class CCAR(models.Model):
     def previous_step(self):
         flow = [
             "creation",
-            "checking1",
             "office",
             "checking2",
             "verification",

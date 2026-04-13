@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class CCARCorrectiveActionEffectiveness(models.Model):
@@ -28,6 +28,7 @@ class CCARCorrectiveActionEffectiveness(models.Model):
     verified_date = fields.Date(string="Verified Date")
     approval = fields.Text(string="Approved/Rejected")
 
+    @api.depends("ccar", "ccar.related_nc.audit_info.internal_auditors")
     def _compute_allowed_verifiers(self):
         for rec in self:
             ccar = rec.ccar

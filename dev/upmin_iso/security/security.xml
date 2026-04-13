@@ -158,13 +158,13 @@
     </record>
 
     <record id="rule_internal_auditor_write" model="ir.rule">
-        <field name="name">Internal Auditor - Write Creation and Verification</field>
+        <field name="name">Internal Auditor - Write Verification</field>
         <field name="model_id" ref="model_upmin_iso_ccar" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_internal_auditor'))]" />
         <field name="domain_force">
             [
             ('auditors.name.user_id', '=', user.id),
-            ('status', 'in', ('creation', 'verification'))
+            ('status', '=', 'verification')
             ]
         </field>
         <field name="perm_read" eval="1" />

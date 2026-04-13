@@ -76,14 +76,22 @@ class AuditPeriod(models.Model):
                 (int(c.ccar_no.split("-", 1)[1]) for c in existing if c.ccar_no.split("-", 1)[1].isdigit()),
                 default=0,
             )
+            UnitHead = self.env["upmin_iso.unit_head"].sudo()
             for i, nc in enumerate(record.related_nc):
                 ccar_no = f"{year}-{latest + i + 1:02d}"
+                office = nc.audit_info.office_to_audit if nc.audit_info else False
+                unit_head = False
+                if office:
+                    uh = UnitHead.search([("office", "in", [office.id])], limit=1)
+                    if uh:
+                        unit_head = uh.name.id
                 CCAR.create(
                     {
                         "ccar_no": ccar_no,
                         "date": fields.Date.today(),
                         "audit_period": record.id,
                         "related_nc": nc.id,
+                        "responsible_person": unit_head,
                     }
                 )
 
