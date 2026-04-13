@@ -260,7 +260,7 @@
                                                 </td>
                                                 <td>
                                                     <p style="margin-bottom: 0px;"> Department: <span
-                                                            t-field="auditor.office.name" />
+                                                            t-out="', '.join(auditor.office.mapped('name'))" />
                                                     </p>
                                                 </td>
                                             </tr>
