@@ -62,6 +62,14 @@
         sequence="20" />
 
     <menuitem
+        id="significant_risks_export_menu"
+        name="Export Significant Risks"
+        action="upmin_iso.significant_risks_export_wizard_action"
+        groups="group_iso_staff"
+        parent="ror_main_menu"
+        sequence="21" />
+
+    <menuitem
         id="audit_main_menu"
         name="Internal Audit"
         groups="group_iso_internal_auditor,group_iso_doc_controller,group_iso_staff"
