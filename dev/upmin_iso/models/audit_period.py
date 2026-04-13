@@ -70,15 +70,14 @@ class AuditPeriod(models.Model):
         for record in self:
             if not record.related_nc:
                 raise UserError("No Non-Conformities found in this audit period. Nothing to generate.")
-            for nc in record.related_nc:
-                year = fields.Date.today().year
-                count = (
-                    self.env["upmin_iso.ccar"].search_count(
-                        [("ccar_no", "like", f"{year}-%")]
-                    )
-                    + 1
-                )
-                ccar_no = f"{year}-{count:02d}"
+            year = fields.Date.today().year
+            existing = CCAR.search([("ccar_no", "like", f"{year}-%")])
+            latest = max(
+                (int(c.ccar_no.split("-", 1)[1]) for c in existing if c.ccar_no.split("-", 1)[1].isdigit()),
+                default=0,
+            )
+            for i, nc in enumerate(record.related_nc):
+                ccar_no = f"{year}-{latest + i + 1:02d}"
                 CCAR.create(
                     {
                         "ccar_no": ccar_no,

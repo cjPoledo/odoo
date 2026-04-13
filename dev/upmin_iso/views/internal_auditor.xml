@@ -10,8 +10,8 @@
                         <field name="name" />
                         <field name="email" widget="email" />
                         <field name="office" widget="many2many_tags" />
-                        <field name="trained" attrs="{'readonly': [('certified', '=', True)]}" />
-                        <field name="certified" attrs="{'invisible': [('trained', '=', False)]}" />
+                        <field name="trained" />
+                        <field name="certified" />
                         <field name="perms_label" widget="badge"
                             decoration-success="perms_label == 'active'"
                             decoration-danger="perms_label == 'inactive'"

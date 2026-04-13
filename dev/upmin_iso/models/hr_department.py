@@ -13,6 +13,24 @@ class HrDepartment(models.Model):
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
+    iso_office_ids = fields.Many2many(
+        comodel_name="hr.department",
+        string="ISO Offices",
+        compute="_compute_iso_office_ids",
+        help="All offices from this employee's DC, UH, and IA directory records.",
+    )
+
+    @api.depends("department_id", "admin_department_id")
+    def _compute_iso_office_ids(self):
+        for rec in self:
+            dc = self.env["upmin_iso.document_controller"].sudo().search(
+                [("name", "=", rec.id)], limit=1
+            )
+            uh = self.env["upmin_iso.unit_head"].sudo().search(
+                [("name", "=", rec.id)], limit=1
+            )
+            rec.iso_office_ids = dc.office | uh.office
+
     iso_ancestor_ids = fields.Many2many(
         comodel_name="hr.department",
         string="ISO Access Groups",
@@ -20,24 +38,15 @@ class HrEmployee(models.Model):
         help="College-level access group departments derived from this employee's directory offices.",
     )
 
-    @api.depends("department_id")
+    @api.depends("department_id", "admin_department_id")
     def _compute_iso_ancestor_ids(self):
         group_ids = set(
             self.env["upmin_iso.iso_access_group"].sudo().search([]).mapped("department_id").ids
         )
         for rec in self:
-            # Collect all offices from DC and Unit Head directory records
-            dc = self.env["upmin_iso.document_controller"].sudo().search(
-                [("name", "=", rec.id)], limit=1
-            )
-            uh = self.env["upmin_iso.unit_head"].sudo().search(
-                [("name", "=", rec.id)], limit=1
-            )
-            offices = dc.office | uh.office
-
             ancestors = []
             seen = set()
-            for dept in offices:
+            for dept in rec.iso_office_ids:
                 d = dept
                 while d:
                     if d.id in group_ids and d.id not in seen:

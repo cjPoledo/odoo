@@ -104,12 +104,15 @@ class AuditInfo(models.Model):
             self.env["upmin_iso.iso_access_group"].sudo().search([]).mapped("department_id").ids
         )
 
-        def college_ancestors(emp):
-            result, dept = [], emp.department_id
-            while dept:
-                if dept.id in group_ids:
-                    result.append(dept)
-                dept = dept.parent_id
+        def college_ancestors(ia_rec):
+            result, seen = [], set()
+            for dept in ia_rec.office:
+                d = dept
+                while d:
+                    if d.id in group_ids and d.id not in seen:
+                        result.append(d)
+                        seen.add(d.id)
+                    d = d.parent_id
             return result
 
         for rec in self:
@@ -118,7 +121,7 @@ class AuditInfo(models.Model):
 
             conflicted_auditors = rec.internal_auditors.filtered(
                 lambda a: rec.office_to_audit in a.office
-                or rec.office_to_audit in college_ancestors(a.name)
+                or rec.office_to_audit in college_ancestors(a)
             )
 
             if conflicted_auditors:

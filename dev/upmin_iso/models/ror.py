@@ -28,10 +28,8 @@ class ROR(models.Model):
         string="Department",
         required=True,
         domain=lambda self: (
-            [("id", "in", list(filter(None, [
-                self.env.user.employee_id.department_id.id,
-                self.env.user.employee_id.admin_department_id.id,
-            ])) + self.env.user.employee_id.iso_ancestor_ids.ids)]
+            [("id", "in", self.env.user.employee_id.iso_office_ids.ids
+                + self.env.user.employee_id.iso_ancestor_ids.ids)]
             if self.env.user.employee_id
             else []
         ),
@@ -41,10 +39,8 @@ class ROR(models.Model):
         string="Related SWOT",
         help="Optionally link a SWOT to import issues from it.",
         domain=lambda self: (
-            [("office", "in", list(filter(None, [
-                self.env.user.employee_id.department_id.id,
-                self.env.user.employee_id.admin_department_id.id,
-            ])) + self.env.user.employee_id.iso_ancestor_ids.ids)]
+            [("office", "in", self.env.user.employee_id.iso_office_ids.ids
+                + self.env.user.employee_id.iso_ancestor_ids.ids)]
             if self.env.user.employee_id
             else []
         ),
