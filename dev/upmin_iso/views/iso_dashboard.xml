@@ -135,6 +135,10 @@
                             class="oe_stat_button" icon="fa-calendar-times-o">
                             <field name="ror_with_skipped" widget="statinfo" string="Skipped Quarters" />
                         </button>
+                        <button name="action_ror_incomplete_past" type="object"
+                            class="oe_stat_button" icon="fa-exclamation-circle">
+                            <field name="ror_with_incomplete_past" widget="statinfo" string="Incomplete Past Ratings" />
+                        </button>
                     </div>
 
                 </sheet>

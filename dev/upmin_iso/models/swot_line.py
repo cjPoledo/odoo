@@ -181,6 +181,17 @@ class SWOTLine(models.Model):
                 skipped_labels = ", ".join(q.strftime("%b %Y") for q in skipped)
                 lines.append(f"Skipped: {skipped_labels}")
 
+            # Incomplete past ratings
+            incomplete_past = rec.ratings.filtered(
+                lambda r: r.review_date < q_end and r.progress < 100
+            )
+            if incomplete_past:
+                labels = ", ".join(
+                    r.review_date.strftime("%b %Y")
+                    for r in sorted(incomplete_past, key=lambda r: r.review_date)
+                )
+                lines.append(f"Incomplete past: {labels}")
+
             rec.ratings_status = "\n".join(lines)
 
     @api.depends(

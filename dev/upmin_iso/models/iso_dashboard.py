@@ -45,6 +45,7 @@ class IsoDashboard(models.TransientModel):
     ror_pending_offices = fields.Integer(compute="_compute_all")
     significant_risks = fields.Integer(compute="_compute_all")
     ror_with_skipped = fields.Integer(compute="_compute_all")
+    ror_with_incomplete_past = fields.Integer(compute="_compute_all")
 
     # ── Directory ─────────────────────────────────────────────────────────
     ia_trained_certified = fields.Integer(compute="_compute_all")
@@ -147,6 +148,16 @@ class IsoDashboard(models.TransientModel):
                         break
         ror_with_skipped = len(skipped_ror_ids)
 
+        # RORs with at least one incomplete past rating (progress < 100, review_date < current quarter)
+        incomplete_past_ror_ids = set(
+            Rating.search([
+                ("review_date", "<", q_end),
+                ("progress", "<", 100),
+                ("issue.ror_id", "!=", False),
+            ]).mapped("issue.ror_id.id")
+        )
+        ror_with_incomplete_past = len(incomplete_past_ror_ids)
+
         # Directory counts
         ia_trained_certified = IA.search_count([("trained", "=", True), ("certified", "=", True)])
         ia_trained_not_certified = IA.search_count([("trained", "=", True), ("certified", "=", False)])
@@ -174,6 +185,7 @@ class IsoDashboard(models.TransientModel):
             rec.ror_pending_offices = ror_pending_offices
             rec.significant_risks = significant_risks
             rec.ror_with_skipped = ror_with_skipped
+            rec.ror_with_incomplete_past = ror_with_incomplete_past
             rec.ia_trained_certified = ia_trained_certified
             rec.ia_trained_not_certified = ia_trained_not_certified
             rec.dc_trained = dc_trained
@@ -466,5 +478,23 @@ class IsoDashboard(models.TransientModel):
             "res_model": "upmin_iso.ror",
             "view_mode": "tree,form",
             "domain": [("id", "in", list(skipped_ror_ids))],
+            "context": {"upmin_iso_dept_short": True},
+        }
+
+    def action_ror_incomplete_past(self):
+        q_end = _current_quarter_end()
+        ror_ids = set(
+            self.env["upmin_iso.ror_rating"].search([
+                ("review_date", "<", q_end),
+                ("progress", "<", 100),
+                ("issue.ror_id", "!=", False),
+            ]).mapped("issue.ror_id.id")
+        )
+        return {
+            "type": "ir.actions.act_window",
+            "name": "RORs With Incomplete Past Ratings",
+            "res_model": "upmin_iso.ror",
+            "view_mode": "tree,form",
+            "domain": [("id", "in", list(ror_ids))],
             "context": {"upmin_iso_dept_short": True},
         }
