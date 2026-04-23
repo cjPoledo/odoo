@@ -84,7 +84,7 @@
             <form string="">
                 <sheet>
                     <group col="1">
-                        <field name="auditor" />
+                        <field name="auditor" groups="upmin_iso.group_iso_staff,upmin_iso.group_iso_internal_auditor" />
                         <field name="clause" />
                         <field name="question" />
                         <field name="evidence" />
@@ -101,7 +101,7 @@
         <field name="model">upmin_iso.audit_finding</field>
         <field name="arch" type="xml">
             <tree string="">
-                <field name="auditor" />
+                <field name="auditor" groups="upmin_iso.group_iso_staff,upmin_iso.group_iso_internal_auditor" />
                 <field name="clause" />
                 <field name="rating" widget="badge"
                     decoration-success="rating == 'c'"
