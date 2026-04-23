@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class AuditInfo(models.Model):
@@ -97,6 +97,12 @@ class AuditInfo(models.Model):
             record.ofi = sum(
                 1 for finding in record.audit_findings if finding.rating == "ofi"
             )
+
+    def unlink(self):
+        if any(record.is_finalized for record in self):
+            raise UserError("Cannot delete a finalized audit schedule.")
+        self.mapped("audit_findings").sudo().unlink()
+        return super().unlink()
 
     @api.constrains("internal_auditors", "office_to_audit")
     def _check_auditor_office_conflict(self):

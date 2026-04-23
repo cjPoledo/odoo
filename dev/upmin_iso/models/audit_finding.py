@@ -12,6 +12,7 @@ class AuditFinding(models.Model):
         string="Audit Information",
         required=True,
         readonly=True,
+        ondelete="cascade",
     )
     auditor = fields.Many2one(
         comodel_name="res.partner",
