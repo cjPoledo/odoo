@@ -28,6 +28,7 @@
         "views/iso_access_group.xml",
         "views/menu.xml",
         "report/ccar_report_template.xml",
+        "report/audit_findings_report.xml",
     ],
     "assets": {
         "web.assets_backend": [

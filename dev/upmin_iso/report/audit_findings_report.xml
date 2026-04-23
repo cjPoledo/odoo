@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_audit_findings" model="report.paperformat">
+        <field name="name">Audit Findings Paper</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">0</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="action_report_audit_findings_own" model="ir.actions.report">
+        <field name="name">Print My Audit Findings</field>
+        <field name="model">upmin_iso.audit_info</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">upmin_iso.audit_findings_report_own_doc</field>
+        <field name="report_file">upmin_iso.audit_findings_report_own_doc</field>
+        <field name="print_report_name">'My Audit Findings - %s' % object.office_to_audit.name</field>
+        <field name="binding_model_id" ref="model_upmin_iso_audit_info" />
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="upmin_iso.paperformat_audit_findings" />
+    </record>
+
+    <record id="action_report_audit_findings_all" model="ir.actions.report">
+        <field name="name">Print All Audit Findings</field>
+        <field name="model">upmin_iso.audit_info</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">upmin_iso.audit_findings_report_all_doc</field>
+        <field name="report_file">upmin_iso.audit_findings_report_all_doc</field>
+        <field name="print_report_name">'Audit Findings - %s' % object.office_to_audit.name</field>
+        <field name="binding_model_id" ref="model_upmin_iso_audit_info" />
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="upmin_iso.paperformat_audit_findings" />
+    </record>
+
+    <!--
+        Base template.
+        Caller must set before calling:
+          - findings       : filtered audit_finding recordset
+          - auditor_display: string to show in the Auditor(s) header line
+    -->
+    <template id="audit_findings_report_base">
+        <style>
+            .af-table, .af-table th, .af-table td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            .af-table {
+                width: 100%;
+                table-layout: fixed;
+                margin-top: 10px;
+            }
+            .af-table th {
+                padding: 6px 8px;
+                text-align: center;
+                vertical-align: middle;
+                font-size: 13px;
+            }
+            .af-table td {
+                padding: 6px 8px;
+                vertical-align: top;
+                font-size: 13px;
+            }
+            .af-table thead { display: table-header-group; }
+            .af-table tr { page-break-inside: avoid; }
+            .ws { min-height: 110px; }
+            .ws-sm { min-height: 110px; text-align: center; vertical-align: middle; }
+            .af-header td { border: none; padding: 3px 6px; font-size: 13px; }
+        </style>
+
+        <table class="af-header" style="width: 100%; margin-bottom: 6px; border-collapse: collapse;">
+            <tr>
+                <td style="width: 13%; font-weight: bold;">Audit area:</td>
+                <td style="width: 37%;"><t t-esc="o.office_to_audit.name or ''" /></td>
+                <td style="width: 13%; font-weight: bold;">Audit Period:</td>
+                <td style="width: 37%;"><t t-esc="o.audit_period.display_name or ''" /></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">Date:</td>
+                <td><t t-esc="str(o.audit_date) if o.audit_date else ''" /></td>
+                <td style="font-weight: bold;">Auditor(s):</td>
+                <td><t t-esc="auditor_display" /></td>
+            </tr>
+        </table>
+
+        <table class="af-table">
+            <thead>
+                <tr>
+                    <th style="width: 17%;">Requirement/Clause</th>
+                    <th style="width: 20%;">Question/s</th>
+                    <th style="width: 22%;">Scenario/Evidence</th>
+                    <th style="width: 5%;">C</th>
+                    <th style="width: 5%;">NC</th>
+                    <th style="width: 5%;">OFI</th>
+                    <th style="width: 26%;">Statement</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="findings" t-as="f">
+                    <tr>
+                        <td>
+                            <div class="ws">
+                                <t t-if="f.clause">
+                                    <strong><t t-esc="f.clause.clause_number" /></strong>
+                                    <t t-if="f.clause.clause_title">
+                                        <t t-esc="' ' + f.clause.clause_title" />
+                                    </t>
+                                </t>
+                            </div>
+                        </td>
+                        <td><div class="ws"><t t-esc="f.question or ''" /></div></td>
+                        <td><div class="ws"><t t-esc="f.evidence or ''" /></div></td>
+                        <td><div class="ws-sm"><t t-if="f.rating == 'c'">&#10003;</t></div></td>
+                        <td><div class="ws-sm"><t t-if="f.rating == 'nc'">&#10003;</t></div></td>
+                        <td><div class="ws-sm"><t t-if="f.rating == 'ofi'">&#10003;</t></div></td>
+                        <td><div class="ws"><t t-esc="f.statement or ''" /></div></td>
+                    </tr>
+                </t>
+                <t t-foreach="range(5)" t-as="i">
+                    <tr>
+                        <td><div class="ws"></div></td>
+                        <td><div class="ws"></div></td>
+                        <td><div class="ws"></div></td>
+                        <td><div class="ws-sm"></div></td>
+                        <td><div class="ws-sm"></div></td>
+                        <td><div class="ws-sm"></div></td>
+                        <td><div class="ws"></div></td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+    </template>
+
+    <template id="audit_findings_report_own_doc">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: Arial, sans-serif;">
+                        <t t-set="findings" t-value="o.audit_findings.filtered(lambda f: f.auditor == user.partner_id)" />
+                        <t t-set="my_ia" t-value="o.internal_auditors.filtered(lambda a: a.name.user_id == user)" />
+                        <t t-set="auditor_display" t-value="my_ia[0].name.name if my_ia else user.name" />
+                        <t t-call="upmin_iso.audit_findings_report_base" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="audit_findings_report_all_doc">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: Arial, sans-serif;">
+                        <t t-set="findings" t-value="o.audit_findings" />
+                        <t t-set="auditor_display" t-value="', '.join(o.internal_auditors.mapped('name.name'))" />
+                        <t t-call="upmin_iso.audit_findings_report_base" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
