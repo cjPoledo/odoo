@@ -6,6 +6,13 @@
         <field name="model">upmin_iso.audit_info</field>
         <field name="arch" type="xml">
             <form string="">
+                <header>
+                    <button name="%(upmin_iso.action_report_audit_findings_own)d"
+                        type="action"
+                        string="Print My Audit Findings"
+                        class="btn-primary"
+                        attrs="{'invisible': [('is_office_auditor', '=', False)]}" />
+                </header>
                 <sheet>
                     <field name="is_staff" invisible="1" />
                     <field name="is_office_auditor" invisible="1" />

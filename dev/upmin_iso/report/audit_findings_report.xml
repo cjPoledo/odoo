@@ -21,6 +21,17 @@
         <field name="report_name">upmin_iso.audit_findings_report_own_doc</field>
         <field name="report_file">upmin_iso.audit_findings_report_own_doc</field>
         <field name="print_report_name">'My Audit Findings - %s' % object.office_to_audit.name</field>
+        <field name="binding_model_id" eval="False" />
+        <field name="paperformat_id" ref="upmin_iso.paperformat_audit_findings" />
+    </record>
+
+    <record id="action_report_audit_findings_blank" model="ir.actions.report">
+        <field name="name">Print Blank Audit Form</field>
+        <field name="model">upmin_iso.audit_info</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">upmin_iso.audit_findings_report_blank_doc</field>
+        <field name="report_file">upmin_iso.audit_findings_report_blank_doc</field>
+        <field name="print_report_name">'Blank Audit Form - %s' % object.office_to_audit.name</field>
         <field name="binding_model_id" ref="model_upmin_iso_audit_info" />
         <field name="binding_type">report</field>
         <field name="paperformat_id" ref="upmin_iso.paperformat_audit_findings" />
@@ -71,6 +82,7 @@
             .ws { min-height: 110px; }
             .ws-sm { min-height: 110px; text-align: center; vertical-align: middle; }
             .af-header td { border: none; padding: 3px 6px; font-size: 13px; }
+            .af-check { display: inline-block; width: 14px; height: 14px; background-color: #000; }
         </style>
 
         <table class="af-header" style="width: 100%; margin-bottom: 6px; border-collapse: collapse;">
@@ -115,9 +127,9 @@
                         </td>
                         <td><div class="ws"><t t-esc="f.question or ''" /></div></td>
                         <td><div class="ws"><t t-esc="f.evidence or ''" /></div></td>
-                        <td><div class="ws-sm"><t t-if="f.rating == 'c'">&#10003;</t></div></td>
-                        <td><div class="ws-sm"><t t-if="f.rating == 'nc'">&#10003;</t></div></td>
-                        <td><div class="ws-sm"><t t-if="f.rating == 'ofi'">&#10003;</t></div></td>
+                        <td><div class="ws-sm"><t t-if="f.rating == 'c'"><span class="af-check"></span></t></div></td>
+                        <td><div class="ws-sm"><t t-if="f.rating == 'nc'"><span class="af-check"></span></t></div></td>
+                        <td><div class="ws-sm"><t t-if="f.rating == 'ofi'"><span class="af-check"></span></t></div></td>
                         <td><div class="ws"><t t-esc="f.statement or ''" /></div></td>
                     </tr>
                 </t>
@@ -139,14 +151,12 @@
     <template id="audit_findings_report_own_doc">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="web.external_layout">
-                    <div class="page" style="font-family: Arial, sans-serif;">
-                        <t t-set="findings" t-value="o.audit_findings.filtered(lambda f: f.auditor == user.partner_id)" />
-                        <t t-set="my_ia" t-value="o.internal_auditors.filtered(lambda a: a.name.user_id == user)" />
-                        <t t-set="auditor_display" t-value="my_ia[0].name.name if my_ia else user.name" />
-                        <t t-call="upmin_iso.audit_findings_report_base" />
-                    </div>
-                </t>
+                <div class="page" style="font-family: Arial, sans-serif;">
+                    <t t-set="findings" t-value="o.audit_findings.filtered(lambda f: f.auditor == user.partner_id)" />
+                    <t t-set="my_ia" t-value="o.internal_auditors.filtered(lambda a: a.name.user_id == user)" />
+                    <t t-set="auditor_display" t-value="my_ia[0].name.name if my_ia else user.name" />
+                    <t t-call="upmin_iso.audit_findings_report_base" />
+                </div>
             </t>
         </t>
     </template>
@@ -154,13 +164,95 @@
     <template id="audit_findings_report_all_doc">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="web.external_layout">
-                    <div class="page" style="font-family: Arial, sans-serif;">
-                        <t t-set="findings" t-value="o.audit_findings" />
-                        <t t-set="auditor_display" t-value="', '.join(o.internal_auditors.mapped('name.name'))" />
-                        <t t-call="upmin_iso.audit_findings_report_base" />
-                    </div>
-                </t>
+                <div class="page" style="font-family: Arial, sans-serif;">
+                    <t t-set="findings" t-value="o.audit_findings" />
+                    <t t-set="auditor_display" t-value="', '.join(o.internal_auditors.mapped('name.name'))" />
+                    <t t-call="upmin_iso.audit_findings_report_base" />
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="audit_findings_report_blank_doc">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page" style="font-family: Arial, sans-serif;">
+                    <style>
+                        .af-table, .af-table th, .af-table td {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                        }
+                        .af-table {
+                            width: 100%;
+                            table-layout: fixed;
+                            margin-top: 10px;
+                        }
+                        .af-table th {
+                            padding: 6px 8px;
+                            text-align: center;
+                            vertical-align: middle;
+                            font-size: 13px;
+                        }
+                        .af-table td {
+                            padding: 6px 8px;
+                            vertical-align: top;
+                            font-size: 13px;
+                        }
+                        .af-table thead { display: table-header-group; }
+                        .af-table tr { page-break-inside: avoid; }
+                        .ws { min-height: 110px; }
+                        .ws-sm { min-height: 110px; text-align: center; vertical-align: middle; }
+                        .af-blank-header td { border: none; padding: 3px 6px; font-size: 13px; }
+                        .af-blank-line {
+                            display: block;
+                            height: 1.4em;
+                            border-bottom: 1px solid black;
+                            width: 100%;
+                        }
+                    </style>
+
+                    <table class="af-blank-header" style="width: 100%; margin-bottom: 6px; border-collapse: collapse;">
+                        <tr>
+                            <td style="width: 13%; font-weight: bold;">Audit area:</td>
+                            <td style="width: 37%;"><div class="af-blank-line"></div></td>
+                            <td style="width: 13%; font-weight: bold;">Audit Period:</td>
+                            <td style="width: 37%;"><div class="af-blank-line"></div></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Date:</td>
+                            <td><div class="af-blank-line"></div></td>
+                            <td style="font-weight: bold;">Auditor(s):</td>
+                            <td><div class="af-blank-line"></div></td>
+                        </tr>
+                    </table>
+
+                    <table class="af-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 17%;">Requirement/Clause</th>
+                                <th style="width: 20%;">Question/s</th>
+                                <th style="width: 22%;">Scenario/Evidence</th>
+                                <th style="width: 5%;">C</th>
+                                <th style="width: 5%;">NC</th>
+                                <th style="width: 5%;">OFI</th>
+                                <th style="width: 26%;">Statement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="range(15)" t-as="i">
+                                <tr>
+                                    <td><div class="ws"></div></td>
+                                    <td><div class="ws"></div></td>
+                                    <td><div class="ws"></div></td>
+                                    <td><div class="ws-sm"></div></td>
+                                    <td><div class="ws-sm"></div></td>
+                                    <td><div class="ws-sm"></div></td>
+                                    <td><div class="ws"></div></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
             </t>
         </t>
     </template>
