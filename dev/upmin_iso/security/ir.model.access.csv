@@ -4,8 +4,6 @@ upmin_iso_ror_access_doc_controller,UPMin ISO ROR Access - Doc Controller,model_
 upmin_iso_ror_rating_access_staff,UPMin ISO ROR Rating Access - Staff,model_upmin_iso_ror_rating,group_iso_staff,1,0,0,0
 upmin_iso_ror_rating_access_doc_controller,UPMin ISO ROR Rating Access - Doc Controller,model_upmin_iso_ror_rating,group_iso_doc_controller,1,1,1,1
 upmin_iso_audit_period_access_staff,UPMin ISO Audit Period Access - Staff,model_upmin_iso_audit_period,group_iso_staff,1,1,1,1
-upmin_iso_audit_period_access_internal_auditor,UPMin ISO Audit Period Access - Internal Auditor,model_upmin_iso_audit_period,group_iso_internal_auditor,1,0,0,0
-upmin_iso_audit_period_access_doc_controller,UPMin ISO Audit Period Access - Doc Controller,model_upmin_iso_audit_period,group_iso_doc_controller,1,0,0,0
 upmin_iso_audit_info_access_staff,UPMin ISO Audit Info Access - Staff,model_upmin_iso_audit_info,group_iso_staff,1,1,1,1
 upmin_iso_audit_info_access_doc_controller,UPMin ISO Audit Info Access - Doc Controller,model_upmin_iso_audit_info,group_iso_doc_controller,1,0,0,0
 upmin_iso_audit_info_access_internal_auditor,UPMin ISO Audit Info Access - Internal Auditor,model_upmin_iso_audit_info,group_iso_internal_auditor,1,1,0,0

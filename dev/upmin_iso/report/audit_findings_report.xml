@@ -90,7 +90,7 @@
                 <td style="width: 13%; font-weight: bold;">Audit area:</td>
                 <td style="width: 37%;"><t t-esc="o.office_to_audit.name or ''" /></td>
                 <td style="width: 13%; font-weight: bold;">Audit Period:</td>
-                <td style="width: 37%;"><t t-esc="o.audit_period.display_name or ''" /></td>
+                <td style="width: 37%;"><t t-esc="o.audit_period.sudo().display_name or ''" /></td>
             </tr>
             <tr>
                 <td style="font-weight: bold;">Date:</td>

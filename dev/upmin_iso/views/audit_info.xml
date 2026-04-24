@@ -20,11 +20,13 @@
                     <group col="2">
                         <group>
                             <field name="office_to_audit"
+                                options="{'no_open': True}"
                                 attrs="{'readonly': ['|', ('is_finalized','=',True), ('is_staff','=',False)]}" />
                         </group>
                         <group>
                             <field name="audit_period"
                                 domain="[('is_finalized', '=', False)]"
+                                options="{'no_open': True}"
                                 attrs="{'readonly': ['|', ('is_finalized','=',True), ('is_staff','=',False)]}" />
                         </group>
                     </group>
