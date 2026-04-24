@@ -41,6 +41,9 @@ class AuditFinding(models.Model):
         string="Statement", help="Justification for the rating based on the evidence."
     )
 
+    is_staff = fields.Boolean(compute="_compute_is_staff", store=False)
+    is_audit_auditor = fields.Boolean(compute="_compute_is_audit_auditor", store=False)
+
     related_audit_period = fields.Many2one(
         comodel_name="upmin_iso.audit_period",
         string="Audit Period",
@@ -51,6 +54,19 @@ class AuditFinding(models.Model):
         string="Office",
         related="audit_info.office_to_audit",
     )
+
+    def _compute_is_staff(self):
+        for record in self:
+            record.is_staff = self.env.user.has_group("upmin_iso.group_iso_staff")
+
+    def _compute_is_audit_auditor(self):
+        current_user = self.env.user
+        for record in self:
+            record.is_audit_auditor = bool(
+                record.audit_info.internal_auditors.filtered(
+                    lambda a: a.name.user_id == current_user
+                )
+            )
 
     def name_get(self):
         result = []
