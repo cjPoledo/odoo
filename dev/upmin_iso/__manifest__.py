@@ -19,6 +19,8 @@
         "views/tows.xml",
         "views/iso_clause.xml",
         "views/audit_period.xml",
+        "report/ccar_report_template.xml",
+        "report/audit_findings_report.xml",
         "views/audit_info.xml",
         "views/ccar.xml",
         "views/ror.xml",
@@ -27,8 +29,6 @@
         "views/iso_dashboard.xml",
         "views/iso_access_group.xml",
         "views/menu.xml",
-        "report/ccar_report_template.xml",
-        "report/audit_findings_report.xml",
     ],
     "assets": {
         "web.assets_backend": [
