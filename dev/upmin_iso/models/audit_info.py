@@ -80,7 +80,7 @@ class AuditInfo(models.Model):
         current_user = self.env.user
         for record in self:
             record.is_office_auditor = bool(
-                record.internal_auditors.filtered(
+                record.internal_auditors.sudo().filtered(
                     lambda a: a.name.user_id == current_user
                 )
             )
