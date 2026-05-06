@@ -5,7 +5,7 @@ class AuditFinding(models.Model):
     _name = "upmin_iso.audit_finding"
     _description = "ISO Audit Finding"
     _rec_name = "audit_info"
-    _order = "audit_info, auditor, clause"
+    _order = "audit_info, auditor, clause_sortkey"
 
     audit_info = fields.Many2one(
         comodel_name="upmin_iso.audit_info",
@@ -24,6 +24,7 @@ class AuditFinding(models.Model):
     clause = fields.Many2one(
         comodel_name="upmin_iso.iso_clause", string="Requirement/Clause"
     )
+    clause_sortkey = fields.Char(related="clause.clause_number_sortkey", store=True)
     question = fields.Char(string="Question", help="Guide question for the audit.")
     evidence = fields.Text(
         string="Scenario/Evidence",
