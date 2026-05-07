@@ -25,7 +25,7 @@ class AuditFinding(models.Model):
         comodel_name="upmin_iso.iso_clause", string="Requirement/Clause"
     )
     clause_sortkey = fields.Char(related="clause.clause_number_sortkey", store=True)
-    question = fields.Char(string="Question", help="Guide question for the audit.")
+    question = fields.Text(string="Question", help="Guide question for the audit.")
     evidence = fields.Text(
         string="Scenario/Evidence",
         help="Describe the scenario or evidence found during the audit.",
@@ -54,6 +54,7 @@ class AuditFinding(models.Model):
         comodel_name="hr.department",
         string="Office",
         related="audit_info.office_to_audit",
+        store=True,
     )
 
     def _compute_is_staff(self):

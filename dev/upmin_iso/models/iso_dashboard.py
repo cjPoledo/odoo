@@ -268,6 +268,10 @@ class IsoDashboard(models.TransientModel):
             "context": {"upmin_iso_dept_short": True},
         }
 
+    def _dashboard_finding_views(self):
+        tree_id = self.env.ref("upmin_iso.audit_finding_view_tree_dashboard").id
+        return [(tree_id, "tree"), (False, "form")]
+
     def action_audit_c(self):
         period = self.env["upmin_iso.audit_period"].search(
             [], order="audit_start_date desc", limit=1
@@ -277,8 +281,9 @@ class IsoDashboard(models.TransientModel):
             "name": "Conformities This Period",
             "res_model": "upmin_iso.audit_finding",
             "view_mode": "tree,form",
+            "views": self._dashboard_finding_views(),
             "domain": [("audit_info.audit_period", "=", period.id), ("rating", "=", "c")] if period else [("id", "=", False)],
-            "context": {"upmin_iso_dept_short": True},
+            "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
         }
 
     def action_audit_nc(self):
@@ -290,8 +295,9 @@ class IsoDashboard(models.TransientModel):
             "name": "Nonconformities This Period",
             "res_model": "upmin_iso.audit_finding",
             "view_mode": "tree,form",
+            "views": self._dashboard_finding_views(),
             "domain": [("audit_info.audit_period", "=", period.id), ("rating", "=", "nc")] if period else [("id", "=", False)],
-            "context": {"upmin_iso_dept_short": True},
+            "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
         }
 
     def action_audit_ofi(self):
@@ -303,8 +309,9 @@ class IsoDashboard(models.TransientModel):
             "name": "Opportunities This Period",
             "res_model": "upmin_iso.audit_finding",
             "view_mode": "tree,form",
+            "views": self._dashboard_finding_views(),
             "domain": [("audit_info.audit_period", "=", period.id), ("rating", "=", "ofi")] if period else [("id", "=", False)],
-            "context": {"upmin_iso_dept_short": True},
+            "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
         }
 
     def action_audit_offices(self):
@@ -357,8 +364,9 @@ class IsoDashboard(models.TransientModel):
             "name": f"Conformities {_date.today().year}",
             "res_model": "upmin_iso.audit_finding",
             "view_mode": "tree,form",
+            "views": self._dashboard_finding_views(),
             "domain": [("audit_info.audit_period", "in", self._year_period_ids()), ("rating", "=", "c")],
-            "context": {"upmin_iso_dept_short": True},
+            "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
         }
 
     def action_year_nc(self):
@@ -367,8 +375,9 @@ class IsoDashboard(models.TransientModel):
             "name": f"Nonconformities {_date.today().year}",
             "res_model": "upmin_iso.audit_finding",
             "view_mode": "tree,form",
+            "views": self._dashboard_finding_views(),
             "domain": [("audit_info.audit_period", "in", self._year_period_ids()), ("rating", "=", "nc")],
-            "context": {"upmin_iso_dept_short": True},
+            "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
         }
 
     def action_year_ofi(self):
@@ -377,8 +386,9 @@ class IsoDashboard(models.TransientModel):
             "name": f"Opportunities {_date.today().year}",
             "res_model": "upmin_iso.audit_finding",
             "view_mode": "tree,form",
+            "views": self._dashboard_finding_views(),
             "domain": [("audit_info.audit_period", "in", self._year_period_ids()), ("rating", "=", "ofi")],
-            "context": {"upmin_iso_dept_short": True},
+            "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
         }
 
     def action_year_offices(self):
