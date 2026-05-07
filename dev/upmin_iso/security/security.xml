@@ -212,16 +212,16 @@
             ('issue.swot_id.office', 'in', user.employee_id.iso_ancestor_ids.ids)]</field>
     </record>
 
-    <!-- Audit Finding: Staff read all -->
+    <!-- Audit Finding: Staff full access -->
     <record id="rule_audit_finding_staff" model="ir.rule">
-        <field name="name">ISO Staff: Audit Finding Read All</field>
+        <field name="name">ISO Staff: Audit Finding Full Access</field>
         <field name="model_id" ref="model_upmin_iso_audit_finding" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]"/>
         <field name="domain_force">[(1, '=', 1)]</field>
         <field name="perm_read" eval="True" />
-        <field name="perm_write" eval="False" />
-        <field name="perm_create" eval="False" />
-        <field name="perm_unlink" eval="False" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="True" />
     </record>
 
     <!-- Audit Finding: IA CRUD own findings only -->

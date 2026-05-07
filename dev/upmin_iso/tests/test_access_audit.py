@@ -46,10 +46,10 @@ Expected matrix
   U2       own office   ✗
   U3       assigned OR  assigned only
            own office
-  U4       all          ✗
-  U5       all          ✗
-  U6       all          assigned only
-  U7       all          assigned only
+  U4       all          all (staff)
+  U5       all          all (staff)
+  U6       all          all (staff+IA)
+  U7       all          all (staff+IA)
 """
 
 from odoo.exceptions import AccessError
@@ -216,10 +216,8 @@ class TestAuditFindingAccess(ISOAccessBase):
         with self.assertRaises(AccessError):
             self.nc_a1.with_user(self.u2).write({'evidence': 'test evidence'})
 
-    def test_u4_staff_cannot_write(self):
-        # Staff has perm_write=0 for audit_finding
-        with self.assertRaises(AccessError):
-            self.nc_a1.with_user(self.u4).write({'evidence': 'test evidence'})
+    def test_u4_staff_can_write(self):
+        self.nc_a1.with_user(self.u4).write({'evidence': 'test evidence'})
 
     def test_u1_ia_can_write_assigned_finding(self):
         self.nc_a1.with_user(self.u1).write({'evidence': 'confirmed finding'})
@@ -231,10 +229,9 @@ class TestAuditFindingAccess(ISOAccessBase):
     def test_u6_staff_ia_can_write_assigned_finding(self):
         self.nc_a1.with_user(self.u6).write({'evidence': 'staff-ia finding'})
 
-    def test_u6_staff_ia_cannot_write_unassigned_finding(self):
-        # Staff(R only) + IA rule(assigned only) → unassigned blocked
-        with self.assertRaises(AccessError):
-            self.nc_b1.with_user(self.u6).write({'evidence': 'attempted'})
+    def test_u6_staff_ia_can_write_unassigned_finding(self):
+        # Staff rule (full CRUD) overrides IA-only restriction
+        self.nc_b1.with_user(self.u6).write({'evidence': 'attempted'})
 
     # ── Create ────────────────────────────────────────────────────────────────
 
@@ -246,13 +243,13 @@ class TestAuditFindingAccess(ISOAccessBase):
                 'rating': 'c',
             })
 
-    def test_u4_staff_cannot_create_finding(self):
-        with self.assertRaises(AccessError):
-            self.env['upmin_iso.audit_finding'].with_user(self.u4).create({
-                'audit_info': self.audit_a.id,
-                'auditor': self.u4.partner_id.id,
-                'rating': 'c',
-            })
+    def test_u4_staff_can_create_finding(self):
+        rec = self.env['upmin_iso.audit_finding'].with_user(self.u4).create({
+            'audit_info': self.audit_a.id,
+            'auditor': self.u4.partner_id.id,
+            'rating': 'c',
+        })
+        self.assertTrue(rec.id)
 
     def test_u1_ia_can_create_finding_for_assigned_audit(self):
         rec = self.env['upmin_iso.audit_finding'].with_user(self.u1).create({

@@ -61,7 +61,7 @@
                     </group>
                     <group col="1">
                         <field name="audit_findings"
-                            attrs="{'readonly': ['|', ('is_finalized','=',True), ('is_office_auditor','=',False)]}" />
+                            attrs="{'readonly': ['|', ('is_finalized','=',True), '&amp;', ('is_staff','=',False), ('is_office_auditor','=',False)]}" />
                     </group>
                 </sheet>
             </form>
