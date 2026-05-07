@@ -125,6 +125,25 @@
         </field>
     </record>
 
+    <record id="upmin_iso.audit_finding_view_form_dashboard" model="ir.ui.view">
+        <field name="name">upmin_iso.audit_finding.view.form.dashboard</field>
+        <field name="model">upmin_iso.audit_finding</field>
+        <field name="arch" type="xml">
+            <form string="" edit="false">
+                <sheet>
+                    <group col="1">
+                        <field name="auditor" readonly="1" />
+                        <field name="clause" readonly="1" />
+                        <field name="question" readonly="1" />
+                        <field name="evidence" readonly="1" />
+                        <field name="rating" widget="radio" readonly="1" />
+                        <field name="statement" readonly="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record id="upmin_iso.audit_finding_view_tree_dashboard" model="ir.ui.view">
         <field name="name">upmin_iso.audit_finding.view.tree.dashboard</field>
         <field name="model">upmin_iso.audit_finding</field>

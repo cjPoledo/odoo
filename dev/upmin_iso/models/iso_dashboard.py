@@ -270,7 +270,8 @@ class IsoDashboard(models.TransientModel):
 
     def _dashboard_finding_views(self):
         tree_id = self.env.ref("upmin_iso.audit_finding_view_tree_dashboard").id
-        return [(tree_id, "tree"), (False, "form")]
+        form_id = self.env.ref("upmin_iso.audit_finding_view_form_dashboard").id
+        return [(tree_id, "tree"), (form_id, "form")]
 
     def action_audit_c(self):
         period = self.env["upmin_iso.audit_period"].search(
