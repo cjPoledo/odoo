@@ -24,7 +24,7 @@ class CCAR(models.Model):
     related_nc = fields.Many2one(
         comodel_name="upmin_iso.audit_finding",
         string="Related Nonconformity",
-        domain=[("rating", "=", "nc")],
+        domain=[("rating", "=", "nc"), ("is_duplicate", "=", False)],
         required=True,
     )
     status = fields.Selection(

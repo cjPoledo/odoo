@@ -92,7 +92,7 @@ class IsoDashboard(models.TransientModel):
             )
             findings = Finding.search([("audit_info.audit_period", "=", period.id)])
             audit_c = sum(1 for f in findings if f.rating == "c")
-            audit_nc = sum(1 for f in findings if f.rating == "nc")
+            audit_nc = sum(1 for f in findings if f.rating == "nc" and not f.is_duplicate)
             audit_ofi = sum(1 for f in findings if f.rating == "ofi")
 
         # IAs not assigned to any office in the latest period
@@ -112,14 +112,14 @@ class IsoDashboard(models.TransientModel):
         year_periods = Period.search([("audit_start_date", ">=", year_start)])
         year_findings = Finding.search([("audit_info.audit_period", "in", year_periods.ids)])
         year_c = sum(1 for f in year_findings if f.rating == "c")
-        year_nc = sum(1 for f in year_findings if f.rating == "nc")
+        year_nc = sum(1 for f in year_findings if f.rating == "nc" and not f.is_duplicate)
         year_ofi = sum(1 for f in year_findings if f.rating == "ofi")
         year_offices = self.env["upmin_iso.audit_info"].search_count(
             [("audit_period", "in", year_periods.ids)]
         ) if year_periods else 0
 
         # NCs without a CCAR
-        all_nc = Finding.search([("rating", "=", "nc")])
+        all_nc = Finding.search([("rating", "=", "nc"), ("is_duplicate", "=", False)])
         linked_nc_ids = set(CCAR.search([]).mapped("related_nc").ids)
         nc_without_ccar = len(all_nc.filtered(lambda f: f.id not in linked_nc_ids))
 
@@ -297,7 +297,7 @@ class IsoDashboard(models.TransientModel):
             "res_model": "upmin_iso.audit_finding",
             "view_mode": "tree,form",
             "views": self._dashboard_finding_views(),
-            "domain": [("audit_info.audit_period", "=", period.id), ("rating", "=", "nc")] if period else [("id", "=", False)],
+            "domain": [("audit_info.audit_period", "=", period.id), ("rating", "=", "nc"), ("is_duplicate", "=", False)] if period else [("id", "=", False)],
             "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
         }
 
@@ -377,7 +377,7 @@ class IsoDashboard(models.TransientModel):
             "res_model": "upmin_iso.audit_finding",
             "view_mode": "tree,form",
             "views": self._dashboard_finding_views(),
-            "domain": [("audit_info.audit_period", "in", self._year_period_ids()), ("rating", "=", "nc")],
+            "domain": [("audit_info.audit_period", "in", self._year_period_ids()), ("rating", "=", "nc"), ("is_duplicate", "=", False)],
             "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
         }
 
@@ -403,7 +403,7 @@ class IsoDashboard(models.TransientModel):
         }
 
     def action_nc_without_ccar(self):
-        all_nc = self.env["upmin_iso.audit_finding"].search([("rating", "=", "nc")])
+        all_nc = self.env["upmin_iso.audit_finding"].search([("rating", "=", "nc"), ("is_duplicate", "=", False)])
         linked_nc_ids = set(self.env["upmin_iso.ccar"].search([]).mapped("related_nc").ids)
         unlinked_ids = all_nc.filtered(lambda f: f.id not in linked_nc_ids).ids
         return {

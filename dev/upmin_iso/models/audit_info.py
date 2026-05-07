@@ -85,14 +85,15 @@ class AuditInfo(models.Model):
                 )
             )
 
-    @api.depends("audit_findings", "audit_findings.rating")
+    @api.depends("audit_findings", "audit_findings.rating", "audit_findings.is_duplicate")
     def _compute_ratings(self):
         for record in self:
             record.c = sum(
                 1 for finding in record.audit_findings if finding.rating == "c"
             )
             record.nc = sum(
-                1 for finding in record.audit_findings if finding.rating == "nc"
+                1 for finding in record.audit_findings
+                if finding.rating == "nc" and not finding.is_duplicate
             )
             record.ofi = sum(
                 1 for finding in record.audit_findings if finding.rating == "ofi"

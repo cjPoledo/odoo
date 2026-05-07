@@ -101,6 +101,8 @@
                         <field name="evidence" />
                         <field name="rating" widget="radio" />
                         <field name="statement" />
+                        <field name="is_duplicate"
+                            attrs="{'invisible': [('is_staff', '=', False)]}" />
                     </group>
                 </sheet>
             </form>
@@ -121,6 +123,8 @@
                 <field name="question" optional="show" />
                 <field name="evidence" optional="hide" />
                 <field name="statement" optional="hide" />
+                <field name="is_duplicate" optional="hide"
+                    attrs="{'column_invisible': [('parent.is_staff', '=', False)]}" />
             </tree>
         </field>
     </record>

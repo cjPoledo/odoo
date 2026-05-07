@@ -41,6 +41,7 @@ class AuditFinding(models.Model):
     statement = fields.Text(
         string="Statement", help="Justification for the rating based on the evidence."
     )
+    is_duplicate = fields.Boolean(string="Duplicate?", default=False)
 
     is_staff = fields.Boolean(compute="_compute_is_staff", store=False)
     is_audit_auditor = fields.Boolean(compute="_compute_is_audit_auditor", store=False)

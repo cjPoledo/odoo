@@ -27,7 +27,7 @@ class AuditPeriod(models.Model):
         comodel_name="upmin_iso.audit_finding",
         inverse_name="related_audit_period",
         string="Nonconformities",
-        domain=[("rating", "=", "nc")],
+        domain=[("rating", "=", "nc"), ("is_duplicate", "=", False)],
         readonly=True,
     )
     related_ofi = fields.One2many(
