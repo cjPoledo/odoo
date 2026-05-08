@@ -22,12 +22,12 @@ class AuditInfo(models.Model):
     audit_time_start = fields.Float(
         string="Audit Time Start",
         help="Enter time in HH:MM format (24-hour). Examples: 8:00 AM = 8:00, 1:30 PM = 13:30, 5:00 PM = 17:00.",
-        group_operator=False,
+        group_operator="min",
     )
     audit_time_end = fields.Float(
         string="Audit Time End",
         help="Enter time in HH:MM format (24-hour). Examples: 8:00 AM = 8:00, 1:30 PM = 13:30, 5:00 PM = 17:00.",
-        group_operator=False,
+        group_operator="max",
     )
     audit_findings = fields.One2many(
         comodel_name="upmin_iso.audit_finding",
