@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import api, models, fields
 
 
 class AuditFinding(models.Model):
@@ -18,8 +18,12 @@ class AuditFinding(models.Model):
         comodel_name="res.partner",
         string="Auditor",
         required=True,
-        readonly=True,
         default=lambda self: self.env.user.partner_id,
+    )
+    available_auditor_ids = fields.Many2many(
+        comodel_name="res.partner",
+        compute="_compute_available_auditor_ids",
+        store=False,
     )
     clause = fields.Many2one(
         comodel_name="upmin_iso.iso_clause", string="Requirement/Clause"
@@ -58,10 +62,19 @@ class AuditFinding(models.Model):
         store=True,
     )
 
+    @api.depends("audit_info.internal_auditors")
+    def _compute_available_auditor_ids(self):
+        for record in self:
+            record.available_auditor_ids = record.audit_info.internal_auditors.mapped(
+                "name.work_contact_id"
+            )
+
+    @api.depends("audit_info")
     def _compute_is_staff(self):
         for record in self:
             record.is_staff = self.env.user.has_group("upmin_iso.group_iso_staff")
 
+    @api.depends("audit_info.internal_auditors")
     def _compute_is_audit_auditor(self):
         current_user = self.env.user
         for record in self:

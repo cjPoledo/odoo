@@ -94,8 +94,11 @@
                 <sheet>
                     <field name="is_staff" invisible="1" />
                     <field name="is_audit_auditor" invisible="1" />
+                    <field name="available_auditor_ids" invisible="1" />
                     <group col="1">
-                        <field name="auditor" attrs="{'invisible': ['&amp;', ('is_staff', '=', False), ('is_audit_auditor', '=', False)]}" />
+                        <field name="auditor"
+                            domain="[('id', 'in', available_auditor_ids)]"
+                            attrs="{'invisible': ['&amp;', ('is_staff', '=', False), ('is_audit_auditor', '=', False)]}" />
                         <field name="clause" />
                         <field name="question" />
                         <field name="evidence" />

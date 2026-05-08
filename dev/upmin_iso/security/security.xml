@@ -224,28 +224,16 @@
         <field name="perm_unlink" eval="True" />
     </record>
 
-    <!-- Audit Finding: IA CRUD own findings only -->
+    <!-- Audit Finding: IA CRUD all findings in their assigned audits -->
     <record id="rule_audit_finding_internal_auditor_own" model="ir.rule">
-        <field name="name">Internal Auditor: Audit Finding CRUD Own</field>
-        <field name="model_id" ref="model_upmin_iso_audit_finding" />
-        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_internal_auditor'))]" />
-        <field name="domain_force">[('auditor', '=', user.partner_id.id), ('audit_info.internal_auditors.name.user_id', '=', user.id)]</field>
-        <field name="perm_read" eval="True" />
-        <field name="perm_write" eval="True" />
-        <field name="perm_create" eval="True" />
-        <field name="perm_unlink" eval="True" />
-    </record>
-
-    <!-- Audit Finding: IA read-only for other auditors' findings in assigned audit_infos -->
-    <record id="rule_audit_finding_internal_auditor_read" model="ir.rule">
-        <field name="name">Internal Auditor: Audit Finding Read Others</field>
+        <field name="name">Internal Auditor: Audit Finding CRUD Assigned Audit</field>
         <field name="model_id" ref="model_upmin_iso_audit_finding" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_internal_auditor'))]" />
         <field name="domain_force">[('audit_info.internal_auditors.name.user_id', '=', user.id)]</field>
         <field name="perm_read" eval="True" />
-        <field name="perm_write" eval="False" />
-        <field name="perm_create" eval="False" />
-        <field name="perm_unlink" eval="False" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="True" />
     </record>
 
     <!-- CCAR Corrective Action: Staff read all -->
