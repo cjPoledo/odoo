@@ -22,6 +22,7 @@
         "report/ccar_report_template.xml",
         "report/audit_findings_report.xml",
         "views/audit_info.xml",
+        "views/audit_finding_merge_wizard.xml",
         "views/ccar.xml",
         "views/ror.xml",
         "views/ror_export_wizard.xml",

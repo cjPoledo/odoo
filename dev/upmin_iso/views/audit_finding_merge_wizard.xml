@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="upmin_iso.audit_finding_merge_wizard_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.audit_finding_merge_wizard.view.form</field>
+        <field name="model">upmin_iso.audit_finding_merge_wizard</field>
+        <field name="arch" type="xml">
+            <form string="Merge Audit Findings">
+                <sheet>
+                    <group>
+                        <field name="audit_info_id" />
+                        <field name="finding_ids"
+                            domain="[('audit_info', '=', audit_info_id), ('rating', 'in', ['nc', 'ofi'])]"
+                            options="{'no_create': True, 'no_open': True}"
+                            widget="many2many_tags" />
+                        <field name="target_id"
+                            domain="[('id', 'in', finding_ids)]"
+                            options="{'no_create': True, 'no_open': True}" />
+                    </group>
+                    <group string="Merged Clauses">
+                        <field name="merged_clause_id" readonly="1" />
+                        <field name="merged_supporting_clause_ids"
+                            widget="many2many_tags"
+                            readonly="1"
+                            options="{'no_create': True, 'no_open': True}" />
+                    </group>
+                    <group string="Merged Text">
+                        <field name="merged_question" />
+                        <field name="merged_evidence" />
+                        <field name="merged_statement" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Merge" name="action_merge"
+                        type="object" class="btn-primary" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

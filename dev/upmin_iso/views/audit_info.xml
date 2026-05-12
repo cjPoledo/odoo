@@ -12,6 +12,10 @@
                         string="Print My Audit Findings"
                         class="btn-primary"
                         attrs="{'invisible': [('is_office_auditor', '=', False)]}" />
+                    <button name="action_open_merge_wizard"
+                        type="object"
+                        string="Merge Findings"
+                        attrs="{'invisible': ['|', ('is_finalized', '=', True), '&amp;', ('is_staff', '=', False), ('is_office_auditor', '=', False)]}" />
                 </header>
                 <sheet>
                     <field name="is_staff" invisible="1" />

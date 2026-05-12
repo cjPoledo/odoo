@@ -9,6 +9,7 @@ from . import audit_period
 from . import audit_info
 from . import iso_clause
 from . import audit_finding
+from . import audit_finding_merge_wizard
 from . import ccar
 from . import ccar_corrective_action
 from . import ccar_corrective_action_effectiveness

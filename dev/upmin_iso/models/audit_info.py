@@ -105,6 +105,16 @@ class AuditInfo(models.Model):
         self.mapped("audit_findings").sudo().unlink()
         return super().unlink()
 
+    def action_open_merge_wizard(self):
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Merge Findings",
+            "res_model": "upmin_iso.audit_finding_merge_wizard",
+            "view_mode": "form",
+            "target": "new",
+            "context": {"default_audit_info_id": self.id},
+        }
+
     @api.constrains("internal_auditors", "office_to_audit")
     def _check_auditor_office_conflict(self):
         group_ids = set(

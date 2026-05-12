@@ -108,16 +108,19 @@ class AuditFinding(models.Model):
                 parts.append(f"<strong>{num}</strong> {title}".strip())
             record.clause_display = "<br/>".join(parts) if parts else False
 
+    _RATING_LABEL = {"c": "C", "nc": "NC", "ofi": "OFI"}
+
     def name_get(self):
         result = []
         for record in self:
-            office = record.audit_info.office_to_audit.name or ""
-            rating = record.rating or ""
+            rating = self._RATING_LABEL.get(record.rating, record.rating or "")
             clause = (
                 f"{record.clause.clause_number} {record.clause.clause_title}".strip()
                 if record.clause
                 else ""
             )
-            name = f"{office} ({rating}) - {clause}" if clause else f"{office} ({rating})"
-            result.append((record.id, name))
+            snippet_src = record.statement or record.evidence or record.auditor.name or ""
+            snippet = (snippet_src[:60] + "…") if len(snippet_src) > 60 else snippet_src
+            parts = [p for p in [rating, clause, snippet] if p]
+            result.append((record.id, " – ".join(parts) or str(record.id)))
         return result
