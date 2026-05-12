@@ -66,6 +66,7 @@
                         <page name="details" string="1. DETAILS">
                             <group col="1">
                                 <field name="clause" />
+                                <field name="supporting_clause_ids" widget="many2many_tags" string="Supporting Clauses" />
                                 <field name="details_scenario" />
                                 <field name="details_statement" />
                                 <field name="auditors" widget="many2many_tags_avatar" />

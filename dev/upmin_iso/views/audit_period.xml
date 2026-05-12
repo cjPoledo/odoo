@@ -42,8 +42,7 @@
                         <field name="related_nc">
                             <tree string="">
                                 <field name="related_office" />
-                                <field name="auditor" />
-                                <field name="clause" />
+                                <field name="clause_display" />
                                 <field name="question" />
                                 <field name="evidence" />
                                 <field name="statement" />

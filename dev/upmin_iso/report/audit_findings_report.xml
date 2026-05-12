@@ -123,6 +123,15 @@
                                         <t t-esc="' ' + f.clause.clause_title" />
                                     </t>
                                 </t>
+                                <t t-if="f.supporting_clause_ids">
+                                    <t t-foreach="f.supporting_clause_ids" t-as="sc">
+                                        <br />
+                                        <strong><t t-esc="sc.clause_number" /></strong>
+                                        <t t-if="sc.clause_title">
+                                            <t t-esc="' ' + sc.clause_title" />
+                                        </t>
+                                    </t>
+                                </t>
                             </div>
                         </td>
                         <td><div class="ws"><t t-esc="f.question or ''" /></div></td>

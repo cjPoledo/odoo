@@ -100,6 +100,7 @@
                             domain="[('id', 'in', available_auditor_ids)]"
                             attrs="{'invisible': ['&amp;', ('is_staff', '=', False), ('is_audit_auditor', '=', False)]}" />
                         <field name="clause" />
+                        <field name="supporting_clause_ids" widget="many2many_tags" string="Supporting Clauses" />
                         <field name="question" />
                         <field name="evidence" />
                         <field name="rating" widget="radio" />
@@ -118,15 +119,15 @@
         <field name="arch" type="xml">
             <tree string="">
                 <field name="auditor" attrs="{'column_invisible': ['&amp;', ('parent.is_staff', '=', False), ('parent.is_office_auditor', '=', False)]}" />
-                <field name="clause" />
+                <field name="clause_display" />
                 <field name="rating" widget="badge"
                     decoration-success="rating == 'c'"
                     decoration-danger="rating == 'nc'"
                     decoration-warning="rating == 'ofi'" />
                 <field name="question" optional="show" />
-                <field name="evidence" optional="hide" />
-                <field name="statement" optional="hide" />
-                <field name="is_duplicate" optional="hide"
+                <field name="evidence" optional="show" />
+                <field name="statement" optional="show" />
+                <field name="is_duplicate" optional="show"
                     attrs="{'column_invisible': [('parent.is_staff', '=', False)]}" />
             </tree>
         </field>
@@ -156,7 +157,7 @@
         <field name="model">upmin_iso.audit_finding</field>
         <field name="arch" type="xml">
             <tree string="">
-                <field name="clause" />
+                <field name="clause_display" />
                 <field name="rating" widget="badge"
                     decoration-success="rating == 'c'"
                     decoration-danger="rating == 'nc'"

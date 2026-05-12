@@ -238,7 +238,7 @@
                                                 <p style="padding-left: 16px;"> Clause/Source of
                                                     Report: <span
                                                         t-field="o.clause.clause_number" /> <span
-                                                        t-field="o.clause.clause_title" /> <br /><br />
+                                                        t-field="o.clause.clause_title" /><t t-if="o.supporting_clause_ids"><t t-foreach="o.supporting_clause_ids" t-as="sc">; <span t-esc="sc.clause_number" /> <span t-esc="sc.clause_title" /></t></t> <br /><br />
                                         <span
                                                         t-field="o.details_scenario" /><br /><br />
                                         <span

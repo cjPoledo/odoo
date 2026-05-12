@@ -96,6 +96,12 @@ class CCAR(models.Model):
         related="related_nc.clause",
         readonly=True,
     )
+    supporting_clause_ids = fields.Many2many(
+        comodel_name="upmin_iso.iso_clause",
+        string="Supporting Clauses",
+        related="related_nc.supporting_clause_ids",
+        readonly=True,
+    )
     details_scenario = fields.Text(
         string="Details (Scenario/Evidence)",
         related="related_nc.evidence",

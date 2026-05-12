@@ -28,6 +28,16 @@ class AuditFinding(models.Model):
     clause = fields.Many2one(
         comodel_name="upmin_iso.iso_clause", string="Requirement/Clause"
     )
+    supporting_clause_ids = fields.Many2many(
+        comodel_name="upmin_iso.iso_clause",
+        relation="upmin_iso_audit_finding_supporting_clause_rel",
+        string="Supporting Clauses",
+    )
+    clause_display = fields.Html(
+        string="Requirement/Clause",
+        compute="_compute_clause_display",
+        store=False,
+    )
     clause_sortkey = fields.Char(related="clause.clause_number_sortkey", store=True)
     question = fields.Text(string="Question", help="Guide question for the audit.")
     evidence = fields.Text(
@@ -83,6 +93,20 @@ class AuditFinding(models.Model):
                     lambda a: a.name.user_id == current_user
                 )
             )
+
+    @api.depends("clause", "supporting_clause_ids")
+    def _compute_clause_display(self):
+        for record in self:
+            parts = []
+            if record.clause:
+                num = record.clause.clause_number or ""
+                title = record.clause.clause_title or ""
+                parts.append(f"<strong>{num}</strong> {title}".strip())
+            for sc in record.supporting_clause_ids:
+                num = sc.clause_number or ""
+                title = sc.clause_title or ""
+                parts.append(f"<strong>{num}</strong> {title}".strip())
+            record.clause_display = "<br/>".join(parts) if parts else False
 
     def name_get(self):
         result = []
