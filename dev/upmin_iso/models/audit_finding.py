@@ -34,7 +34,7 @@ class AuditFinding(models.Model):
         string="Supporting Clauses",
     )
     clause_display = fields.Html(
-        string="Requirement/Clause",
+        string="Clause Details",
         compute="_compute_clause_display",
         store=False,
     )
