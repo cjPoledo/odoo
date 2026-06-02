@@ -8,6 +8,7 @@ class CCAR(models.Model):
     _rec_name = "ccar_no"
     _order = "ccar_no"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+    _mail_post_access = "read"
 
     ccar_no = fields.Char(
         string="CCAR No.",

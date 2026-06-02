@@ -294,3 +294,45 @@ class TestCCAREffectivenessAccess(ISOAccessBase):
 
     def test_u1_ia_can_write_assigned_ca_eff(self):
         self.cae_a.with_user(self.u1).write({'corrective_action': 'ia ca update'})
+
+
+class TestCCARChatterAccess(ISOAccessBase):
+    """All users with read access to a CCAR can post to the chatter."""
+
+    def _post_message(self, record, user):
+        return record.with_user(user).message_post(
+            body='Test chatter message',
+            message_type='comment',
+            subtype_xmlid='mail.mt_comment',
+        )
+
+    def test_dc_can_post_at_verification_status(self):
+        # u2 (DC) has read-only access at 'verification' — must be able to post
+        msg = self._post_message(self.ccar_verif, self.u2)
+        self.assertEqual(msg.author_id, self.u2.partner_id)
+
+    def test_ia_can_post_at_office_status(self):
+        # u1 (IA) has read-only access at 'office' — must be able to post
+        msg = self._post_message(self.ccar_office, self.u1)
+        self.assertEqual(msg.author_id, self.u1.partner_id)
+
+    def test_dc_can_post_at_creation_status(self):
+        msg = self._post_message(self.ccar_creation, self.u2)
+        self.assertEqual(msg.author_id, self.u2.partner_id)
+
+    def test_ia_can_post_at_creation_status(self):
+        msg = self._post_message(self.ccar_creation, self.u1)
+        self.assertEqual(msg.author_id, self.u1.partner_id)
+
+    def test_staff_can_always_post(self):
+        msg = self._post_message(self.ccar_verif, self.u4)
+        self.assertEqual(msg.author_id, self.u4.partner_id)
+
+    def test_cannot_post_without_read_access(self):
+        # u2 (DC dept_a) cannot read ccar_b (dept_b) — should fail
+        with self.assertRaises(AccessError):
+            self._post_message(self.ccar_b, self.u2)
+
+    def test_plain_user_cannot_post(self):
+        with self.assertRaises(AccessError):
+            self._post_message(self.ccar_creation, self.u0)
