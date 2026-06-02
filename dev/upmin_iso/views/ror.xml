@@ -22,6 +22,10 @@
                         <field name="office" attrs="{'readonly':[('id','!=', False)]}" />
                         <field name="related_swot" />
                     </group>
+                    <group string="Additional Viewers" attrs="{'invisible': [('id', '=', False)]}"
+                           groups="upmin_iso.group_iso_staff">
+                        <field name="bypass_user_ids" widget="many2many_tags_avatar" nolabel="1" colspan="2" />
+                    </group>
                     <div attrs="{'invisible': [('related_swot', '=', False)]}">
                         <button string="Import Issues from SWOT" name="action_import_from_swot"
                             type="object" class="btn-secondary mb-3" />

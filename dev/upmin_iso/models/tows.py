@@ -46,6 +46,15 @@ class TOWS(models.Model):
         context={"default_tows_type": "WT"},
     )
 
+    bypass_user_ids = fields.Many2many(
+        comodel_name="res.users",
+        relation="upmin_iso_tows_bypass_user_rel",
+        column1="tows_id",
+        column2="user_id",
+        string="Additional Viewers",
+        domain=lambda self: [("groups_id", "in", [self.env.ref("upmin_iso.group_iso_doc_controller").id])],
+    )
+
     _sql_constraints = [
         (
             "unique_swot",

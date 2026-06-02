@@ -28,10 +28,14 @@ class ROR(models.Model):
         string="Department",
         required=True,
         domain=lambda self: (
-            [("id", "in", self.env.user.employee_id.iso_office_ids.ids
-                + self.env.user.employee_id.iso_ancestor_ids.ids)]
-            if self.env.user.employee_id
-            else []
+            []
+            if self.env.user.has_group("upmin_iso.group_iso_staff")
+            else (
+                [("id", "in", self.env.user.employee_id.iso_office_ids.ids
+                    + self.env.user.employee_id.iso_ancestor_ids.ids)]
+                if self.env.user.employee_id
+                else []
+            )
         ),
     )
     related_swot = fields.Many2one(
@@ -39,12 +43,25 @@ class ROR(models.Model):
         string="Related SWOT",
         help="Optionally link a SWOT to import issues from it.",
         domain=lambda self: (
-            [("office", "in", self.env.user.employee_id.iso_office_ids.ids
-                + self.env.user.employee_id.iso_ancestor_ids.ids)]
-            if self.env.user.employee_id
-            else []
+            []
+            if self.env.user.has_group("upmin_iso.group_iso_staff")
+            else (
+                [("office", "in", self.env.user.employee_id.iso_office_ids.ids
+                    + self.env.user.employee_id.iso_ancestor_ids.ids)]
+                if self.env.user.employee_id
+                else []
+            )
         ),
     )
+    bypass_user_ids = fields.Many2many(
+        comodel_name="res.users",
+        relation="upmin_iso_ror_bypass_user_rel",
+        column1="ror_id",
+        column2="user_id",
+        string="Additional Viewers",
+        domain=lambda self: [("groups_id", "in", [self.env.ref("upmin_iso.group_iso_doc_controller").id])],
+    )
+
     pending_this_quarter = fields.Integer(
         string="Pending This Quarter",
         compute="_compute_pending_this_quarter",

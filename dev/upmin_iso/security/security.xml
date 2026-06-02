@@ -25,25 +25,25 @@
         <field name="name">Restrict ROR Access to Own Office</field>
         <field name="model_id" ref="model_upmin_iso_ror" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['|', ('office', 'in', user.employee_id.iso_office_ids.ids), ('office', 'in', user.employee_id.iso_ancestor_ids.ids)]</field>
+        <field name="domain_force">['|', '|', ('office', 'in', user.employee_id.iso_office_ids.ids), ('office', 'in', user.employee_id.iso_ancestor_ids.ids), ('bypass_user_ids', 'in', [user.id])]</field>
     </record>
 
     <record id="rule_office_ror_staff" model="ir.rule">
-        <field name="name">Access ROR: Staff Read All</field>
+        <field name="name">Access ROR: Staff Full Access</field>
         <field name="model_id" ref="model_upmin_iso_ror" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]" />
         <field name="domain_force">[(1,'=',1)]</field>
         <field name="perm_read" eval="True" />
-        <field name="perm_write" eval="False" />
-        <field name="perm_create" eval="False" />
-        <field name="perm_unlink" eval="False" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="True" />
     </record>
 
     <record id="rule_audit_info_doc_controller" model="ir.rule">
         <field name="name">Doc Controller: See Audit Info of Own Office</field>
         <field name="model_id" ref="model_upmin_iso_audit_info" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['|', ('office_to_audit', 'in', user.employee_id.iso_office_ids.ids), ('office_to_audit', 'in', user.employee_id.iso_ancestor_ids.ids)]</field>
+        <field name="domain_force">['|', '|', ('office_to_audit', 'in', user.employee_id.iso_office_ids.ids), ('office_to_audit', 'in', user.employee_id.iso_ancestor_ids.ids), ('audit_findings.ccar_ids.bypass_user_ids', 'in', [user.id])]</field>
     </record>
 
 
@@ -75,7 +75,7 @@
         <field name="name">Doc Controller: CRUD Own Office SWOT</field>
         <field name="model_id" ref="model_upmin_iso_swot" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['|', ('office', 'in', user.employee_id.iso_office_ids.ids), ('office', 'in', user.employee_id.iso_ancestor_ids.ids)]</field>
+        <field name="domain_force">['|', '|', ('office', 'in', user.employee_id.iso_office_ids.ids), ('office', 'in', user.employee_id.iso_ancestor_ids.ids), ('bypass_user_ids', 'in', [user.id])]</field>
         <field name="perm_read" eval="1" />
         <field name="perm_write" eval="1" />
         <field name="perm_create" eval="1" />
@@ -83,21 +83,21 @@
     </record>
 
     <record id="rule_swot_iso_staff_readall" model="ir.rule">
-        <field name="name">ISO Staff: Read All SWOT</field>
+        <field name="name">ISO Staff: Full Access SWOT</field>
         <field name="model_id" ref="model_upmin_iso_swot" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]" />
         <field name="domain_force">[(1, '=', 1)]</field>
         <field name="perm_read" eval="1" />
-        <field name="perm_write" eval="0" />
-        <field name="perm_create" eval="0" />
-        <field name="perm_unlink" eval="0" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_unlink" eval="1" />
     </record>
 
     <record id="rule_tows_doc_controller_own" model="ir.rule">
         <field name="name">Doc Controller: CRUD Own Office TOWS</field>
         <field name="model_id" ref="model_upmin_iso_tows" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['|', ('office', 'in', user.employee_id.iso_office_ids.ids), ('office', 'in', user.employee_id.iso_ancestor_ids.ids)]</field>
+        <field name="domain_force">['|', '|', ('office', 'in', user.employee_id.iso_office_ids.ids), ('office', 'in', user.employee_id.iso_ancestor_ids.ids), ('bypass_user_ids', 'in', [user.id])]</field>
         <field name="perm_read" eval="1" />
         <field name="perm_write" eval="1" />
         <field name="perm_create" eval="1" />
@@ -105,14 +105,14 @@
     </record>
 
     <record id="rule_tows_iso_staff_readall" model="ir.rule">
-        <field name="name">ISO Staff: Read All TOWS</field>
+        <field name="name">ISO Staff: Full Access TOWS</field>
         <field name="model_id" ref="model_upmin_iso_tows" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]" />
         <field name="domain_force">[(1, '=', 1)]</field>
         <field name="perm_read" eval="1" />
-        <field name="perm_write" eval="0" />
-        <field name="perm_create" eval="0" />
-        <field name="perm_unlink" eval="0" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_unlink" eval="1" />
     </record>
 
     <record id="rule_iso_staff_all" model="ir.rule">
@@ -130,7 +130,7 @@
         <field name="name">Doc Controller - Read Own Office</field>
         <field name="model_id" ref="model_upmin_iso_ccar" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['|', ('office', 'in', user.employee_id.iso_office_ids.ids), ('office', 'in', user.employee_id.iso_ancestor_ids.ids)]</field>
+        <field name="domain_force">['|', '|', ('office', 'in', user.employee_id.iso_office_ids.ids), ('office', 'in', user.employee_id.iso_ancestor_ids.ids), ('bypass_user_ids', 'in', [user.id])]</field>
         <field name="perm_read" eval="1" />
         <field name="perm_write" eval="0" />
     </record>
@@ -139,7 +139,7 @@
         <field name="name">Doc Controller - Write Office Status</field>
         <field name="model_id" ref="model_upmin_iso_ccar" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['&amp;', '|', ('office', 'in', user.employee_id.iso_office_ids.ids), ('office', 'in', user.employee_id.iso_ancestor_ids.ids), ('status', 'in', ('office', 'office2'))]</field>
+        <field name="domain_force">['|', '&amp;', ('bypass_user_ids', 'in', [user.id]), ('status', 'in', ('office', 'office2')), '&amp;', '|', ('office', 'in', user.employee_id.iso_office_ids.ids), ('office', 'in', user.employee_id.iso_ancestor_ids.ids), ('status', 'in', ('office', 'office2'))]</field>
         <field name="perm_read" eval="1" />
         <field name="perm_write" eval="1" />
     </record>
@@ -190,14 +190,14 @@
 
     <!-- ROR Rating: Staff read all -->
     <record id="rule_ror_rating_staff" model="ir.rule">
-        <field name="name">ISO Staff: ROR Rating Read All</field>
+        <field name="name">ISO Staff: ROR Rating Full Access</field>
         <field name="model_id" ref="model_upmin_iso_ror_rating" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]"/>
         <field name="domain_force">[(1, '=', 1)]</field>
         <field name="perm_read" eval="True" />
-        <field name="perm_write" eval="False" />
-        <field name="perm_create" eval="False" />
-        <field name="perm_unlink" eval="False" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="True" />
     </record>
 
     <!-- ROR Rating: DC restricted to own office (via issue → ror/swot → office) -->
@@ -205,11 +205,12 @@
         <field name="name">Doc Controller: ROR Rating Own Office Only</field>
         <field name="model_id" ref="model_upmin_iso_ror_rating" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['|', '|', '|',
+        <field name="domain_force">['|', '|', '|', '|',
             ('issue.ror_id.office', 'in', user.employee_id.iso_office_ids.ids),
             ('issue.ror_id.office', 'in', user.employee_id.iso_ancestor_ids.ids),
             ('issue.swot_id.office', 'in', user.employee_id.iso_office_ids.ids),
-            ('issue.swot_id.office', 'in', user.employee_id.iso_ancestor_ids.ids)]</field>
+            ('issue.swot_id.office', 'in', user.employee_id.iso_ancestor_ids.ids),
+            ('issue.ror_id.bypass_user_ids', 'in', [user.id])]</field>
     </record>
 
     <!-- Audit Finding: Staff full access -->
@@ -238,14 +239,14 @@
 
     <!-- CCAR Corrective Action: Staff read all -->
     <record id="rule_ccar_corrective_action_staff" model="ir.rule">
-        <field name="name">ISO Staff: CCAR Corrective Action Read All</field>
+        <field name="name">ISO Staff: CCAR Corrective Action Full Access</field>
         <field name="model_id" ref="model_upmin_iso_ccar_corrective_action" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]"/>
         <field name="domain_force">[(1, '=', 1)]</field>
         <field name="perm_read" eval="True" />
-        <field name="perm_write" eval="False" />
-        <field name="perm_create" eval="False" />
-        <field name="perm_unlink" eval="False" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="True" />
     </record>
 
     <!-- CCAR Corrective Action: DC own office, IA assigned only -->
@@ -253,7 +254,7 @@
         <field name="name">Doc Controller: CCAR Corrective Action Own Office</field>
         <field name="model_id" ref="model_upmin_iso_ccar_corrective_action" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['|', ('ccar.office', 'in', user.employee_id.iso_office_ids.ids), ('ccar.office', 'in', user.employee_id.iso_ancestor_ids.ids)]</field>
+        <field name="domain_force">['|', '|', ('ccar.office', 'in', user.employee_id.iso_office_ids.ids), ('ccar.office', 'in', user.employee_id.iso_ancestor_ids.ids), ('ccar.bypass_user_ids', 'in', [user.id])]</field>
     </record>
 
     <record id="rule_ccar_corrective_action_internal_auditor" model="ir.rule">
@@ -265,25 +266,25 @@
 
     <!-- CCAR Effectiveness: Staff read all -->
     <record id="rule_ccar_correction_effectiveness_staff" model="ir.rule">
-        <field name="name">ISO Staff: Correction Effectiveness Read All</field>
+        <field name="name">ISO Staff: Correction Effectiveness Full Access</field>
         <field name="model_id" ref="model_upmin_iso_ccar_correction_effectiveness" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]"/>
         <field name="domain_force">[(1, '=', 1)]</field>
         <field name="perm_read" eval="True" />
-        <field name="perm_write" eval="False" />
-        <field name="perm_create" eval="False" />
-        <field name="perm_unlink" eval="False" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="True" />
     </record>
 
     <record id="rule_ccar_corrective_action_effectiveness_staff" model="ir.rule">
-        <field name="name">ISO Staff: Corrective Action Effectiveness Read All</field>
+        <field name="name">ISO Staff: Corrective Action Effectiveness Full Access</field>
         <field name="model_id" ref="model_upmin_iso_ccar_corrective_action_effectiveness" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]"/>
         <field name="domain_force">[(1, '=', 1)]</field>
         <field name="perm_read" eval="True" />
-        <field name="perm_write" eval="False" />
-        <field name="perm_create" eval="False" />
-        <field name="perm_unlink" eval="False" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="True" />
     </record>
 
     <!-- Audit Finding: DC restricted to own office or college -->
@@ -291,7 +292,7 @@
         <field name="name">Doc Controller: Audit Finding Own Office or College</field>
         <field name="model_id" ref="model_upmin_iso_audit_finding" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['|', ('audit_info.office_to_audit', 'in', user.employee_id.iso_office_ids.ids), ('audit_info.office_to_audit', 'in', user.employee_id.iso_ancestor_ids.ids)]</field>
+        <field name="domain_force">['|', '|', ('audit_info.office_to_audit', 'in', user.employee_id.iso_office_ids.ids), ('audit_info.office_to_audit', 'in', user.employee_id.iso_ancestor_ids.ids), ('ccar_ids.bypass_user_ids', 'in', [user.id])]</field>
         <field name="perm_read" eval="True" />
         <field name="perm_write" eval="False" />
         <field name="perm_create" eval="False" />
@@ -303,7 +304,7 @@
         <field name="name">Doc Controller: Correction Effectiveness Own Office or College</field>
         <field name="model_id" ref="model_upmin_iso_ccar_correction_effectiveness" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['|', ('ccar.office', 'in', user.employee_id.iso_office_ids.ids), ('ccar.office', 'in', user.employee_id.iso_ancestor_ids.ids)]</field>
+        <field name="domain_force">['|', '|', ('ccar.office', 'in', user.employee_id.iso_office_ids.ids), ('ccar.office', 'in', user.employee_id.iso_ancestor_ids.ids), ('ccar.bypass_user_ids', 'in', [user.id])]</field>
         <field name="perm_read" eval="True" />
         <field name="perm_write" eval="False" />
         <field name="perm_create" eval="False" />
@@ -314,7 +315,7 @@
         <field name="name">Doc Controller: Corrective Action Effectiveness Own Office or College</field>
         <field name="model_id" ref="model_upmin_iso_ccar_corrective_action_effectiveness" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['|', ('ccar.office', 'in', user.employee_id.iso_office_ids.ids), ('ccar.office', 'in', user.employee_id.iso_ancestor_ids.ids)]</field>
+        <field name="domain_force">['|', '|', ('ccar.office', 'in', user.employee_id.iso_office_ids.ids), ('ccar.office', 'in', user.employee_id.iso_ancestor_ids.ids), ('ccar.bypass_user_ids', 'in', [user.id])]</field>
         <field name="perm_read" eval="True" />
         <field name="perm_write" eval="False" />
         <field name="perm_create" eval="False" />

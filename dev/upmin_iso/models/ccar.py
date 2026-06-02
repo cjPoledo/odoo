@@ -133,6 +133,14 @@ class CCAR(models.Model):
         related="related_nc.audit_info.office_to_audit",
         store=True,
     )
+    bypass_user_ids = fields.Many2many(
+        comodel_name="res.users",
+        relation="upmin_iso_ccar_bypass_user_rel",
+        column1="ccar_id",
+        column2="user_id",
+        string="Additional Viewers",
+        domain=lambda self: [("groups_id", "in", [self.env.ref("upmin_iso.group_iso_doc_controller").id])],
+    )
 
     # Immediate Action/Correction Taken
     description = fields.Text(string="Description")
@@ -351,7 +359,21 @@ class CCAR(models.Model):
             "completed",
         ]
 
+        is_staff = self.env.user.has_group("upmin_iso.group_iso_staff")
+        is_dc = self.env.user.has_group("upmin_iso.group_iso_doc_controller")
+        is_ia = self.env.user.has_group("upmin_iso.group_iso_internal_auditor")
+
+        staff_statuses = {"creation", "checking2", "checking3"}
+        dc_statuses = {"office", "office2"}
+        ia_statuses = {"verification"}
+
         for record in self:
+            if record.status in staff_statuses and not is_staff:
+                raise ValidationError("Only ISO Staff can submit at this stage.")
+            if record.status in dc_statuses and not (is_dc or is_staff):
+                raise ValidationError("Only the office DC or ISO Staff can submit at this stage.")
+            if record.status in ia_statuses and not (is_ia or is_staff):
+                raise ValidationError("Only an Internal Auditor or ISO Staff can submit at this stage.")
             record._validate_next_step()
             if record.status in flow:
                 idx = flow.index(record.status)
@@ -359,6 +381,9 @@ class CCAR(models.Model):
                     record.status = flow[idx + 1]
 
     def previous_step(self):
+        if not self.env.user.has_group("upmin_iso.group_iso_staff"):
+            raise ValidationError("Only ISO Staff can return a CCAR to a previous step.")
+
         flow = [
             "creation",
             "office",

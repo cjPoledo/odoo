@@ -16,10 +16,14 @@ class SWOT(models.Model):
         string="Office",
         required=True,
         domain=lambda self: (
-            [("id", "in", self.env.user.employee_id.iso_office_ids.ids
-                + self.env.user.employee_id.iso_ancestor_ids.ids)]
-            if self.env.user.employee_id
-            else []
+            []
+            if self.env.user.has_group("upmin_iso.group_iso_staff")
+            else (
+                [("id", "in", self.env.user.employee_id.iso_office_ids.ids
+                    + self.env.user.employee_id.iso_ancestor_ids.ids)]
+                if self.env.user.employee_id
+                else []
+            )
         ),
     )
     strengths = fields.One2many(
@@ -63,6 +67,15 @@ class SWOT(models.Model):
             rec.weaknesses_count = len(rec.weaknesses)
             rec.opportunities_count = len(rec.opportunities)
             rec.threats_count = len(rec.threats)
+
+    bypass_user_ids = fields.Many2many(
+        comodel_name="res.users",
+        relation="upmin_iso_swot_bypass_user_rel",
+        column1="swot_id",
+        column2="user_id",
+        string="Additional Viewers",
+        domain=lambda self: [("groups_id", "in", [self.env.ref("upmin_iso.group_iso_doc_controller").id])],
+    )
 
     _sql_constraints = [
         (

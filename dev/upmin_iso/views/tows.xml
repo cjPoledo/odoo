@@ -29,6 +29,10 @@
                             <field name="office" />
                         </group>
                     </group>
+                    <group string="Additional Viewers" attrs="{'invisible': [('id', '=', False)]}"
+                           groups="upmin_iso.group_iso_staff">
+                        <field name="bypass_user_ids" widget="many2many_tags_avatar" nolabel="1" colspan="2" />
+                    </group>
                     <div class="alert alert-info" role="alert" attrs="{'invisible': [('id','!=',False)]}">
                         <strong>How to use TOWS:</strong> Select a SWOT above and save first, then add strategies below by matching quadrant pairs.
                         SO — use strengths to exploit opportunities.

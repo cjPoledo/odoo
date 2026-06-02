@@ -14,6 +14,11 @@ class AuditFinding(models.Model):
         readonly=True,
         ondelete="cascade",
     )
+    ccar_ids = fields.One2many(
+        comodel_name="upmin_iso.ccar",
+        inverse_name="related_nc",
+        string="CCARs",
+    )
     auditor = fields.Many2one(
         comodel_name="res.partner",
         string="Auditor",
