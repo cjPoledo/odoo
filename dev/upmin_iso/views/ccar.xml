@@ -10,8 +10,9 @@
                     <button string="Return" name="previous_step" type="object" class="btn-primary"
                         attrs="{'invisible': [('status', '=', 'creation')]}"
                         groups="upmin_iso.group_iso_staff" />
+                    <field name="can_submit" invisible="1" />
                     <button string="Submit" name="next_step" type="object" class="btn-primary"
-                        attrs="{'invisible': [('status', '=', 'completed')]}" />
+                        attrs="{'invisible': ['|', ('status', '=', 'completed'), ('can_submit', '=', False)]}" />
                     <field name="status" widget="statusbar" />
                 </header>
                 <sheet>

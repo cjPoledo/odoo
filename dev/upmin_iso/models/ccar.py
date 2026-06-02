@@ -142,6 +142,7 @@ class CCAR(models.Model):
         string="Additional Viewers",
         domain=lambda self: [("groups_id", "in", [self.env.ref("upmin_iso.group_iso_doc_controller").id])],
     )
+    can_submit = fields.Boolean(compute="_compute_can_submit", store=False)
 
     # Immediate Action/Correction Taken
     description = fields.Text(string="Description")
@@ -348,6 +349,21 @@ class CCAR(models.Model):
 
         if partner_ids:
             self.message_subscribe(partner_ids=list(partner_ids))
+
+    def _compute_can_submit(self):
+        user = self.env.user
+        is_staff = user.has_group("upmin_iso.group_iso_staff")
+        is_dc = user.has_group("upmin_iso.group_iso_doc_controller")
+        is_ia = user.has_group("upmin_iso.group_iso_internal_auditor")
+        for record in self:
+            if record.status in {"creation", "checking2", "checking3"}:
+                record.can_submit = is_staff
+            elif record.status in {"office", "office2"}:
+                record.can_submit = is_dc or is_staff
+            elif record.status == "verification":
+                record.can_submit = is_ia or is_staff
+            else:
+                record.can_submit = False
 
     def next_step(self):
         flow = [
