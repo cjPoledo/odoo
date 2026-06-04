@@ -5,6 +5,11 @@
         <field name="model">upmin_iso.swot</field>
         <field name="arch" type="xml">
             <form string="">
+                <header>
+                    <button string="Export SWOT / TOWS" name="action_export_swot_tows"
+                        type="object" class="btn-secondary"
+                        attrs="{'invisible': [('id', '=', False)]}" />
+                </header>
                 <sheet>
                     <group col="2">
                         <group col="1">

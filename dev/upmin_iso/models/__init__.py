@@ -21,3 +21,4 @@ from . import swot
 from . import swot_line
 from . import tows_line
 from . import tows
+from . import swot_tows_export_wizard

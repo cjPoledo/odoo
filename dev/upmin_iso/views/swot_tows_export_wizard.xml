@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="upmin_iso.swot_tows_export_wizard_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.swot_tows_export_wizard.view.form</field>
+        <field name="model">upmin_iso.swot_tows_export_wizard</field>
+        <field name="arch" type="xml">
+            <form string="Export SWOT / TOWS to XLSX">
+                <group>
+                    <field name="swot_id" readonly="1" />
+                </group>
+                <footer>
+                    <button string="Export" name="action_export"
+                        type="object" class="btn-primary" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="upmin_iso.swot_tows_export_wizard_action" model="ir.actions.act_window">
+        <field name="name">Export SWOT / TOWS</field>
+        <field name="res_model">upmin_iso.swot_tows_export_wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="upmin_iso.swot_tows_export_wizard_view_form" />
+        <field name="target">new</field>
+    </record>
+</odoo>

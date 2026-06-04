@@ -85,6 +85,17 @@ class SWOT(models.Model):
         )
     ]
 
+    def action_export_swot_tows(self):
+        wizard = self.env["upmin_iso.swot_tows_export_wizard"].create({"swot_id": self.id})
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Export SWOT / TOWS",
+            "res_model": "upmin_iso.swot_tows_export_wizard",
+            "res_id": wizard.id,
+            "view_mode": "form",
+            "target": "new",
+        }
+
     def name_get(self):
         result = []
         for rec in self:

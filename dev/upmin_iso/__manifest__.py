@@ -17,6 +17,7 @@
         "views/unit_head.xml",
         "views/swot.xml",
         "views/tows.xml",
+        "views/swot_tows_export_wizard.xml",
         "views/iso_clause.xml",
         "views/audit_period.xml",
         "report/ccar_report_template.xml",

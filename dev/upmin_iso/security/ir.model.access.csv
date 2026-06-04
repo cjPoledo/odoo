@@ -45,5 +45,7 @@ upmin_iso_audit_finding_merge_wizard_access_internal_auditor,UPMin ISO Audit Fin
 upmin_iso_ror_export_wizard_access_staff,UPMin ISO ROR Export Wizard - Staff,model_upmin_iso_ror_export_wizard,group_iso_staff,1,1,1,1
 upmin_iso_ror_export_wizard_access_doc_controller,UPMin ISO ROR Export Wizard - Doc Controller,model_upmin_iso_ror_export_wizard,group_iso_doc_controller,1,1,1,1
 upmin_iso_significant_risks_export_wizard_access_staff,UPMin ISO Significant Risks Export Wizard - Staff,model_upmin_iso_significant_risks_export_wizard,group_iso_staff,1,1,1,1
+upmin_iso_swot_tows_export_wizard_access_staff,UPMin ISO SWOT TOWS Export Wizard - Staff,model_upmin_iso_swot_tows_export_wizard,group_iso_staff,1,1,1,1
+upmin_iso_swot_tows_export_wizard_access_doc_controller,UPMin ISO SWOT TOWS Export Wizard - Doc Controller,model_upmin_iso_swot_tows_export_wizard,group_iso_doc_controller,1,1,1,1
 upmin_iso_iso_dashboard_access_staff,UPMin ISO Dashboard - Staff,model_upmin_iso_iso_dashboard,upmin_iso.group_iso_staff,1,1,1,1
 upmin_iso_iso_access_group_access_staff,UPMin ISO Access Group - Staff,model_upmin_iso_iso_access_group,upmin_iso.group_iso_staff,1,1,1,1
