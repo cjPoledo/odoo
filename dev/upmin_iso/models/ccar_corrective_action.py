@@ -12,6 +12,7 @@ class CCARCorrectiveAction(models.Model):
         string="CCAR",
         required=True,
         readonly=True,
+        ondelete="cascade",
     )
     corrective_action = fields.Text(string="Corrective Action (what was implemented)")
     effectiveness = fields.Text(

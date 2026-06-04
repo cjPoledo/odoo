@@ -12,6 +12,7 @@ class CCARCorrectionEffectiveness(models.Model):
         string="CCAR",
         required=True,
         readonly=True,
+        ondelete="cascade",
     )
     correction = fields.Text(string="Correction")
     verification = fields.Text(string="How was verification performed?")
