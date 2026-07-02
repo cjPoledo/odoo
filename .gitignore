@@ -1,3 +1,6 @@
+# local docs and manuals (not part of module source)
+/dev/docs/
+
 # sphinx build directories
 _build/
 
