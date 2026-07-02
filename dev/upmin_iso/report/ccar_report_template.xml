@@ -30,65 +30,64 @@
         <field name="paperformat_id" ref="upmin_iso.paperformat_ccar" />
     </record>
 
-    <template id="custom_header_footer" inherit_id="web.external_layout_standard">
+    <template id="ccar_external_layout">
+        <!-- Self-contained layout: does not inherit web.external_layout_standard so the
+             CCAR header/footer always renders regardless of the company's configured
+             Document Layout (res.company.external_report_layout_id). -->
 
         <!-- HEADER -->
-        <xpath expr="//div[1]" position="replace">
-            <div class="header" style="font-family: Arial, sans-serif;">
-                <t t-if="o._name == 'upmin_iso.ccar'">
-                    <img src="/upmin_iso/static/src/img/qao_header.png" alt="Header Image"
-                        style="width:100%;" />
-                    <h1 style="text-align:center; font-size:20px; font-weight:bold;">CORRECTION AND
-                        CORRECTIVE ACTION REPORT (CCAR)</h1>
-                    <table
-                        style="width:100%;
-                          font-size:15px;
-                          border-collapse:collapse; border: none; border-style: hidden!important;">
-                        <tr>
-                            <td style="text-align:left; width:50%; border: none;"> CCAR NO. <span
-                                    t-field="o.ccar_no"
-                                    style="text-decoration: underline;" />
-                            </td>
+        <div class="header" style="font-family: Arial, sans-serif;">
+            <img src="/upmin_iso/static/src/img/qao_header.png" alt="Header Image"
+                style="width:100%;" />
+            <h1 style="text-align:center; font-size:20px; font-weight:bold;">CORRECTION AND
+                CORRECTIVE ACTION REPORT (CCAR)</h1>
+            <table
+                style="width:100%;
+                  font-size:15px;
+                  border-collapse:collapse; border: none; border-style: hidden!important;">
+                <tr>
+                    <td style="text-align:left; width:50%; border: none;"> CCAR NO. <span
+                            t-field="o.ccar_no"
+                            style="text-decoration: underline;" />
+                    </td>
 
-                            <td style="text-align:right; width:50%; border: none;"> DATE <span
-                                    t-field="o.date"
-                                    style="text-decoration: underline;" />
-                            </td>
-                        </tr>
-                    </table>
-                </t>
-            </div>
-        </xpath>
+                    <td style="text-align:right; width:50%; border: none;"> DATE <span
+                            t-field="o.date"
+                            style="text-decoration: underline;" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
+            <t t-out="0" />
+        </div>
 
         <!-- FOOTER -->
-        <xpath expr="//div[3]" position="replace">
-            <div class="footer"
-                style="font-family: Arial, sans-serif; font-size:12px; padding: 32px 0px;">
-                <t t-if="o._name == 'upmin_iso.ccar'">
-                    <table
-                        style="width:100%;
-                          border-collapse:collapse; border: none; border-style: hidden!important;">
-                        <tr>
-                            <td style="text-align:left; width:50%; border: none;">
-                                QAO_ISO_0010_Rev_00
-                            </td>
+        <div class="footer"
+            style="font-family: Arial, sans-serif; font-size:12px; padding: 32px 0px;">
+            <table
+                style="width:100%;
+                  border-collapse:collapse; border: none; border-style: hidden!important;">
+                <tr>
+                    <td style="text-align:left; width:50%; border: none;">
+                        QAO_ISO_0010_Rev_00
+                    </td>
 
-                            <td style="text-align:right; width:50%; border: none;"> Page <span
-                                    class="page" /> of <span
-                                    class="topage" />
-                            </td>
-                        </tr>
-                    </table>
-                </t>
-            </div>
-        </xpath>
+                    <td style="text-align:right; width:50%; border: none;"> Page <span
+                            class="page" /> of <span
+                            class="topage" />
+                    </td>
+                </tr>
+            </table>
+        </div>
 
     </template>
 
     <template id="upmin_iso.ccar_report_template_doc">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="web.external_layout">
+                <t t-call="upmin_iso.ccar_external_layout">
                     <div class="page"
                         style="font-family: Arial, sans-serif; font-size:15px; margin-top: -3rem;">
 
