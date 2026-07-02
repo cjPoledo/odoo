@@ -7,12 +7,14 @@
 - Run the instance with: `.venv/bin/python3 odoo-bin -c odoo.conf -d odoo16_dev` (add `-u <module> --dev=all` when developing a module).
 
 ## Deployment
-- To package a module for deployment, zip it so the module folder itself is the root of the archive (e.g. `upmin_iso.zip` contains `upmin_iso/...` at the top level, not `dev/upmin_iso/...`). `cd` into `/dev` first so the module folder is the top-level entry:
-  ```
-  cd dev && zip -r ../upmin_iso.zip upmin_iso -x '*__pycache__*' -x '*.pyc' -x '*.DS_Store'
-  ```
-- Exclude `__pycache__`, `.pyc`, and `.DS_Store` from the archive.
-- The resulting zip is placed in the repo root (gitignored) and uploaded directly to the ISIP Odoo instance's Apps > Import Module.
+- To release a new version of a module for deployment:
+  1. Bump the `"version"` field in the module's `__manifest__.py` (e.g. `1.2` -> `1.3`) and commit it on its own with a conventional commit message: `chore(<module>): bump version to X.Y`.
+  2. Package the module: zip it so the module folder itself is the root of the archive (e.g. `upmin_iso.zip` contains `upmin_iso/...` at the top level, not `dev/upmin_iso/...`). `cd` into `/dev` first so the module folder is the top-level entry:
+     ```
+     cd dev && zip -r ../upmin_iso.zip upmin_iso -x '*__pycache__*' -x '*.pyc' -x '*.DS_Store'
+     ```
+     Exclude `__pycache__`, `.pyc`, and `.DS_Store` from the archive.
+  3. The resulting zip is placed in the repo root (gitignored — it's a build artifact regenerated from source, never committed) and uploaded directly to the ISIP Odoo instance's Apps > Import Module.
 
 ## Rules
 - Do not assume. Ask clarifying questions.
