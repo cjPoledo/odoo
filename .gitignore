@@ -1,6 +1,9 @@
 # local docs and manuals (not part of module source)
 /dev/docs/
 
+# packaged module deployment zips (build artifacts, regenerated from source)
+/*.zip
+
 # sphinx build directories
 _build/
 
