@@ -176,6 +176,17 @@ class ROR(models.Model):
             "target": "new",
         }
 
+    def action_import_xlsx(self):
+        wizard = self.env["upmin_iso.ror_import_wizard"].create({"ror_id": self.id})
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Import ROR",
+            "res_model": "upmin_iso.ror_import_wizard",
+            "res_id": wizard.id,
+            "view_mode": "form",
+            "target": "new",
+        }
+
     def action_import_from_swot(self):
         for rec in self:
             if not rec.related_swot:

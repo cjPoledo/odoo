@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="upmin_iso.ror_import_wizard_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.ror_import_wizard.view.form</field>
+        <field name="model">upmin_iso.ror_import_wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import ROR from XLSX">
+                <group>
+                    <field name="ror_id" readonly="1" />
+                    <field name="import_file" filename="import_filename"
+                        attrs="{'invisible': [('result_summary', '!=', False)]}" />
+                    <field name="import_filename" invisible="1" />
+                </group>
+                <div attrs="{'invisible': [('result_summary', '=', False)]}">
+                    <field name="result_summary" readonly="1" nolabel="1" class="o_text_overflow" />
+                </div>
+                <footer>
+                    <button string="Import" name="action_import_ror"
+                        type="object" class="btn-primary"
+                        attrs="{'invisible': [('result_summary', '!=', False)]}" />
+                    <button string="Close" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="upmin_iso.ror_import_wizard_action" model="ir.actions.act_window">
+        <field name="name">Import ROR</field>
+        <field name="res_model">upmin_iso.ror_import_wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="upmin_iso.ror_import_wizard_view_form" />
+        <field name="target">new</field>
+    </record>
+</odoo>

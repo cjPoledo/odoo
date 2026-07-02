@@ -11,6 +11,11 @@
                             name="action_export_xlsx"
                             class="oe_stat_button" icon="fa-file-excel-o"
                             attrs="{'invisible': [('id', '=', False)]}" />
+                        <button string="Import from XLSX" type="object"
+                            name="action_import_xlsx"
+                            class="oe_stat_button" icon="fa-upload"
+                            groups="upmin_iso.group_iso_staff"
+                            attrs="{'invisible': [('id', '=', False)]}" />
                         <button name="action_generate_quarter_ratings" type="object"
                             class="oe_stat_button" icon="fa-calendar-plus-o"
                             attrs="{'invisible': ['|', ('id', '=', False), ('pending_this_quarter', '=', 0)]}">
