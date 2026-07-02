@@ -14,7 +14,11 @@
      cd dev && zip -r ../upmin_iso.zip upmin_iso -x '*__pycache__*' -x '*.pyc' -x '*.DS_Store'
      ```
      Exclude `__pycache__`, `.pyc`, and `.DS_Store` from the archive.
-  3. The resulting zip is placed in the repo root (gitignored — it's a build artifact regenerated from source, never committed) and uploaded directly to the ISIP Odoo instance's Apps > Import Module.
+  3. The resulting zip is placed in the repo root (gitignored — it's a build artifact regenerated from source, never committed).
+  4. Publish it as a new GitHub release tagged `<module>-vX.Y` (e.g. `upmin_iso-v1.3`) with the zip attached as a release asset:
+     ```
+     gh release create upmin_iso-v1.3 upmin_iso.zip --title "upmin_iso v1.3" --notes "..."
+     ```
 
 ## Rules
 - Do not assume. Ask clarifying questions.
