@@ -30,7 +30,7 @@ Fixture CCARs (all dept_a unless noted):
   ccar_b         status='creation', office=dept_b — neither u1 nor u2 can see
 """
 
-from odoo.exceptions import AccessError
+from odoo.exceptions import AccessError, UserError
 
 from .common import ISOAccessBase
 
@@ -336,3 +336,130 @@ class TestCCARChatterAccess(ISOAccessBase):
     def test_plain_user_cannot_post(self):
         with self.assertRaises(AccessError):
             self._post_message(self.ccar_creation, self.u0)
+
+    # ── Followers widget (message_subscribe) ─────────────────────────────────
+    # The chatter "Followers" widget calls ``message_subscribe`` to add /
+    # remove followers. The default Odoo implementation requires
+    # ``check_access_rule('write')`` when adding a partner other than
+    # yourself. On CCAR that write check is denied for Doc Controllers
+    # and Internal Auditors outside their narrow status window. The
+    # CCAR.message_subscribe override routes the access check through
+    # the read rule, so anyone who can read a CCAR can manage its
+    # followers. These tests pin that behavior.
+
+    def _add_follower(self, record, user, partner):
+        return record.with_user(user).message_subscribe(partner_ids=[partner.id])
+
+    def test_dc_can_follow_self_at_any_status(self):
+        # u2 (DC dept_a) following ccar_creation (status=creation) — would
+        # raise before the message_subscribe override.
+        self._add_follower(self.ccar_creation, self.u2, self.u2.partner_id)
+        self.assertIn(
+            self.u2.partner_id,
+            self.ccar_creation.message_follower_ids.mapped("partner_id"),
+        )
+
+    def test_dc_can_add_other_follower_at_creation_status(self):
+        # The pre-fix bug: u2 trying to add u1 as a follower at
+        # status=creation raised AccessError because message_subscribe
+        # demanded write access and rule_doc_controller_write_office
+        # only allowed writes at status in ('office', 'office2').
+        other_partner = self.u1.partner_id
+        self._add_follower(self.ccar_creation, self.u2, other_partner)
+        self.assertIn(
+            other_partner,
+            self.ccar_creation.message_follower_ids.mapped("partner_id"),
+        )
+
+    def test_ia_can_add_other_follower_at_creation_status(self):
+        # Same shape for Internal Auditor: rule_internal_auditor_write
+        # only allowed writes at status='verification', so a chatter
+        # follower add at 'creation' used to fail.
+        other_partner = self.u2.partner_id
+        self._add_follower(self.ccar_creation, self.u1, other_partner)
+        self.assertIn(
+            other_partner,
+            self.ccar_creation.message_follower_ids.mapped("partner_id"),
+        )
+
+    def test_cannot_follow_without_read_access(self):
+        # u2 (DC dept_a) cannot read ccar_b (dept_b). message_subscribe
+        # returns False silently in that case (matches the parent class
+        # behavior), and no follower is added.
+        result = self._add_follower(self.ccar_b, self.u2, self.u2.partner_id)
+        self.assertFalse(result)
+        self.assertFalse(
+            self.ccar_b.sudo().message_follower_ids.filtered(
+                lambda f: f.partner_id == self.u2.partner_id
+            )
+        )
+
+    def test_plain_user_cannot_follow(self):
+        # u0 has no ISO group, so read access is denied on
+        # ccar_creation. message_subscribe returns False silently (no
+        # follower added) — that's the expected user-facing behavior
+        # for a user with no access to the record.
+        result = self._add_follower(self.ccar_creation, self.u0, self.u0.partner_id)
+        self.assertFalse(result)
+        self.assertFalse(
+            self.ccar_creation.sudo().message_follower_ids.filtered(
+                lambda f: f.partner_id == self.u0.partner_id
+            )
+        )
+
+    # ── Schedule activity (mail.activity.create auto-subscribes) ─────────────
+    # ``mail.activity.create`` calls ``message_subscribe`` on the parent
+    # record to auto-subscribe the assigned user. The pre-fix bug meant
+    # DC/IA could not schedule activities on CCARs outside their
+    # status-gated write window. Pin that activity creation now works
+    # for any user who can read the CCAR.
+
+    def _schedule_activity(self, ccar, user, assigned_user):
+        return self.env["mail.activity"].with_user(user).create({
+            "activity_type_id": self.env.ref("mail.mail_activity_data_todo").id,
+            "res_model_id": self.env["ir.model"]._get_id("upmin_iso.ccar"),
+            "res_id": ccar.id,
+            "user_id": assigned_user.id,
+            "date_deadline": "2026-12-31",
+            "summary": "Test activity",
+        })
+
+    def test_dc_can_schedule_activity_at_creation_status(self):
+        # u2 (DC) scheduling an activity on ccar_creation (status=creation)
+        # used to fail with AccessError because mail.activity.create
+        # called message_subscribe on the parent and the write rule
+        # didn't grant write to u2 here.
+        act = self._schedule_activity(self.ccar_creation, self.u2, self.u2)
+        self.assertTrue(act.id)
+
+    def test_ia_can_schedule_activity_at_office_status(self):
+        # u1 (IA) on ccar_office (status=office) — IA's write rule only
+        # covered status='verification', so the activity create path
+        # used to fail here too.
+        act = self._schedule_activity(self.ccar_office, self.u1, self.u1)
+        self.assertTrue(act.id)
+
+    def test_dc_cannot_schedule_activity_on_unread_ccar(self):
+        # u2 (DC dept_a) cannot read ccar_b (dept_b). The activity
+        # create path checks the assigned user's read access via
+        # _check_access_assignation and raises UserError when the
+        # assignee can't see the parent record. (Odoo's assertRaises
+        # only accepts a single exception class, so we use a manual
+        # try/except.)
+        try:
+            self._schedule_activity(self.ccar_b, self.u2, self.u2)
+        except (AccessError, UserError):
+            pass
+        else:
+            self.fail("Expected AccessError or UserError, got none")
+
+    def test_plain_user_cannot_schedule_activity(self):
+        # u0 is a plain user with no ISO group, so they cannot read
+        # ccar_creation. The activity create path raises UserError via
+        # _check_access_assignation.
+        try:
+            self._schedule_activity(self.ccar_creation, self.u0, self.u0)
+        except (AccessError, UserError):
+            pass
+        else:
+            self.fail("Expected AccessError or UserError, got none")

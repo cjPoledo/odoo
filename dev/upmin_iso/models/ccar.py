@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, AccessError
 
 
 class CCAR(models.Model):
@@ -416,4 +416,52 @@ class CCAR(models.Model):
                 idx = flow.index(record.status)
                 if idx > 0:
                     record.status = flow[idx - 1]
+
+    # ── Chatter-side access relaxations ──────────────────────────────────────
+    # The CCAR record rules gate *field* writes by status / office / auditor
+    # assignment, which is the right model for protecting things like
+    # `status` and `description`. But the chatter widgets (post message,
+    # log note, schedule activity, follow / unfollow, add other follower)
+    # internally call `message_subscribe` and write chatter-related fields,
+    # which require `check_access_rule('write')` even when the user only has
+    # read access on the record.
+    #
+    # Without these overrides, a Doc Controller or Internal Auditor who can
+    # see a CCAR can't post messages, log notes, schedule activities, or
+    # add followers on it (the "chatter is dead" bug). The chatter is
+    # read-only in intent — anyone who can read the record should be able
+    # to comment on it. We enforce that by routing chatter-internal
+    # subscribe/write calls through the read check instead of the write
+    # check, while leaving the existing field-write rules untouched.
+
+    def message_subscribe(self, partner_ids=None, subtype_ids=None):
+        """Chatter subscribe: allow any user who can READ the CCAR to add
+        followers (themselves or others). Field writes on the CCAR itself
+        are still gated by the normal record rules.
+
+        The parent ``mail.thread.message_subscribe`` requires
+        ``check_access_rule('write')`` when adding someone other than
+        yourself as a follower. On CCAR that write check is denied for
+        Doc Controllers and Internal Auditors outside their narrow
+        status window, which makes the "Follow" / "Add follower" widgets
+        fail with AccessError, and also breaks ``mail.activity.create``
+        (which auto-subscribes the assigned user). Routing the access
+        check through read keeps the chatter usable for any user who
+        can see the record.
+        """
+        if not self or not partner_ids:
+            return True
+        adding_current = set(partner_ids) == set([self.env.user.partner_id.id])
+        try:
+            self.check_access_rights("read")
+            self.check_access_rule("read")
+        except AccessError:
+            return False
+        # Filter inactive / private partners (mirrors parent class
+        # behavior, but without re-running the write access check).
+        if not adding_current:
+            partner_ids = self.env["res.partner"].sudo().search(
+                [("id", "in", partner_ids), ("active", "=", True), ("type", "!=", "private")]
+            ).ids
+        return self._message_subscribe(partner_ids, subtype_ids, customer_ids=None if adding_current else None)
 
