@@ -56,4 +56,4 @@ package.json
 /share/
 /src/
 # UPMin HR Extensions (managed separately)
-dev/upmin_hr_ext/
+dev/spmes/
