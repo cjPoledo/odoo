@@ -50,3 +50,10 @@ upmin_iso_swot_tows_export_wizard_access_staff,UPMin ISO SWOT TOWS Export Wizard
 upmin_iso_swot_tows_export_wizard_access_doc_controller,UPMin ISO SWOT TOWS Export Wizard - Doc Controller,model_upmin_iso_swot_tows_export_wizard,group_iso_doc_controller,1,1,1,1
 upmin_iso_iso_dashboard_access_staff,UPMin ISO Dashboard - Staff,model_upmin_iso_iso_dashboard,upmin_iso.group_iso_staff,1,1,1,1
 upmin_iso_iso_access_group_access_staff,UPMin ISO Access Group - Staff,model_upmin_iso_iso_access_group,upmin_iso.group_iso_staff,1,1,1,1
+upmin_iso_institutional_finding_access_staff,UPMin ISO Institutional Finding Access - Staff,model_upmin_iso_institutional_finding,group_iso_staff,1,1,1,1
+upmin_iso_institutional_finding_access_internal_auditor,UPMin ISO Institutional Finding Access - Internal Auditor,model_upmin_iso_institutional_finding,group_iso_internal_auditor,1,0,0,0
+upmin_iso_institutional_finding_access_doc_controller,UPMin ISO Institutional Finding Access - Doc Controller,model_upmin_iso_institutional_finding,group_iso_doc_controller,1,0,0,0
+upmin_iso_institutional_finding_wizard_access_staff,UPMin ISO Institutional Finding Wizard - Staff,model_upmin_iso_institutional_finding_wizard,group_iso_staff,1,1,1,1
+upmin_iso_audit_period_final_nc_access_staff,UPMin ISO Audit Period Final NC Access - Staff,model_upmin_iso_audit_period_final_nc,group_iso_staff,1,0,0,0
+upmin_iso_audit_period_final_nc_access_internal_auditor,UPMin ISO Audit Period Final NC Access - Internal Auditor,model_upmin_iso_audit_period_final_nc,group_iso_internal_auditor,1,0,0,0
+upmin_iso_audit_period_final_nc_access_doc_controller,UPMin ISO Audit Period Final NC Access - Doc Controller,model_upmin_iso_audit_period_final_nc,group_iso_doc_controller,1,0,0,0

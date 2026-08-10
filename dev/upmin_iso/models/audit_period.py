@@ -43,6 +43,26 @@ class AuditPeriod(models.Model):
         string="Issued CCARs",
         readonly=True,
     )
+    institutional_findings = fields.One2many(
+        comodel_name="upmin_iso.institutional_finding",
+        inverse_name="audit_period",
+        string="Institutional Findings",
+        readonly=True,
+    )
+    final_nc_ids = fields.One2many(
+        comodel_name="upmin_iso.audit_period_final_nc",
+        inverse_name="audit_period_id",
+        string="Final NCs",
+        readonly=True,
+    )
+    final_nc_count = fields.Integer(
+        string="Final NC Count",
+        compute="_compute_final_nc_count",
+    )
+
+    def _compute_final_nc_count(self):
+        for record in self:
+            record.final_nc_count = len(record.final_nc_ids)
 
     _sql_constraints = [
         (
@@ -98,6 +118,17 @@ class AuditPeriod(models.Model):
     def action_undo_generate_ccar(self):
         for record in self:
             record.ccars.unlink()
+
+    def action_open_institutional_finding_wizard(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Group into Institutional Finding",
+            "res_model": "upmin_iso.institutional_finding_wizard",
+            "view_mode": "form",
+            "target": "new",
+            "context": {"default_audit_period_id": self.id},
+        }
 
     def name_get(self):
         result = []

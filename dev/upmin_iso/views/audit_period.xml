@@ -23,6 +23,11 @@
                         attrs="{'invisible': ['|', ('is_finalized', '=', False), ('ccars', '=', [])]}"
                         class="btn-secondary"
                         confirm="Delete all generated CCARs for this period? This cannot be undone." />
+                    <button name="action_open_institutional_finding_wizard"
+                        string="GROUP INTO INSTITUTIONAL FINDING" type="object"
+                        class="btn-secondary"
+                        attrs="{'invisible': [('related_nc', '=', [])]}"
+                        groups="upmin_iso.group_iso_staff" />
                     <field name="is_finalized" invisible="1" />
                 </header>
                 <sheet>
@@ -39,14 +44,42 @@
                         </group>
                     </group>
                     <div class="mt-3">
-                        <label for="related_nc" string="Nonconformities" class="o_form_label fw-bold mb-2 d-block" />
+                        <label for="final_nc_ids" string="Final Nonconformities" class="o_form_label fw-bold mb-2 d-block" />
+                        <field name="final_nc_count" class="fw-bold ms-2" />
+                        <field name="final_nc_ids" nolabel="1">
+                            <tree string="" create="false" edit="false" delete="false"
+                                decoration-info="kind == 'institutional'">
+                                <field name="kind" widget="badge"
+                                    decoration-info="kind == 'institutional'"
+                                    decoration-muted="kind == 'individual'" />
+                                <field name="clause_display" />
+                                <field name="office_display" />
+                                <button name="action_open_record" type="object"
+                                    string="Open" icon="fa-external-link" />
+                            </tree>
+                        </field>
+                    </div>
+                    <div class="mt-3">
+                        <label for="related_nc" string="Nonconformities (Detail)" class="o_form_label fw-bold mb-2 d-block" />
                         <field name="related_nc" nolabel="1">
                             <tree string="">
-                                <field name="related_office" />
+                                <field name="related_office_name" string="Office" />
                                 <field name="clause_display" />
                                 <field name="question" />
                                 <field name="evidence" />
                                 <field name="statement" />
+                                <field name="institutional_finding_id" widget="badge"
+                                    string="Institutional Finding" />
+                            </tree>
+                        </field>
+                    </div>
+                    <div class="mt-3">
+                        <label for="institutional_findings" string="Institutional Findings" class="o_form_label fw-bold mb-2 d-block" />
+                        <field name="institutional_findings" nolabel="1">
+                            <tree string="">
+                                <field name="clause" />
+                                <field name="finding_count" />
+                                <field name="office_display" />
                             </tree>
                         </field>
                     </div>

@@ -1,4 +1,5 @@
 from odoo import api, models, fields
+from odoo.exceptions import UserError
 
 
 class AuditFinding(models.Model):
@@ -61,6 +62,12 @@ class AuditFinding(models.Model):
         string="Statement", help="Justification for the rating based on the evidence."
     )
     is_duplicate = fields.Boolean(string="Duplicate?", default=False)
+    institutional_finding_id = fields.Many2one(
+        comodel_name="upmin_iso.institutional_finding",
+        string="Institutional Finding",
+        help="When set, this finding is counted as part of a shared institutional "
+        "finding spanning multiple offices instead of as its own individual NC.",
+    )
 
     is_staff = fields.Boolean(compute="_compute_is_staff", store=False)
     is_audit_auditor = fields.Boolean(compute="_compute_is_audit_auditor", store=False)
@@ -76,6 +83,15 @@ class AuditFinding(models.Model):
         related="audit_info.office_to_audit",
         store=True,
     )
+    related_office_name = fields.Char(
+        string="Office",
+        compute="_compute_related_office_name",
+    )
+
+    @api.depends("related_office")
+    def _compute_related_office_name(self):
+        for record in self:
+            record.related_office_name = record.related_office.name
 
     @api.depends("audit_info.internal_auditors")
     def _compute_available_auditor_ids(self):
@@ -118,6 +134,8 @@ class AuditFinding(models.Model):
     def name_get(self):
         result = []
         for record in self:
+            office_initials = getattr(record.related_office, "department_initials", "") or ""
+            office_tag = f"[{office_initials}] " if office_initials else ""
             rating = self._RATING_LABEL.get(record.rating, record.rating or "")
             clause = (
                 f"{record.clause.clause_number} {record.clause.clause_title}".strip()
@@ -127,5 +145,16 @@ class AuditFinding(models.Model):
             snippet_src = record.statement or record.evidence or record.auditor.name or ""
             snippet = (snippet_src[:60] + "…") if len(snippet_src) > 60 else snippet_src
             parts = [p for p in [rating, clause, snippet] if p]
-            result.append((record.id, " – ".join(parts) or str(record.id)))
+            label = " – ".join(parts) or str(record.id)
+            result.append((record.id, f"{office_tag}{label}"))
         return result
+
+    def action_remove_from_institutional_finding(self):
+        for record in self:
+            if record.related_audit_period.is_finalized:
+                raise UserError(
+                    "Cannot ungroup findings in a finalized audit period."
+                )
+        institutional_findings = self.mapped("institutional_finding_id")
+        self.write({"institutional_finding_id": False})
+        institutional_findings.filtered(lambda inc: not inc.finding_ids).unlink()

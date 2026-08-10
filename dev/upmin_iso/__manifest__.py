@@ -19,6 +19,8 @@
         "views/tows.xml",
         "views/swot_tows_export_wizard.xml",
         "views/iso_clause.xml",
+        "views/institutional_finding.xml",
+        "views/institutional_finding_wizard.xml",
         "views/audit_period.xml",
         "report/ccar_report_template.xml",
         "report/audit_findings_report.xml",

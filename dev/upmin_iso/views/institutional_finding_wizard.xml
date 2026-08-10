@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="upmin_iso.institutional_finding_wizard_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.institutional_finding_wizard.view.form</field>
+        <field name="model">upmin_iso.institutional_finding_wizard</field>
+        <field name="arch" type="xml">
+            <form string="Group into Institutional Finding">
+                <sheet>
+                    <group>
+                        <field name="audit_period_id" invisible="1" />
+                        <field name="institutional_finding_id"
+                            options="{'no_open': True}" />
+                        <field name="finding_ids"
+                            widget="many2many_tags"
+                            options="{'no_create': True, 'no_open': True}" />
+                    </group>
+                    <group string="Institutional Finding Details">
+                        <field name="clause_id" />
+                        <field name="supporting_clause_ids" widget="many2many_tags"
+                            options="{'no_create': True}" />
+                        <field name="description" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Group" name="action_group"
+                        type="object" class="btn-primary" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>
