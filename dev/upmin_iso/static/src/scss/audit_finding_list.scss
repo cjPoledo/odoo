@@ -1,0 +1,5 @@
+.o_list_renderer .o_list_table tbody > tr > td.o_data_cell[name="clause_display"]:not(.o_list_record_selector):not(.o_handle_cell):not(.o_list_button):not(.o_list_record_remove) {
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
+}

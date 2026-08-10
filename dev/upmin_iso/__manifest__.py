@@ -39,6 +39,7 @@
             "upmin_iso/static/src/js/delete_confirm.js",
             "upmin_iso/static/src/xml/ror_list_button.xml",
             "upmin_iso/static/src/scss/ror_button.scss",
+            "upmin_iso/static/src/scss/audit_finding_list.scss",
         ],
     },
     "icon": "upmin_iso/static/description/logo.jpeg",
