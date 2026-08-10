@@ -38,8 +38,9 @@
                                 attrs="{'readonly': [('is_finalized', '=', True)]}" />
                         </group>
                     </group>
-                    <group col="1">
-                        <field name="related_nc">
+                    <div class="mt-3">
+                        <label for="related_nc" string="Nonconformities" class="o_form_label fw-bold mb-2 d-block" />
+                        <field name="related_nc" nolabel="1">
                             <tree string="">
                                 <field name="related_office" />
                                 <field name="clause_display" />
@@ -48,8 +49,11 @@
                                 <field name="statement" />
                             </tree>
                         </field>
-                        <field name="ccars" />
-                    </group>
+                    </div>
+                    <div class="mt-3">
+                        <label for="ccars" string="Issued CCARs" class="o_form_label fw-bold mb-2 d-block" />
+                        <field name="ccars" nolabel="1" />
+                    </div>
                 </sheet>
             </form>
         </field>
