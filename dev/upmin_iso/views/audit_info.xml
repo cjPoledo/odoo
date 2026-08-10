@@ -63,10 +63,11 @@
                             <field name="ofi" decoration-warning="True" />
                         </group>
                     </group>
-                    <group col="1">
-                        <field name="audit_findings"
+                    <div class="mt-3">
+                        <label for="audit_findings" string="Audit Findings" class="o_form_label fw-bold mb-2 d-block" />
+                        <field name="audit_findings" nolabel="1"
                             attrs="{'readonly': ['|', ('is_finalized','=',True), '&amp;', ('is_staff','=',False), ('is_office_auditor','=',False)]}" />
-                    </group>
+                    </div>
                 </sheet>
             </form>
         </field>
