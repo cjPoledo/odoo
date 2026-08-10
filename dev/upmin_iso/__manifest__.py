@@ -37,6 +37,7 @@
         "web.assets_backend": [
             "upmin_iso/static/src/js/ror_tree_extend.js",
             "upmin_iso/static/src/js/delete_confirm.js",
+            "upmin_iso/static/src/js/html_tooltip_strip.js",
             "upmin_iso/static/src/xml/ror_list_button.xml",
             "upmin_iso/static/src/scss/ror_button.scss",
             "upmin_iso/static/src/scss/audit_finding_list.scss",
