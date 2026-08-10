@@ -28,3 +28,4 @@
 - Inefficient instructions may be given. If there are better alternatives, propose the idea concisely and ask for decision.
 - UX is very important. Ensure every update to the code, specially the UI, allows users to have the best experience. Workflows must stay simple and intuitive for non-technical ISIP staff; favor clarity over technical elegance and avoid exposing unnecessary complexity or Odoo internals in the UI.
 - Do not scope creep. Only do what is approved. Propose beneficial features that are outside the current scope concisely instead.
+- Ensure code is DRY.
