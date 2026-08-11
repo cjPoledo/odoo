@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="upmin_iso.audit_period_final_nc_view_tree" model="ir.ui.view">
+        <field name="name">upmin_iso.audit_period_final_nc.view.tree</field>
+        <field name="model">upmin_iso.audit_period_final_nc</field>
+        <field name="arch" type="xml">
+            <tree string="" create="false" edit="false" delete="false"
+                decoration-info="kind == 'institutional'">
+                <field name="kind" widget="badge"
+                    decoration-info="kind == 'institutional'"
+                    decoration-muted="kind == 'individual'" />
+                <field name="clause_display" />
+                <field name="office_display" />
+                <button name="action_open_record" type="object"
+                    string="Open" icon="fa-external-link" />
+            </tree>
+        </field>
+    </record>
+
     <record id="upmin_iso.audit_period_view_form" model="ir.ui.view">
         <field name="name">upmin_iso.audit_period.view.form</field>
         <field name="model">upmin_iso.audit_period</field>
@@ -31,6 +48,29 @@
                     <field name="is_finalized" invisible="1" />
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_offices_audited" type="object"
+                            class="oe_stat_button" icon="fa-building">
+                            <field name="office_count" widget="statinfo" string="Offices Audited" />
+                        </button>
+                        <button name="action_view_c" type="object"
+                            class="oe_stat_button" icon="fa-check" style="color: green;">
+                            <field name="c_count" widget="statinfo" string="Conformities" />
+                        </button>
+                        <button name="action_view_final_nc" type="object"
+                            class="oe_stat_button" icon="fa-times" style="color: red;">
+                            <field name="final_nc_count" widget="statinfo" string="Nonconformities" />
+                        </button>
+                        <button name="action_view_ofi" type="object"
+                            class="oe_stat_button" icon="fa-lightbulb-o" style="color: orange;">
+                            <field name="ofi_count" widget="statinfo" string="Opportunities" />
+                        </button>
+                        <button name="action_view_offices_without_nc" type="object"
+                            class="oe_stat_button" icon="fa-shield"
+                            attrs="{'invisible': [('office_count', '=', 0)]}">
+                            <field name="offices_without_nc_count" widget="statinfo" string="Without NC" />
+                        </button>
+                    </div>
                     <group col="2">
                         <group>
                             <field name="audit_start_date" widget="daterange"
@@ -43,50 +83,71 @@
                                 attrs="{'readonly': [('is_finalized', '=', True)]}" />
                         </group>
                     </group>
-                    <div class="mt-3">
-                        <label for="final_nc_ids" string="Final Nonconformities" class="o_form_label fw-bold mb-2 d-block" />
-                        <field name="final_nc_count" class="fw-bold ms-2" />
-                        <field name="final_nc_ids" nolabel="1">
-                            <tree string="" create="false" edit="false" delete="false"
-                                decoration-info="kind == 'institutional'">
-                                <field name="kind" widget="badge"
-                                    decoration-info="kind == 'institutional'"
-                                    decoration-muted="kind == 'individual'" />
-                                <field name="clause_display" />
-                                <field name="office_display" />
-                                <button name="action_open_record" type="object"
-                                    string="Open" icon="fa-external-link" />
-                            </tree>
-                        </field>
-                    </div>
-                    <div class="mt-3">
-                        <label for="related_nc" string="Nonconformities (Detail)" class="o_form_label fw-bold mb-2 d-block" />
-                        <field name="related_nc" nolabel="1">
-                            <tree string="">
-                                <field name="related_office_name" string="Office" />
-                                <field name="clause_display" />
-                                <field name="question" />
-                                <field name="evidence" />
-                                <field name="statement" />
-                                <field name="institutional_finding_id" widget="badge"
-                                    string="Institutional Finding" />
-                            </tree>
-                        </field>
-                    </div>
-                    <div class="mt-3">
-                        <label for="institutional_findings" string="Institutional Findings" class="o_form_label fw-bold mb-2 d-block" />
-                        <field name="institutional_findings" nolabel="1">
-                            <tree string="">
-                                <field name="clause" />
-                                <field name="finding_count" />
-                                <field name="office_display" />
-                            </tree>
-                        </field>
-                    </div>
-                    <div class="mt-3">
-                        <label for="ccars" string="Issued CCARs" class="o_form_label fw-bold mb-2 d-block" />
-                        <field name="ccars" nolabel="1" />
-                    </div>
+                    <notebook>
+                        <page name="offices" string="Offices Audited">
+                            <field name="audit_infos" nolabel="1">
+                                <tree string="" create="false" delete="false" edit="false">
+                                    <field name="office_to_audit_name" string="Office" />
+                                    <field name="internal_auditors" widget="many2many_tags" />
+                                    <field name="audit_date" />
+                                    <field name="c" decoration-success="True" />
+                                    <field name="nc" decoration-danger="True" />
+                                    <field name="ofi" decoration-warning="True" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="findings" string="Findings">
+                            <div class="mt-3">
+                                <label for="final_nc_ids" string="Final Nonconformities" class="o_form_label fw-bold mb-2 d-block" />
+                                <field name="final_nc_ids" nolabel="1">
+                                    <tree string="" create="false" edit="false" delete="false"
+                                        decoration-info="kind == 'institutional'">
+                                        <field name="kind" widget="badge"
+                                            decoration-info="kind == 'institutional'"
+                                            decoration-muted="kind == 'individual'" />
+                                        <field name="clause_display" />
+                                        <field name="office_display" />
+                                        <button name="action_open_record" type="object"
+                                            string="Open" icon="fa-external-link" />
+                                    </tree>
+                                </field>
+                            </div>
+                            <div class="mt-3">
+                                <label for="related_nc" string="Nonconformities (Detail)" class="o_form_label fw-bold mb-2 d-block" />
+                                <field name="related_nc" nolabel="1">
+                                    <tree string="">
+                                        <field name="related_office_name" string="Office" />
+                                        <field name="clause_display" />
+                                        <field name="question" />
+                                        <field name="evidence" />
+                                        <field name="statement" />
+                                        <field name="institutional_finding_id" widget="badge"
+                                            string="Institutional Finding" />
+                                    </tree>
+                                </field>
+                            </div>
+                            <div class="mt-3"
+                                attrs="{'invisible': [('institutional_findings', '=', [])]}">
+                                <label for="institutional_findings" string="Institutional Findings" class="o_form_label fw-bold mb-2 d-block" />
+                                <field name="institutional_findings" nolabel="1">
+                                    <tree string="">
+                                        <field name="clause" />
+                                        <field name="finding_count" />
+                                        <field name="office_display" />
+                                    </tree>
+                                </field>
+                            </div>
+                        </page>
+                        <page name="ccars" string="CCARs">
+                            <field name="ccars" nolabel="1">
+                                <tree string="" create="false" delete="false">
+                                    <field name="ccar_no" />
+                                    <field name="date" />
+                                    <field name="status" widget="badge" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -99,6 +160,7 @@
             <tree string="">
                 <field name="audit_start_date" />
                 <field name="audit_end_date" />
+                <field name="office_count" />
                 <field name="related_c" />
                 <field name="related_nc" />
                 <field name="related_ofi" />

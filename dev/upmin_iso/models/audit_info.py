@@ -11,6 +11,10 @@ class AuditInfo(models.Model):
     office_to_audit = fields.Many2one(
         comodel_name="hr.department", string="Office to Audit", required=True
     )
+    office_to_audit_name = fields.Char(
+        string="Office to Audit",
+        compute="_compute_office_to_audit_name",
+    )
     audit_period = fields.Many2one(
         comodel_name="upmin_iso.audit_period", string="Audit Period", required=True
     )
@@ -84,6 +88,11 @@ class AuditInfo(models.Model):
                     lambda a: a.name.user_id == current_user
                 )
             )
+
+    @api.depends("office_to_audit")
+    def _compute_office_to_audit_name(self):
+        for record in self:
+            record.office_to_audit_name = record.office_to_audit.name
 
     @api.depends("audit_findings", "audit_findings.rating", "audit_findings.is_duplicate")
     def _compute_ratings(self):

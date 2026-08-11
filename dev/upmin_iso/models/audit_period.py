@@ -16,6 +16,33 @@ class AuditPeriod(models.Model):
         help="Mark as finalized to prevent further editing and enable report generation.",
     )
 
+    audit_infos = fields.One2many(
+        comodel_name="upmin_iso.audit_info",
+        inverse_name="audit_period",
+        string="Offices Audited",
+        readonly=True,
+    )
+    office_count = fields.Integer(
+        string="Offices Audited",
+        compute="_compute_office_counts",
+    )
+    offices_without_nc_ids = fields.Many2many(
+        comodel_name="hr.department",
+        string="Offices Without NC",
+        compute="_compute_office_counts",
+    )
+    offices_without_nc_count = fields.Integer(
+        string="Offices Without NC",
+        compute="_compute_office_counts",
+    )
+
+    def _compute_office_counts(self):
+        for record in self:
+            record.office_count = len(record.audit_infos)
+            without_nc = record.audit_infos.filtered(lambda ai: ai.nc == 0)
+            record.offices_without_nc_ids = without_nc.mapped("office_to_audit")
+            record.offices_without_nc_count = len(without_nc)
+
     related_c = fields.One2many(
         comodel_name="upmin_iso.audit_finding",
         inverse_name="related_audit_period",
@@ -59,10 +86,20 @@ class AuditPeriod(models.Model):
         string="Final NC Count",
         compute="_compute_final_nc_count",
     )
+    c_count = fields.Integer(
+        string="Conformities",
+        compute="_compute_final_nc_count",
+    )
+    ofi_count = fields.Integer(
+        string="Opportunities for Improvement",
+        compute="_compute_final_nc_count",
+    )
 
     def _compute_final_nc_count(self):
         for record in self:
             record.final_nc_count = len(record.final_nc_ids)
+            record.c_count = len(record.related_c)
+            record.ofi_count = len(record.related_ofi)
 
     _sql_constraints = [
         (
@@ -128,6 +165,72 @@ class AuditPeriod(models.Model):
             "view_mode": "form",
             "target": "new",
             "context": {"default_audit_period_id": self.id},
+        }
+
+    def action_view_offices_audited(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Offices Audited",
+            "res_model": "upmin_iso.audit_info",
+            "view_mode": "tree,form",
+            "domain": [("audit_period", "=", self.id)],
+            "context": {"upmin_iso_dept_short": True},
+        }
+
+    def _dashboard_finding_views(self):
+        tree_id = self.env.ref("upmin_iso.audit_finding_view_tree_dashboard").id
+        form_id = self.env.ref("upmin_iso.audit_finding_view_form_dashboard").id
+        return [(tree_id, "tree"), (form_id, "form")]
+
+    def action_view_c(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Conformities",
+            "res_model": "upmin_iso.audit_finding",
+            "view_mode": "tree,form",
+            "views": self._dashboard_finding_views(),
+            "domain": [("id", "in", self.related_c.ids)],
+            "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
+        }
+
+    def action_view_final_nc(self):
+        self.ensure_one()
+        tree_id = self.env.ref("upmin_iso.audit_period_final_nc_view_tree").id
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Final Nonconformities",
+            "res_model": "upmin_iso.audit_period_final_nc",
+            "view_mode": "tree",
+            "views": [(tree_id, "tree")],
+            "domain": [("id", "in", self.final_nc_ids.ids)],
+        }
+
+    def action_view_ofi(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Opportunities for Improvement",
+            "res_model": "upmin_iso.audit_finding",
+            "view_mode": "tree,form",
+            "views": self._dashboard_finding_views(),
+            "domain": [("id", "in", self.related_ofi.ids)],
+            "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
+        }
+
+    def action_view_offices_without_nc(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Offices Without NC",
+            "res_model": "upmin_iso.audit_info",
+            "view_mode": "tree,form",
+            "domain": [
+                ("audit_period", "=", self.id),
+                ("office_to_audit", "in", self.offices_without_nc_ids.ids),
+            ],
+            "context": {"upmin_iso_dept_short": True},
         }
 
     def name_get(self):
