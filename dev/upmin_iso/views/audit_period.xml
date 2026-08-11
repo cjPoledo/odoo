@@ -97,8 +97,8 @@
                             </field>
                         </page>
                         <page name="findings" string="Findings">
-                            <div class="mt-3">
-                                <label for="final_nc_ids" string="Final Nonconformities" class="o_form_label fw-bold mb-2 d-block" />
+                            <div>
+                                <label for="final_nc_ids" string="Final Nonconformities" class="o_form_label fw-bold mb-4 d-block" />
                                 <field name="final_nc_ids" nolabel="1">
                                     <tree string="" create="false" edit="false" delete="false"
                                         decoration-info="kind == 'institutional'">
@@ -118,11 +118,11 @@
                                     <tree string="">
                                         <field name="related_office_name" string="Office" />
                                         <field name="clause_display" />
-                                        <field name="question" />
+                                        <field name="question" optional="show" />
                                         <field name="evidence" />
                                         <field name="statement" />
                                         <field name="institutional_finding_id" widget="badge"
-                                            string="Institutional Finding" />
+                                            string="Institutional Finding" optional="show" />
                                     </tree>
                                 </field>
                             </div>
