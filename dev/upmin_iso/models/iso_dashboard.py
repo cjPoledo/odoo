@@ -57,6 +57,7 @@ class IsoDashboard(models.TransientModel):
         CCAR = self.env["upmin_iso.ccar"]
         Finding = self.env["upmin_iso.audit_finding"]
         Period = self.env["upmin_iso.audit_period"]
+        FinalNC = self.env["upmin_iso.audit_period_final_nc"]
         ROR = self.env["upmin_iso.ror"]
         Rating = self.env["upmin_iso.ror_rating"]
         Line = self.env["upmin_iso.swot_line"]
@@ -70,7 +71,7 @@ class IsoDashboard(models.TransientModel):
         ccar_open = CCAR.search([("status", "!=", "completed")])
         ccar_creation = ccar_open.filtered(lambda c: c.status == "creation")
         ccar_awaiting_qao = ccar_open.filtered(
-            lambda c: c.status in ("checking1", "checking2", "checking3")
+            lambda c: c.status in ("checking2", "checking3")
         )
         ccar_awaiting_office = ccar_open.filtered(
             lambda c: c.status in ("office", "office2")
@@ -92,7 +93,7 @@ class IsoDashboard(models.TransientModel):
             )
             findings = Finding.search([("audit_info.audit_period", "=", period.id)])
             audit_c = sum(1 for f in findings if f.rating == "c")
-            audit_nc = sum(1 for f in findings if f.rating == "nc" and not f.is_duplicate)
+            audit_nc = FinalNC.search_count([("audit_period_id", "=", period.id)])
             audit_ofi = sum(1 for f in findings if f.rating == "ofi")
 
         # IAs not assigned to any office in the latest period
@@ -112,7 +113,7 @@ class IsoDashboard(models.TransientModel):
         year_periods = Period.search([("audit_start_date", ">=", year_start)])
         year_findings = Finding.search([("audit_info.audit_period", "in", year_periods.ids)])
         year_c = sum(1 for f in year_findings if f.rating == "c")
-        year_nc = sum(1 for f in year_findings if f.rating == "nc" and not f.is_duplicate)
+        year_nc = FinalNC.search_count([("audit_period_id", "in", year_periods.ids)])
         year_ofi = sum(1 for f in year_findings if f.rating == "ofi")
         year_offices = self.env["upmin_iso.audit_info"].search_count(
             [("audit_period", "in", year_periods.ids)]
@@ -230,7 +231,7 @@ class IsoDashboard(models.TransientModel):
             "name": "CCARs Awaiting QAO",
             "res_model": "upmin_iso.ccar",
             "view_mode": "tree,form",
-            "domain": [("status", "in", ["checking1", "checking2", "checking3"])],
+            "domain": [("status", "in", ["checking2", "checking3"])],
             "context": {"upmin_iso_dept_short": True},
         }
 
@@ -273,6 +274,10 @@ class IsoDashboard(models.TransientModel):
         form_id = self.env.ref("upmin_iso.audit_finding_view_form_dashboard").id
         return [(tree_id, "tree"), (form_id, "form")]
 
+    def _final_nc_tree_view(self):
+        tree_id = self.env.ref("upmin_iso.audit_period_final_nc_view_tree").id
+        return [(tree_id, "tree")]
+
     def action_audit_c(self):
         period = self.env["upmin_iso.audit_period"].search(
             [], order="audit_start_date desc", limit=1
@@ -294,11 +299,10 @@ class IsoDashboard(models.TransientModel):
         return {
             "type": "ir.actions.act_window",
             "name": "Nonconformities This Period",
-            "res_model": "upmin_iso.audit_finding",
-            "view_mode": "tree,form",
-            "views": self._dashboard_finding_views(),
-            "domain": [("audit_info.audit_period", "=", period.id), ("rating", "=", "nc"), ("is_duplicate", "=", False)] if period else [("id", "=", False)],
-            "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
+            "res_model": "upmin_iso.audit_period_final_nc",
+            "view_mode": "tree",
+            "views": self._final_nc_tree_view(),
+            "domain": [("audit_period_id", "=", period.id)] if period else [("id", "=", False)],
         }
 
     def action_audit_ofi(self):
@@ -374,11 +378,10 @@ class IsoDashboard(models.TransientModel):
         return {
             "type": "ir.actions.act_window",
             "name": f"Nonconformities {_date.today().year}",
-            "res_model": "upmin_iso.audit_finding",
-            "view_mode": "tree,form",
-            "views": self._dashboard_finding_views(),
-            "domain": [("audit_info.audit_period", "in", self._year_period_ids()), ("rating", "=", "nc"), ("is_duplicate", "=", False)],
-            "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
+            "res_model": "upmin_iso.audit_period_final_nc",
+            "view_mode": "tree",
+            "views": self._final_nc_tree_view(),
+            "domain": [("audit_period_id", "in", self._year_period_ids())],
         }
 
     def action_year_ofi(self):
