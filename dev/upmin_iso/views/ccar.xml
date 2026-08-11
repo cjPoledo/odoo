@@ -261,8 +261,13 @@
             <tree string="" create="false" delete="false">
                 <field name="ccar_no" />
                 <field name="date" />
+                <field name="office" />
                 <field name="audit_period" />
-                <field name="status" widget="badge" />
+                <field name="status" widget="badge"
+                    decoration-muted="status == 'creation'"
+                    decoration-warning="status in ('office', 'office2')"
+                    decoration-info="status in ('checking2', 'checking3', 'verification')"
+                    decoration-success="status == 'completed'" />
             </tree>
         </field>
     </record>
