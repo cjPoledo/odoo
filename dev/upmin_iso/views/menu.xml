@@ -93,14 +93,6 @@
         sequence="20" />
 
     <menuitem
-        id="institutional_finding_menu"
-        name="Institutional Findings"
-        action="upmin_iso.institutional_finding_action"
-        groups="group_iso_staff"
-        parent="audit_main_menu"
-        sequence="30" />
-
-    <menuitem
         id="ccar_menu"
         name="CCAR"
         action="upmin_iso.ccar_action"
