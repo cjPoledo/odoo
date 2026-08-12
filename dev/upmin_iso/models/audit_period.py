@@ -23,12 +23,12 @@ class AuditPeriod(models.Model):
         readonly=True,
     )
     office_count = fields.Integer(
-        string="Offices Audited",
+        string="Offices Audited Count",
         compute="_compute_office_counts",
     )
     offices_without_nc_ids = fields.Many2many(
         comodel_name="hr.department",
-        string="Offices Without NC",
+        string="Departments Without NC",
         compute="_compute_office_counts",
     )
     offices_without_nc_count = fields.Integer(
@@ -87,11 +87,11 @@ class AuditPeriod(models.Model):
         compute="_compute_final_nc_count",
     )
     c_count = fields.Integer(
-        string="Conformities",
+        string="Conformities Count",
         compute="_compute_final_nc_count",
     )
     ofi_count = fields.Integer(
-        string="Opportunities for Improvement",
+        string="Opportunities for Improvement Count",
         compute="_compute_final_nc_count",
     )
 

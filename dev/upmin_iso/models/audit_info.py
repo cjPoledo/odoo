@@ -12,7 +12,7 @@ class AuditInfo(models.Model):
         comodel_name="hr.department", string="Office to Audit", required=True
     )
     office_to_audit_name = fields.Char(
-        string="Office to Audit",
+        string="Office to Audit (Text)",
         compute="_compute_office_to_audit_name",
     )
     audit_period = fields.Many2one(

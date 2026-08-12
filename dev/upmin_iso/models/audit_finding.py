@@ -84,7 +84,7 @@ class AuditFinding(models.Model):
         store=True,
     )
     related_office_name = fields.Char(
-        string="Office",
+        string="Office (Text)",
         compute="_compute_related_office_name",
     )
 
