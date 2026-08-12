@@ -39,6 +39,10 @@ upmin_iso_tows_line_access_staff,UPMin ISO TOWS Line Access - Staff,model_upmin_
 upmin_iso_swot_access_doc_controller,UPMin ISO SWOT Access - Doc Controller,model_upmin_iso_swot,group_iso_doc_controller,1,1,1,1
 upmin_iso_tows_access_doc_controller,UPMin ISO TOWS Access - Doc Controller,model_upmin_iso_tows,group_iso_doc_controller,1,1,1,1
 upmin_iso_swot_line_access_doc_controller,UPMin ISO SWOT Line Access - Doc Controller,model_upmin_iso_swot_line,group_iso_doc_controller,1,1,1,1
+upmin_iso_swot_line_closure_access_staff,UPMin ISO SWOT Line Closure Access - Staff,model_upmin_iso_swot_line_closure,group_iso_staff,1,1,1,0
+upmin_iso_swot_line_closure_access_doc_controller,UPMin ISO SWOT Line Closure Access - Doc Controller,model_upmin_iso_swot_line_closure,group_iso_doc_controller,1,1,1,0
+upmin_iso_swot_line_close_wizard_access_staff,UPMin ISO SWOT Line Close Wizard - Staff,model_upmin_iso_swot_line_close_wizard,group_iso_staff,1,1,1,1
+upmin_iso_swot_line_close_wizard_access_doc_controller,UPMin ISO SWOT Line Close Wizard - Doc Controller,model_upmin_iso_swot_line_close_wizard,group_iso_doc_controller,1,1,1,1
 upmin_iso_tows_line_access_doc_controller,UPMin ISO TOWS Line Access - Doc Controller,model_upmin_iso_tows_line,group_iso_doc_controller,1,1,1,1
 upmin_iso_audit_finding_merge_wizard_access_staff,UPMin ISO Audit Finding Merge Wizard - Staff,model_upmin_iso_audit_finding_merge_wizard,group_iso_staff,1,1,1,1
 upmin_iso_audit_finding_merge_wizard_access_internal_auditor,UPMin ISO Audit Finding Merge Wizard - Internal Auditor,model_upmin_iso_audit_finding_merge_wizard,group_iso_internal_auditor,1,1,1,1

@@ -98,7 +98,9 @@ class ROR(models.Model):
         RORRating = self.env["upmin_iso.ror_rating"]
         for rec in self:
             q_end = rec._current_quarter_end()
-            issues = rec.internal_issues + rec.external_issues
+            issues = (rec.internal_issues + rec.external_issues).filtered(
+                lambda i: not i.is_closed
+            )
             if not issues:
                 rec.pending_this_quarter = 0
                 continue
@@ -115,7 +117,9 @@ class ROR(models.Model):
         RORRating = self.env["upmin_iso.ror_rating"]
         for rec in self:
             q_end = rec._current_quarter_end()
-            issues = rec.internal_issues + rec.external_issues
+            issues = (rec.internal_issues + rec.external_issues).filtered(
+                lambda i: not i.is_closed
+            )
             if not issues:
                 continue
             existing_ids = set(

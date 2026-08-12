@@ -23,6 +23,8 @@ from . import document_controller
 from . import unit_head
 from . import swot
 from . import swot_line
+from . import swot_line_closure
+from . import swot_line_close_wizard
 from . import tows_line
 from . import tows
 from . import swot_tows_export_wizard

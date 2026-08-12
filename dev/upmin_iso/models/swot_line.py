@@ -68,6 +68,16 @@ class SWOTLine(models.Model):
         inverse_name="issue",
         string="Ratings",
     )
+    closures = fields.One2many(
+        comodel_name="upmin_iso.swot_line_closure",
+        inverse_name="swot_line_id",
+        string="Closure History",
+    )
+    is_closed = fields.Boolean(
+        string="Closed", compute="_compute_is_closed", store=True,
+        help="A closed issue is excluded from pending/notification checks "
+        "but stays visible with its full rating and closure history.",
+    )
 
     # remarks
     fields_status = fields.Text(
@@ -87,6 +97,7 @@ class SWOTLine(models.Model):
             ("complete", "Completed"),
             ("incomplete", "In Progress"),
             ("no", "Not Rated"),
+            ("closed", "Closed"),
         ],
         string="This Quarter",
         compute="_compute_current_quarter_rated",
@@ -129,7 +140,10 @@ class SWOTLine(models.Model):
             else:
                 rec.fields_status = "Missing: " + ", ".join(status_list)
 
-    @api.depends("ratings", "ratings.progress", "ratings.review_date", "ratings.risk_conclusion")
+    @api.depends(
+        "ratings", "ratings.progress", "ratings.review_date", "ratings.risk_conclusion",
+        "is_closed", "closures.closed_date", "closures.reopened_date",
+    )
     def _compute_ratings_status(self):
         from datetime import date as _date
 
@@ -158,11 +172,14 @@ class SWOTLine(models.Model):
             lines = []
 
             # CTA: current quarter status
-            this_quarter = rec.ratings.filtered(lambda r: r.review_date == q_end)
-            if not this_quarter:
-                lines.append("[ Rate this quarter ]")
-            elif this_quarter[:1].progress < 100:
-                lines.append("[ Complete this quarter's rating ]")
+            if rec.is_closed:
+                lines.append("[ Closed — no rating needed ]")
+            else:
+                this_quarter = rec.ratings.filtered(lambda r: r.review_date == q_end)
+                if not this_quarter:
+                    lines.append("[ Rate this quarter ]")
+                elif this_quarter[:1].progress < 100:
+                    lines.append("[ Complete this quarter's rating ]")
 
             # Latest completed rating
             if completed_ratings:
@@ -172,11 +189,15 @@ class SWOTLine(models.Model):
             else:
                 lines.append("No completed ratings yet")
 
-            # Skipped quarters
+            # Skipped quarters — a quarter covered by a closure is exempt,
+            # since the issue was deliberately dormant, not neglected.
             create_date = rec.create_date.date() if rec.create_date else _date.today()
             all_required = past_required_quarters(create_date)
             entry_dates = set(rec.ratings.mapped("review_date"))
-            skipped = [q for q in all_required if q not in entry_dates]
+            skipped = [
+                q for q in all_required
+                if q not in entry_dates and not rec._is_closed_during(q)
+            ]
             if skipped:
                 skipped_labels = ", ".join(q.strftime("%b %Y") for q in skipped)
                 lines.append(f"Skipped: {skipped_labels}")
@@ -215,7 +236,7 @@ class SWOTLine(models.Model):
         for rec in self:
             rec.fields_missing_label = f"{rec.fields_missing_count} missing" if rec.fields_missing_count else False
 
-    @api.depends("ratings", "ratings.review_date", "ratings.progress")
+    @api.depends("ratings", "ratings.review_date", "ratings.progress", "is_closed")
     def _compute_current_quarter_rated(self):
         from datetime import date as _date
         today = fields.Date.context_today(self)
@@ -229,6 +250,9 @@ class SWOTLine(models.Model):
         if not q_end:
             q_end = _date(year + 1, 3, 31)
         for rec in self:
+            if rec.is_closed:
+                rec.current_quarter_rated = "closed"
+                continue
             rating = rec.ratings.filtered(lambda r: r.review_date == q_end)[:1]
             if not rating:
                 rec.current_quarter_rated = "no"
@@ -236,6 +260,48 @@ class SWOTLine(models.Model):
                 rec.current_quarter_rated = "complete"
             else:
                 rec.current_quarter_rated = "incomplete"
+
+    @api.depends("closures.reopened_date")
+    def _compute_is_closed(self):
+        for rec in self:
+            open_closure = rec.closures.filtered(lambda c: not c.reopened_date)
+            rec.is_closed = bool(open_closure)
+
+    def _is_closed_during(self, a_date):
+        """True if any closure interval covered the given date."""
+        self.ensure_one()
+        return any(closure._covers(a_date) for closure in self.closures)
+
+    def action_close(self, closed_reason):
+        self.ensure_one()
+        employee = self.env.user.employee_id
+        self.env["upmin_iso.swot_line_closure"].create({
+            "swot_line_id": self.id,
+            "closed_reason": closed_reason,
+            "closed_by": employee.id if employee else False,
+        })
+
+    def action_open_close_wizard(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Close Issue",
+            "res_model": "upmin_iso.swot_line_close_wizard",
+            "view_mode": "form",
+            "target": "new",
+            "context": {"default_swot_line_id": self.id},
+        }
+
+    def action_reopen(self):
+        self.ensure_one()
+        open_closure = self.closures.filtered(lambda c: not c.reopened_date)[:1]
+        if not open_closure:
+            return
+        employee = self.env.user.employee_id
+        open_closure.write({
+            "reopened_date": fields.Date.context_today(self),
+            "reopened_by": employee.id if employee else False,
+        })
 
     @api.constrains("swot_id", "ror_id")
     def _check_parent(self):

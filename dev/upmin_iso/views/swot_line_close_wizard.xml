@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="swot_line_close_wizard_view_form" model="ir.ui.view">
+        <field name="name">upmin_iso.swot_line_close_wizard.view.form</field>
+        <field name="model">upmin_iso.swot_line_close_wizard</field>
+        <field name="arch" type="xml">
+            <form string="Close Issue">
+                <field name="swot_line_id" invisible="1" />
+                <div class="o_td_label">
+                    <label for="closed_reason" string="Reason for Closing" class="fw-bold mb-2 d-block" />
+                </div>
+                <field name="closed_reason" nolabel="1" class="o_field_widget w-100"
+                    placeholder="Explain why this risk/opportunity no longer requires active rating (e.g. root cause resolved, process discontinued, mitigation verified effective)."
+                    options="{'rows': 6}" />
+                <footer>
+                    <button string="Close Issue" name="action_confirm" type="object" class="btn-primary" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

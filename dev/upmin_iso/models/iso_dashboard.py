@@ -134,7 +134,9 @@ class IsoDashboard(models.TransientModel):
             ("review_date", "=", q_end),
         ])
 
-        # RORs with at least one issue that has skipped quarters
+        # RORs with at least one issue that has skipped quarters. A quarter
+        # covered by a closure is exempt — the issue was deliberately
+        # dormant, not neglected.
         ror_with_skipped = 0
         issues = Line.search([("ror_id", "!=", False)])
         skipped_ror_ids = set()
@@ -144,17 +146,24 @@ class IsoDashboard(models.TransientModel):
             for year in range(create_dt.year, today.year + 1):
                 for month, day in [(3, 31), (6, 30), (9, 30), (12, 31)]:
                     q = _date(year, month, day)
-                    if q >= create_dt and q < today and q not in entry_dates:
+                    if (
+                        q >= create_dt and q < today and q not in entry_dates
+                        and not issue._is_closed_during(q)
+                    ):
                         skipped_ror_ids.add(issue.ror_id.id)
                         break
         ror_with_skipped = len(skipped_ror_ids)
 
-        # RORs with at least one incomplete past rating (progress < 100, review_date < current quarter)
+        # RORs with at least one incomplete past rating (progress < 100,
+        # review_date < current quarter). Closed issues are excluded — an
+        # unfinished rating on the quarter an issue was closed isn't a gap
+        # that needs chasing.
         incomplete_past_ror_ids = set(
             Rating.search([
                 ("review_date", "<", q_end),
                 ("progress", "<", 100),
                 ("issue.ror_id", "!=", False),
+                ("issue.is_closed", "=", False),
             ]).mapped("issue.ror_id.id")
         )
         ror_with_incomplete_past = len(incomplete_past_ror_ids)
@@ -483,7 +492,10 @@ class IsoDashboard(models.TransientModel):
             for year in range(create_dt.year, today.year + 1):
                 for month, day in [(3, 31), (6, 30), (9, 30), (12, 31)]:
                     q = _date(year, month, day)
-                    if q >= create_dt and q < today and q not in entry_dates:
+                    if (
+                        q >= create_dt and q < today and q not in entry_dates
+                        and not issue._is_closed_during(q)
+                    ):
                         skipped_ror_ids.add(issue.ror_id.id)
                         break
         return {
@@ -502,6 +514,7 @@ class IsoDashboard(models.TransientModel):
                 ("review_date", "<", q_end),
                 ("progress", "<", 100),
                 ("issue.ror_id", "!=", False),
+                ("issue.is_closed", "=", False),
             ]).mapped("issue.ror_id.id")
         )
         return {

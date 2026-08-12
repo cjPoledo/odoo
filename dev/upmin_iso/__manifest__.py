@@ -27,6 +27,7 @@
         "views/audit_info.xml",
         "views/audit_finding_merge_wizard.xml",
         "views/ccar.xml",
+        "views/swot_line_close_wizard.xml",
         "views/ror.xml",
         "views/ror_export_wizard.xml",
         "views/ror_import_wizard.xml",
