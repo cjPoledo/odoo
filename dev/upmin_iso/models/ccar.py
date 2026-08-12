@@ -356,11 +356,11 @@ class CCAR(models.Model):
         is_dc = user.has_group("upmin_iso.group_iso_doc_controller")
         is_ia = user.has_group("upmin_iso.group_iso_internal_auditor")
         for record in self:
-            if record.status in {"creation", "checking2", "checking3"}:
+            if record.status in {"checking2", "checking3"}:
                 record.can_submit = is_staff
             elif record.status in {"office", "office2"}:
                 record.can_submit = is_dc or is_staff
-            elif record.status == "verification":
+            elif record.status in self._IA_STATUSES:
                 record.can_submit = is_ia or is_staff
             else:
                 record.can_submit = False
@@ -380,9 +380,9 @@ class CCAR(models.Model):
         is_dc = self.env.user.has_group("upmin_iso.group_iso_doc_controller")
         is_ia = self.env.user.has_group("upmin_iso.group_iso_internal_auditor")
 
-        staff_statuses = {"creation", "checking2", "checking3"}
-        dc_statuses = {"office", "office2"}
-        ia_statuses = {"verification"}
+        staff_statuses = {"checking2", "checking3"}
+        dc_statuses = self._DC_STATUSES
+        ia_statuses = self._IA_STATUSES
 
         for record in self:
             if record.status in staff_statuses and not is_staff:
@@ -417,51 +417,37 @@ class CCAR(models.Model):
                 if idx > 0:
                     record.status = flow[idx - 1]
 
-    # ── Chatter-side access relaxations ──────────────────────────────────────
-    # The CCAR record rules gate *field* writes by status / office / auditor
-    # assignment, which is the right model for protecting things like
-    # `status` and `description`. But the chatter widgets (post message,
-    # log note, schedule activity, follow / unfollow, add other follower)
-    # internally call `message_subscribe` and write chatter-related fields,
-    # which require `check_access_rule('write')` even when the user only has
-    # read access on the record.
-    #
-    # Without these overrides, a Doc Controller or Internal Auditor who can
-    # see a CCAR can't post messages, log notes, schedule activities, or
-    # add followers on it (the "chatter is dead" bug). The chatter is
-    # read-only in intent — anyone who can read the record should be able
-    # to comment on it. We enforce that by routing chatter-internal
-    # subscribe/write calls through the read check instead of the write
-    # check, while leaving the existing field-write rules untouched.
+    # ── Status-based write gating ─────────────────────────────────────────────
+    # Record rules only scope which CCARs a Doc Controller / Internal Auditor
+    # can see and (at the ORM access-check level) write. Which *statuses*
+    # they're allowed to edit at is enforced here instead of via status-based
+    # rule domains, so that write access on the record is never conditionally
+    # revoked — chatter (post, log note, schedule activity, follow) requires
+    # write access on the record itself and must keep working regardless of
+    # status.
+    _DC_STATUSES = {"office", "office2"}
+    _IA_STATUSES = {"creation", "verification"}
+    # Fields chatter/mail internals may touch directly via write(); never
+    # part of a user-facing form submission, so they're exempt from the
+    # status check.
+    _CHATTER_FIELDS = {"message_follower_ids", "message_ids", "activity_ids"}
 
-    def message_subscribe(self, partner_ids=None, subtype_ids=None):
-        """Chatter subscribe: allow any user who can READ the CCAR to add
-        followers (themselves or others). Field writes on the CCAR itself
-        are still gated by the normal record rules.
-
-        The parent ``mail.thread.message_subscribe`` requires
-        ``check_access_rule('write')`` when adding someone other than
-        yourself as a follower. On CCAR that write check is denied for
-        Doc Controllers and Internal Auditors outside their narrow
-        status window, which makes the "Follow" / "Add follower" widgets
-        fail with AccessError, and also breaks ``mail.activity.create``
-        (which auto-subscribes the assigned user). Routing the access
-        check through read keeps the chatter usable for any user who
-        can see the record.
-        """
-        if not self or not partner_ids:
-            return True
-        adding_current = set(partner_ids) == set([self.env.user.partner_id.id])
-        try:
-            self.check_access_rights("read")
-            self.check_access_rule("read")
-        except AccessError:
-            return False
-        # Filter inactive / private partners (mirrors parent class
-        # behavior, but without re-running the write access check).
-        if not adding_current:
-            partner_ids = self.env["res.partner"].sudo().search(
-                [("id", "in", partner_ids), ("active", "=", True), ("type", "!=", "private")]
-            ).ids
-        return self._message_subscribe(partner_ids, subtype_ids, customer_ids=None if adding_current else None)
+    def write(self, vals):
+        restricted_vals = set(vals) - self._CHATTER_FIELDS
+        if restricted_vals and not self.env.su:
+            user = self.env.user
+            is_staff = user.has_group("upmin_iso.group_iso_staff")
+            if not is_staff:
+                is_dc = user.has_group("upmin_iso.group_iso_doc_controller")
+                is_ia = user.has_group("upmin_iso.group_iso_internal_auditor")
+                for record in self:
+                    if is_dc and record.status in self._DC_STATUSES:
+                        continue
+                    if is_ia and record.status in self._IA_STATUSES:
+                        continue
+                    raise AccessError(
+                        "You cannot edit this CCAR at its current status "
+                        f"({record.status})."
+                    )
+        return super().write(vals)
 

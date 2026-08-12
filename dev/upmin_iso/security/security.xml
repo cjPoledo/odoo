@@ -127,25 +127,20 @@
     </record>
 
     <record id="rule_doc_controller_read" model="ir.rule">
-        <field name="name">Doc Controller - Read Own Office</field>
+        <field name="name">Doc Controller - Own Office</field>
         <field name="model_id" ref="model_upmin_iso_ccar" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
         <field name="domain_force">['|', '|', ('office', 'in', user.employee_id.iso_office_ids.ids), ('office', 'in', user.employee_id.iso_ancestor_ids.ids), ('bypass_user_ids', 'in', [user.id])]</field>
         <field name="perm_read" eval="1" />
-        <field name="perm_write" eval="0" />
-    </record>
-
-    <record id="rule_doc_controller_write_office" model="ir.rule">
-        <field name="name">Doc Controller - Write Office Status</field>
-        <field name="model_id" ref="model_upmin_iso_ccar" />
-        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_doc_controller'))]" />
-        <field name="domain_force">['|', '&amp;', ('bypass_user_ids', 'in', [user.id]), ('status', 'in', ('office', 'office2')), '&amp;', '|', ('office', 'in', user.employee_id.iso_office_ids.ids), ('office', 'in', user.employee_id.iso_ancestor_ids.ids), ('status', 'in', ('office', 'office2'))]</field>
-        <field name="perm_read" eval="1" />
         <field name="perm_write" eval="1" />
+        <!-- Status-based write eligibility (office/office2 only) is enforced
+             in CCAR.write(), not here, so chatter (which also requires write
+             access on the record for follower management) works for DC at
+             any status on any CCAR they can see. -->
     </record>
 
     <record id="rule_internal_auditor_read" model="ir.rule">
-        <field name="name">Internal Auditor - Read Assigned</field>
+        <field name="name">Internal Auditor - Assigned CCARs</field>
         <field name="model_id" ref="model_upmin_iso_ccar" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_internal_auditor'))]" />
         <field name="domain_force">
@@ -154,21 +149,10 @@
             ]
         </field>
         <field name="perm_read" eval="1" />
-        <field name="perm_write" eval="0" />
-    </record>
-
-    <record id="rule_internal_auditor_write" model="ir.rule">
-        <field name="name">Internal Auditor - Write Verification</field>
-        <field name="model_id" ref="model_upmin_iso_ccar" />
-        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_internal_auditor'))]" />
-        <field name="domain_force">
-            [
-            ('auditors.name.user_id', '=', user.id),
-            ('status', '=', 'verification')
-            ]
-        </field>
-        <field name="perm_read" eval="1" />
         <field name="perm_write" eval="1" />
+        <!-- Status-based write eligibility (creation/verification only) is
+             enforced in CCAR.write(), not here, so chatter works for IA at
+             any status on any CCAR they're assigned to. -->
     </record>
 
 

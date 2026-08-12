@@ -8,7 +8,7 @@ Access tests for CCAR and its sub-models.
 │   DC  → own office                                                          │
 │   IA  → auditors.name.user_id = current user                               │
 │   Staff → all                                                               │
-│ Row-level (write):                                                          │
+│ Write eligibility (enforced in CCAR.write(), not ir.rule):                  │
 │   DC  → own office AND status in ('office', 'office2')                     │
 │   IA  → assigned AND status in ('creation', 'verification')                │
 │   Staff → all                                                               │
@@ -341,11 +341,11 @@ class TestCCARChatterAccess(ISOAccessBase):
     # The chatter "Followers" widget calls ``message_subscribe`` to add /
     # remove followers. The default Odoo implementation requires
     # ``check_access_rule('write')`` when adding a partner other than
-    # yourself. On CCAR that write check is denied for Doc Controllers
-    # and Internal Auditors outside their narrow status window. The
-    # CCAR.message_subscribe override routes the access check through
-    # the read rule, so anyone who can read a CCAR can manage its
-    # followers. These tests pin that behavior.
+    # yourself. CCAR's ir.rule records grant unconditional write access to
+    # any CCAR a Doc Controller / Internal Auditor can read — status-based
+    # write eligibility is enforced separately in ``CCAR.write()`` — so this
+    # check passes for any user who can read the record, at any status.
+    # These tests pin that behavior.
 
     def _add_follower(self, record, user, partner):
         return record.with_user(user).message_subscribe(partner_ids=[partner.id])

@@ -11,6 +11,11 @@
                         attrs="{'invisible': [('status', '=', 'creation')]}"
                         groups="upmin_iso.group_iso_staff" />
                     <field name="can_submit" invisible="1" />
+                    <!-- can_submit reflects whether the current user's role
+                         may edit fields at the record's current status
+                         (Staff: always; DC: office/office2; IA:
+                         creation/verification), so it doubles as the
+                         field-level readonly gate below. -->
                     <button string="Submit" name="next_step" type="object" class="btn-primary"
                         attrs="{'invisible': ['|', ('status', '=', 'completed'), ('can_submit', '=', False)]}" />
                     <field name="status" widget="statusbar" />
@@ -33,38 +38,38 @@
                             <group col="5">
                                 <group>
                                     <field name="audit_nature" widget="radio" nolabel="1"
-                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'creation'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group>
                                     <field name="conformity_nature" widget="radio" nolabel="1"
-                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'creation'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="2">
                                     <label for="complaint_nature_a" colspan="2" />
                                     <field name="complaint_nature_a" nolabel="1" colspan="2"
-                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'creation'), ('can_submit', '=', False)]}" />
                                     <label for="internal_complaint_dept" colspan="2"
                                         attrs="{'invisible': [('complaint_nature_a', '!=', 'internal')]}" />
                                     <field name="internal_complaint_dept" nolabel="1" colspan="2"
-                                        attrs="{'readonly': [('status', '!=', 'creation')], 'invisible': [('complaint_nature_a', '!=', 'internal')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'creation'), ('can_submit', '=', False)], 'invisible': [('complaint_nature_a', '!=', 'internal')]}" />
                                 </group>
                                 <group col="2">
                                     <label for="complaint_nature_b" colspan="2" />
                                     <field name="complaint_nature_b" nolabel="1" colspan="2"
-                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'creation'), ('can_submit', '=', False)]}" />
                                     <label for="customer_complaint_customer" colspan="2"
                                         attrs="{'invisible': [('complaint_nature_b', '!=', 'customer')]}" />
                                     <field name="customer_complaint_customer" nolabel="1" colspan="2"
-                                        attrs="{'readonly': [('status', '!=', 'creation')], 'invisible': [('complaint_nature_b', '!=', 'customer')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'creation'), ('can_submit', '=', False)], 'invisible': [('complaint_nature_b', '!=', 'customer')]}" />
                                 </group>
                                 <group col="2">
                                     <label for="complaint_nature_c" colspan="2" />
                                     <field name="complaint_nature_c" nolabel="1" colspan="2"
-                                        attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'creation'), ('can_submit', '=', False)]}" />
                                     <label for="supplier_nonconformity_supplier" colspan="2"
                                         attrs="{'invisible': [('complaint_nature_c', '!=', 'supplier')]}" />
                                     <field name="supplier_nonconformity_supplier" nolabel="1" colspan="2"
-                                        attrs="{'readonly': [('status', '!=', 'creation')], 'invisible': [('complaint_nature_c', '!=', 'supplier')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'creation'), ('can_submit', '=', False)], 'invisible': [('complaint_nature_c', '!=', 'supplier')]}" />
                                 </group>
                             </group>
                         </page>
@@ -77,9 +82,9 @@
                                 <field name="auditors" widget="many2many_tags_avatar" />
                                 <field name="audit_date" />
                                 <field name="responsible_person"
-                                    attrs="{'readonly': [('status', '!=', 'creation')]}" />
+                                    attrs="{'readonly': ['|', ('status', '!=', 'creation'), ('can_submit', '=', False)]}" />
                                 <field name="date_received"
-                                    attrs="{'readonly': [('status', 'not in', ['creation', 'office'])]}" />
+                                    attrs="{'readonly': ['|', ('status', 'not in', ['creation', 'office']), ('can_submit', '=', False)]}" />
                                 <field name="office" />
                             </group>
                         </page>
@@ -90,17 +95,17 @@
                             <group col="2">
                                 <group col="1" colspan="2">
                                     <field name="description"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                                     <field name="results"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="1">
                                     <field name="responsibility"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="1">
                                     <field name="completed_date"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                                 </group>
                             </group>
                         </page>
@@ -108,16 +113,16 @@
                             attrs="{'invisible': [('status', '=', 'creation')]}">
                             <group col="1">
                                 <field name="tree_diagram_link" widget="url"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                    attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                             </group>
                             <group col="3">
                                 <group col='1'>
                                     <field name="investigated_by"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="1">
                                     <field name="date_investigated"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="1">
                                     <field name="investigator_dept" />
@@ -130,7 +135,7 @@
                             <group col="2">
                                 <field
                                     name="corrective_action_plan"
-                                    attrs="{'readonly': [('status', '!=', 'office')]}" nolabel="1"
+                                    attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" nolabel="1"
                                     colspan="2">
                                     <tree string="" editable="bottom" no_open="1">
                                         <field name="corrective_action" />
@@ -144,15 +149,15 @@
                             <group col="3">
                                 <group col="1">
                                     <field name="proposed_by"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="1">
                                     <field name="target_date"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="1">
                                     <field name="approved_by"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                                 </group>
                             </group>
                         </page>
@@ -162,15 +167,15 @@
                             <group col="2">
                                 <group col="1" colspan="2">
                                     <field name="affected_areas"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="1">
                                     <field name="initiated_date"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="1">
                                     <field name="effective_date"
-                                        attrs="{'readonly': [('status', '!=', 'office')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office'), ('can_submit', '=', False)]}" />
                                 </group>
                             </group>
                         </page>
@@ -180,7 +185,7 @@
                             attrs="{'invisible': ['|', '|', ('status', '=', 'creation'), ('status', '=', 'office'), ('status', '=', 'checking2')]}">
                             <group col="2">
                                 <field name="correction_effectiveness"
-                                    attrs="{'readonly': [('status', '!=', 'verification')]}"
+                                    attrs="{'readonly': ['|', ('status', '!=', 'verification'), ('can_submit', '=', False)]}"
                                     nolabel="1" colspan="2">
                                     <tree string="" editable="bottom" no_open="1">
                                         <field name="allowed_verifiers" invisible="1" />
@@ -192,7 +197,7 @@
                                     </tree>
                                 </field>
                                 <field name="corrective_action_effectiveness"
-                                    attrs="{'readonly': [('status', '!=', 'verification')]}"
+                                    attrs="{'readonly': ['|', ('status', '!=', 'verification'), ('can_submit', '=', False)]}"
                                     nolabel="1" colspan="2">
                                     <tree string="" editable="bottom" no_open="1">
                                         <field name="allowed_verifiers" invisible="1" />
@@ -213,15 +218,15 @@
                             <group col="2">
                                 <group col="1" colspan="2">
                                     <field name="affected_related_risks_opportunities"
-                                        attrs="{'readonly': [('status', '!=', 'office2')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office2'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="1">
                                     <field name="updated_by"
-                                        attrs="{'readonly': [('status', '!=', 'office2')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office2'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="1">
                                     <field name="updated_date"
-                                        attrs="{'readonly': [('status', '!=', 'office2')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office2'), ('can_submit', '=', False)]}" />
                                 </group>
                             </group>
                         </page>
@@ -231,15 +236,15 @@
                             <group col="2">
                                 <group col="1" colspan="2">
                                     <field name="changes_to_qms"
-                                        attrs="{'readonly': [('status', '!=', 'office2')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office2'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="1">
                                     <field name="changes_by"
-                                        attrs="{'readonly': [('status', '!=', 'office2')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office2'), ('can_submit', '=', False)]}" />
                                 </group>
                                 <group col="1">
                                     <field name="changes_date"
-                                        attrs="{'readonly': [('status', '!=', 'office2')]}" />
+                                        attrs="{'readonly': ['|', ('status', '!=', 'office2'), ('can_submit', '=', False)]}" />
                                 </group>
                             </group>
                         </page>
