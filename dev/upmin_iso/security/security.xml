@@ -21,6 +21,17 @@
         <field name="category_id" ref="module_category_iso" />
     </record>
 
+    <record id="rule_iso_staff_manage_roles" model="ir.rule">
+        <field name="name">ISO Staff: Manage ISO Role Membership Only</field>
+        <field name="model_id" ref="base.model_res_groups" />
+        <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]" />
+        <field name="domain_force">[('category_id.name', '=', 'UPMin ISO')]</field>
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_create" eval="0" />
+        <field name="perm_unlink" eval="0" />
+    </record>
+
     <record id="rule_office_ror" model="ir.rule">
         <field name="name">Restrict ROR Access to Own Office</field>
         <field name="model_id" ref="model_upmin_iso_ror" />

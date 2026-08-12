@@ -132,6 +132,14 @@
         sequence="20" />
 
     <menuitem
+        id="iso_role_membership_menu"
+        name="Manage ISO Roles"
+        action="upmin_iso.iso_role_membership_action"
+        groups="group_iso_staff"
+        parent="config_menu"
+        sequence="30" />
+
+    <menuitem
         id="directory_menu"
         name="Directory"
         groups="base.group_user"
