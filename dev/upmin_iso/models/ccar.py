@@ -353,15 +353,13 @@ class CCAR(models.Model):
     def _compute_can_submit(self):
         user = self.env.user
         is_staff = user.has_group("upmin_iso.group_iso_staff")
-        is_dc = user.has_group("upmin_iso.group_iso_doc_controller")
-        is_ia = user.has_group("upmin_iso.group_iso_internal_auditor")
         for record in self:
             if record.status in {"checking2", "checking3"}:
                 record.can_submit = is_staff
-            elif record.status in {"office", "office2"}:
-                record.can_submit = is_dc or is_staff
-            elif record.status in self._IA_STATUSES:
-                record.can_submit = is_ia or is_staff
+            elif record.status in record._DC_STATUSES:
+                record.can_submit = is_staff or record._is_dc_of_record(user)
+            elif record.status in record._IA_STATUSES:
+                record.can_submit = is_staff or record._is_ia_of_record(user)
             else:
                 record.can_submit = False
 
@@ -376,20 +374,17 @@ class CCAR(models.Model):
             "completed",
         ]
 
-        is_staff = self.env.user.has_group("upmin_iso.group_iso_staff")
-        is_dc = self.env.user.has_group("upmin_iso.group_iso_doc_controller")
-        is_ia = self.env.user.has_group("upmin_iso.group_iso_internal_auditor")
+        user = self.env.user
+        is_staff = user.has_group("upmin_iso.group_iso_staff")
 
         staff_statuses = {"checking2", "checking3"}
-        dc_statuses = self._DC_STATUSES
-        ia_statuses = self._IA_STATUSES
 
         for record in self:
             if record.status in staff_statuses and not is_staff:
                 raise ValidationError("Only ISO Staff can submit at this stage.")
-            if record.status in dc_statuses and not (is_dc or is_staff):
+            if record.status in record._DC_STATUSES and not (is_staff or record._is_dc_of_record(user)):
                 raise ValidationError("Only the office DC or ISO Staff can submit at this stage.")
-            if record.status in ia_statuses and not (is_ia or is_staff):
+            if record.status in record._IA_STATUSES and not (is_staff or record._is_ia_of_record(user)):
                 raise ValidationError("Only an Internal Auditor or ISO Staff can submit at this stage.")
             record._validate_next_step()
             if record.status in flow:
@@ -432,18 +427,36 @@ class CCAR(models.Model):
     # status check.
     _CHATTER_FIELDS = {"message_follower_ids", "message_ids", "activity_ids"}
 
+    def _is_dc_of_record(self, user):
+        """Whether user is a Document Controller of THIS record's office
+        specifically, not merely a member of the DC group somewhere else."""
+        self.ensure_one()
+        employee = user.sudo().employee_id
+        office = self.sudo().office
+        return bool(
+            office
+            and (
+                office in employee.iso_office_ids
+                or office in employee.iso_ancestor_ids
+            )
+        )
+
+    def _is_ia_of_record(self, user):
+        """Whether user is the Internal Auditor assigned to THIS record,
+        not merely a member of the IA group generally."""
+        self.ensure_one()
+        return user in self.sudo().auditors.name.user_id
+
     def write(self, vals):
         restricted_vals = set(vals) - self._CHATTER_FIELDS
         if restricted_vals and not self.env.su:
             user = self.env.user
             is_staff = user.has_group("upmin_iso.group_iso_staff")
             if not is_staff:
-                is_dc = user.has_group("upmin_iso.group_iso_doc_controller")
-                is_ia = user.has_group("upmin_iso.group_iso_internal_auditor")
                 for record in self:
-                    if is_dc and record.status in self._DC_STATUSES:
+                    if record._is_dc_of_record(user) and record.status in self._DC_STATUSES:
                         continue
-                    if is_ia and record.status in self._IA_STATUSES:
+                    if record._is_ia_of_record(user) and record.status in self._IA_STATUSES:
                         continue
                     raise AccessError(
                         "You cannot edit this CCAR at its current status "

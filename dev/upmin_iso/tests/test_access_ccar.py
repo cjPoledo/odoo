@@ -136,6 +136,27 @@ class TestCCARAccess(ISOAccessBase):
         # IA rule grants write at status='creation' for assigned
         self.ccar_creation.with_user(self.u3).write({'description': 'u3 creation'})
 
+    def test_u3_ia_dc_cannot_write_foreign_office_ccar_at_office_status(self):
+        # ccar_office belongs to dept_a. U3 can READ it (IA assigned to
+        # audit_a), but U3's DC scope is dept_b, not dept_a — holding the
+        # DC group badge elsewhere must not unlock a DC-gated status
+        # (office/office2) on a CCAR of an office U3 isn't actually DC of.
+        with self.assertRaises(AccessError):
+            self.ccar_office.with_user(self.u3).write({'description': 'attempted'})
+
+    def test_u8_dc_unassigned_ia_cannot_write_at_creation_status(self):
+        # U8 is DC of dept_a (ccar_creation's office) and can therefore READ
+        # ccar_creation, but is not assigned as auditor on audit_a. Holding
+        # the IA group badge alone must not unlock the IA-gated 'creation'
+        # status on a CCAR U8 isn't actually the assigned auditor for.
+        with self.assertRaises(AccessError):
+            self.ccar_creation.with_user(self.u8).write({'description': 'attempted'})
+
+    def test_u8_dc_unassigned_ia_can_write_at_office_status(self):
+        # Legitimate: U8 IS DC of dept_a, and ccar_office is dept_a's own
+        # CCAR at a DC-gated status.
+        self.ccar_office.with_user(self.u8).write({'description': 'u8 dc update'})
+
     # ── Staff full CRUD ───────────────────────────────────────────────────────
 
     def test_u4_staff_can_write_any_ccar(self):

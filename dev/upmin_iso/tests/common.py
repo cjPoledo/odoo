@@ -16,6 +16,7 @@ u4  — ISO Staff
 u5  — Staff + DC
 u6  — Staff + IA
 u7  — All (Staff + DC + IA)
+u8  — DC (dept_a) + IA group, but NOT assigned to audit_a
 
 Every ISO user (u1-u7) has a linked hr.employee with department_id = dept_a,
 so "own office" checks resolve to dept_a for all of them.
@@ -89,6 +90,10 @@ class ISOAccessBase(TransactionCase):
         cls.u5, cls.emp_u5 = _make('u5_staff_dc', cls.dept_a, [g_user.id, cls.g_staff.id, cls.g_dc.id])
         cls.u6, cls.emp_u6 = _make('u6_staff_ia', cls.dept_b, [g_user.id, cls.g_staff.id, cls.g_ia.id])
         cls.u7, cls.emp_u7 = _make('u7_all',      cls.dept_b, [g_user.id, cls.g_staff.id, cls.g_dc.id, cls.g_ia.id])
+        # U8 (DC of dept_a + IA group, but NOT assigned to audit_a): pins that
+        # holding the IA group badge alone must not unlock IA-gated statuses
+        # on a CCAR U8 isn't actually the assigned auditor for.
+        cls.u8, cls.emp_u8 = _make('u8_dc_ia_unassigned', cls.dept_a, [g_user.id, cls.g_dc.id, cls.g_ia.id])
 
         # ── Directory records ─────────────────────────────────────────────────
         # Use sudo() so group-grant side-effects don't interfere with explicitly
@@ -105,6 +110,9 @@ class ISOAccessBase(TransactionCase):
         cls.dc_u3 = DC.sudo().create({'name': cls.emp_u3.id})
         cls.dc_u5 = DC.sudo().create({'name': cls.emp_u5.id})
         cls.dc_u7 = DC.sudo().create({'name': cls.emp_u7.id})
+        cls.dc_u8 = DC.sudo().create({'name': cls.emp_u8.id})
+        # U8 deliberately has NO internal_auditor directory record and is
+        # NOT added to audit_a.internal_auditors — holds the IA group only.
 
         # ── SWOT ──────────────────────────────────────────────────────────────
         cls.swot_a = env['upmin_iso.swot'].sudo().create({
