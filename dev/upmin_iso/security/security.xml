@@ -25,7 +25,7 @@
         <field name="name">ISO Staff: Manage ISO Role Membership Only</field>
         <field name="model_id" ref="base.model_res_groups" />
         <field name="groups" eval="[(4, ref('upmin_iso.group_iso_staff'))]" />
-        <field name="domain_force">[('category_id.name', '=', 'UPMin ISO')]</field>
+        <field name="domain_force">[(1, '=', 1)] if user.has_group('base.group_system') else [('category_id.name', '=', 'UPMin ISO')]</field>
         <field name="perm_read" eval="1" />
         <field name="perm_write" eval="1" />
         <field name="perm_create" eval="0" />
