@@ -63,3 +63,20 @@ class InstitutionalFinding(models.Model):
             )
             result.append((record.id, clause))
         return result
+
+    @api.model
+    def _name_search(
+        self, name, args=None, operator="ilike", limit=100, name_get_uid=None
+    ):
+        args = list(args or [])
+        if name:
+            args += [
+                "|",
+                "|",
+                ("clause.clause_number", operator, name),
+                ("clause.clause_title", operator, name),
+                ("description", operator, name),
+            ]
+        return self._search(
+            args, limit=limit, access_rights_uid=name_get_uid
+        )
