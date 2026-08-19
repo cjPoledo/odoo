@@ -14,13 +14,13 @@ Access tests for CCAR and its sub-models.
 │   Staff → all                                                               │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ upmin_iso.ccar_corrective_action                                            │
-│ Model-level: Staff=R, DC=CRUD, IA=R                                        │
-│ Row-level: DC→own office, IA→assigned                                      │
+│ Model-level: Staff=CRUD, DC=CRUD, IA=R                                     │
+│ Row-level: Staff→all, DC→own office, IA→assigned                          │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ upmin_iso.ccar_correction_effectiveness                                     │
 │ upmin_iso.ccar_corrective_action_effectiveness                              │
-│ Model-level: Staff=R, DC=R, IA=CRUD                                        │
-│ Row-level: DC→own office, IA→assigned                                      │
+│ Model-level: Staff=CRUD, DC=R, IA=CRUD                                     │
+│ Row-level: Staff→all, DC→own office, IA→assigned                          │
 └─────────────────────────────────────────────────────────────────────────────┘
 
 Fixture CCARs (all dept_a unless noted):
@@ -247,10 +247,9 @@ class TestCCARCorrectiveActionAccess(ISOAccessBase):
         with self.assertRaises(AccessError):
             self.ca_a.with_user(self.u1).write({'corrective_action': 'attempted'})
 
-    def test_u4_staff_cannot_write_corrective_action(self):
-        # Staff has model-level perm_write=0
-        with self.assertRaises(AccessError):
-            self.ca_a.with_user(self.u4).write({'corrective_action': 'attempted'})
+    def test_u4_staff_can_write_corrective_action(self):
+        # Staff has full CRUD on all corrective actions.
+        self.ca_a.with_user(self.u4).write({'corrective_action': 'staff update'})
 
     def test_u2_dc_can_write_own_office_ca(self):
         self.ca_a.with_user(self.u2).write({'corrective_action': 'dc update'})
@@ -274,7 +273,7 @@ class TestCCAREffectivenessAccess(ISOAccessBase):
     ccar_correction_effectiveness and ccar_corrective_action_effectiveness:
       IA   → CRUD, assigned
       DC   → R only, own office
-      Staff → R only, all
+      Staff → CRUD, all
     """
 
     def test_u0_no_access_correction_eff(self):
@@ -302,9 +301,8 @@ class TestCCAREffectivenessAccess(ISOAccessBase):
         with self.assertRaises(AccessError):
             self.ce_a.with_user(self.u2).write({'correction': 'attempted'})
 
-    def test_u4_staff_cannot_write_correction_eff(self):
-        with self.assertRaises(AccessError):
-            self.ce_a.with_user(self.u4).write({'correction': 'attempted'})
+    def test_u4_staff_can_write_correction_eff(self):
+        self.ce_a.with_user(self.u4).write({'correction': 'staff update'})
 
     def test_u1_ia_can_write_assigned_correction_eff(self):
         self.ce_a.with_user(self.u1).write({'correction': 'ia update'})
@@ -319,10 +317,9 @@ class TestCCAREffectivenessAccess(ISOAccessBase):
         # Staff(R) + IA(CRUD assigned) → write allowed for assigned
         self.ce_a.with_user(self.u6).write({'correction': 'staff-ia update'})
 
-    def test_u5_staff_dc_cannot_write_correction_eff(self):
-        # Staff(R) + DC(R) → still R only
-        with self.assertRaises(AccessError):
-            self.ce_a.with_user(self.u5).write({'correction': 'attempted'})
+    def test_u5_staff_dc_can_write_correction_eff(self):
+        # Staff(CRUD) + DC(R) → write allowed via staff's full access.
+        self.ce_a.with_user(self.u5).write({'correction': 'staff-dc update'})
 
     # ── ccar_corrective_action_effectiveness mirrors correction_effectiveness ─
 

@@ -2,12 +2,12 @@
 Access tests for upmin_iso.ror and upmin_iso.ror_rating.
 
 Model-level (ir.model.access):
-  group_iso_staff          — R only
+  group_iso_staff          — CRUD
   group_iso_doc_controller — CRUD
 
 Row-level (ir.rule):
-  DC   → own office only (CRUD)
-  Staff → read all, no write
+  DC    → own office only (CRUD)
+  Staff → all records, full CRUD
 
 Expected matrix
 ---------------
@@ -16,10 +16,10 @@ Expected matrix
   U1       ✗           ✗
   U2       own office  own office
   U3       own office  own office
-  U4       all         ✗
-  U5       all         own office
-  U6       all         ✗
-  U7       all         own office
+  U4       all         all
+  U5       all         all
+  U6       all         all
+  U7       all         all
 """
 
 from odoo.exceptions import AccessError
@@ -79,29 +79,27 @@ class TestRORAccess(ISOAccessBase):
         with self.assertRaises(AccessError):
             self.ror_b.with_user(self.u2).write({'related_swot': False})
 
-    def test_u4_staff_cannot_write(self):
-        with self.assertRaises(AccessError):
-            self.ror_a.with_user(self.u4).write({'related_swot': False})
+    def test_u4_staff_can_write_any_office(self):
+        # Staff has full CRUD on all ROR records, not just own office.
+        self.ror_a.with_user(self.u4).write({'related_swot': False})
 
     def test_u5_staff_dc_can_write_own_office(self):
         self.ror_a.with_user(self.u5).write({'related_swot': False})
 
-    def test_u5_staff_dc_cannot_write_other_office(self):
-        with self.assertRaises(AccessError):
-            self.ror_b.with_user(self.u5).write({'related_swot': False})
+    def test_u5_staff_dc_can_write_other_office(self):
+        # Staff grants full CRUD regardless of DC office scope.
+        self.ror_b.with_user(self.u5).write({'related_swot': False})
 
-    def test_u6_staff_ia_cannot_write(self):
-        with self.assertRaises(AccessError):
-            self.ror_a.with_user(self.u6).write({'related_swot': False})
+    def test_u6_staff_ia_can_write_any_office(self):
+        self.ror_a.with_user(self.u6).write({'related_swot': False})
 
     def test_u7_all_can_write_own_office(self):
         # U7's DC scope is dept_b
         self.ror_b.with_user(self.u7).write({'related_swot': False})
 
-    def test_u7_all_cannot_write_other_office(self):
-        # ror_a is dept_a — outside U7's DC scope; staff has R-only
-        with self.assertRaises(AccessError):
-            self.ror_a.with_user(self.u7).write({'related_swot': False})
+    def test_u7_all_can_write_other_office(self):
+        # ror_a is dept_a — outside U7's DC scope, but staff has full CRUD.
+        self.ror_a.with_user(self.u7).write({'related_swot': False})
 
     # ── Create ────────────────────────────────────────────────────────────────
 
@@ -111,11 +109,11 @@ class TestRORAccess(ISOAccessBase):
                 {'office': self.dept_a.id}
             )
 
-    def test_u4_staff_cannot_create(self):
-        with self.assertRaises(AccessError):
-            self.env['upmin_iso.ror'].with_user(self.u4).create(
-                {'office': self.dept_a.id}
-            )
+    def test_u4_staff_can_create(self):
+        rec = self.env['upmin_iso.ror'].with_user(self.u4).create(
+            {'office': self.dept_a.id}
+        )
+        self.assertTrue(rec.id)
 
     def test_u2_dc_can_create_own_office(self):
         rec = self.env['upmin_iso.ror'].with_user(self.u2).create(
@@ -131,10 +129,9 @@ class TestRORAccess(ISOAccessBase):
 
     # ── Delete ────────────────────────────────────────────────────────────────
 
-    def test_u4_staff_cannot_delete(self):
+    def test_u4_staff_can_delete(self):
         tmp = self.env['upmin_iso.ror'].sudo().create({'office': self.dept_a.id})
-        with self.assertRaises(AccessError):
-            tmp.with_user(self.u4).unlink()
+        tmp.with_user(self.u4).unlink()
 
     def test_u2_dc_can_delete_own_office(self):
         tmp = self.env['upmin_iso.ror'].sudo().create({'office': self.dept_a.id})
@@ -198,9 +195,8 @@ class TestRORRatingAccess(ISOAccessBase):
         self.assertIn(self.rating_a, results)
         self.assertIn(self.rating_b, results)
 
-    def test_u4_staff_cannot_write(self):
-        with self.assertRaises(AccessError):
-            self.rating_a.with_user(self.u4).write({'progress': 50})
+    def test_u4_staff_can_write(self):
+        self.rating_a.with_user(self.u4).write({'progress': 50})
 
     def test_u2_dc_can_write_own_office(self):
         self.rating_a.with_user(self.u2).write({'progress': 50})
