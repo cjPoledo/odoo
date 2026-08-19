@@ -157,6 +157,27 @@ class TestCCARAccess(ISOAccessBase):
         # CCAR at a DC-gated status.
         self.ccar_office.with_user(self.u8).write({'description': 'u8 dc update'})
 
+    # ── Additional Viewers (bypass_user_ids) act as DC of record ─────────────
+
+    def test_u3_bypass_dc_can_write_foreign_office_ccar_at_office_status(self):
+        # U3's DC scope is dept_b, so ccar_office (dept_a) is normally
+        # out of reach for DC write (see
+        # test_u3_ia_dc_cannot_write_foreign_office_ccar_at_office_status).
+        # Once explicitly added as an Additional Viewer, U3 must be able to
+        # edit it at a DC-gated status just as if U3 were dept_a's own DC.
+        self.ccar_office.sudo().bypass_user_ids = [(4, self.u3.id)]
+        self.ccar_office.with_user(self.u3).write({'description': 'bypass dc update'})
+
+    def test_u1_bypass_without_dc_group_still_has_no_ccar_access(self):
+        # The bypass_user_ids clause only appears on rule_doc_controller_read
+        # (scoped to group_iso_doc_controller). U1 is IA-only, so being
+        # added to bypass_user_ids on a CCAR outside their assignment
+        # doesn't grant them read/write access at all — that rule never
+        # applies to them regardless of bypass_user_ids membership.
+        self.ccar_office.sudo().bypass_user_ids = [(4, self.u1.id)]
+        with self.assertRaises(AccessError):
+            self.ccar_office.with_user(self.u1).write({'description': 'attempted'})
+
     # ── Staff full CRUD ───────────────────────────────────────────────────────
 
     def test_u4_staff_can_write_any_ccar(self):

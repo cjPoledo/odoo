@@ -429,8 +429,12 @@ class CCAR(models.Model):
 
     def _is_dc_of_record(self, user):
         """Whether user is a Document Controller of THIS record's office
-        specifically, not merely a member of the DC group somewhere else."""
+        specifically, not merely a member of the DC group somewhere else.
+        A user granted bypass access (Additional Viewers) is treated as the
+        DC of record too, mirroring the row-visibility ir.rule domains."""
         self.ensure_one()
+        if user in self.sudo().bypass_user_ids:
+            return True
         employee = user.sudo().employee_id
         office = self.sudo().office
         return bool(
