@@ -61,6 +61,10 @@
                             class="oe_stat_button" icon="fa-times" style="color: red;">
                             <field name="final_nc_count" widget="statinfo" string="Nonconformities" />
                         </button>
+                        <button name="action_view_related_nc" type="object"
+                            class="oe_stat_button" icon="fa-list" style="color: red;">
+                            <field name="related_nc_count" widget="statinfo" string="All NC Findings" />
+                        </button>
                         <button name="action_view_ofi" type="object"
                             class="oe_stat_button" icon="fa-lightbulb-o" style="color: orange;">
                             <field name="ofi_count" widget="statinfo" string="Opportunities" />

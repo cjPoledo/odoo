@@ -61,6 +61,10 @@
                             class="oe_stat_button" icon="fa-times" style="color: red;">
                             <field name="audit_nc" widget="statinfo" string="Nonconformities" />
                         </button>
+                        <button name="action_audit_related_nc" type="object"
+                            class="oe_stat_button" icon="fa-list" style="color: red;">
+                            <field name="audit_related_nc" widget="statinfo" string="All NC Findings" />
+                        </button>
                         <button name="action_audit_ofi" type="object"
                             class="oe_stat_button" icon="fa-lightbulb-o" style="color: orange;">
                             <field name="audit_ofi" widget="statinfo" string="Opportunities" />
@@ -96,6 +100,10 @@
                         <button name="action_year_nc" type="object"
                             class="oe_stat_button" icon="fa-times" style="color: red;">
                             <field name="year_nc" widget="statinfo" string="Nonconformities" />
+                        </button>
+                        <button name="action_year_related_nc" type="object"
+                            class="oe_stat_button" icon="fa-list" style="color: red;">
+                            <field name="year_related_nc" widget="statinfo" string="All NC Findings" />
                         </button>
                         <button name="action_year_ofi" type="object"
                             class="oe_stat_button" icon="fa-lightbulb-o" style="color: orange;">

@@ -86,6 +86,10 @@ class AuditPeriod(models.Model):
         string="Final NC Count",
         compute="_compute_final_nc_count",
     )
+    related_nc_count = fields.Integer(
+        string="All NC Findings Count",
+        compute="_compute_final_nc_count",
+    )
     c_count = fields.Integer(
         string="Conformities Count",
         compute="_compute_final_nc_count",
@@ -98,6 +102,7 @@ class AuditPeriod(models.Model):
     def _compute_final_nc_count(self):
         for record in self:
             record.final_nc_count = len(record.final_nc_ids)
+            record.related_nc_count = len(record.related_nc)
             record.c_count = len(record.related_c)
             record.ofi_count = len(record.related_ofi)
 
@@ -205,6 +210,18 @@ class AuditPeriod(models.Model):
             "view_mode": "tree",
             "views": [(tree_id, "tree")],
             "domain": [("id", "in", self.final_nc_ids.ids)],
+        }
+
+    def action_view_related_nc(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "All NC Findings",
+            "res_model": "upmin_iso.audit_finding",
+            "view_mode": "tree,form",
+            "views": self._dashboard_finding_views(),
+            "domain": [("id", "in", self.related_nc.ids)],
+            "context": {"upmin_iso_dept_short": True, "search_default_group_by_office": 1},
         }
 
     def action_view_ofi(self):
