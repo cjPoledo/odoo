@@ -572,6 +572,7 @@ class TestCollegeLevelAccess(ISOAccessBase):
         ia_child_emp = self.env['hr.employee'].sudo().create({
             'name': 'IA Child Emp',
             'department_id': self.dept_child.id,
+            'work_email': 'ia.child.emp@iso.test',
         })
         ia_child_rec = self.env['upmin_iso.internal_auditor'].sudo().create({
             'name': ia_child_emp.id,
@@ -591,6 +592,7 @@ class TestCollegeLevelAccess(ISOAccessBase):
         ia_child_emp = self.env['hr.employee'].sudo().create({
             'name': 'IA Child Emp 2',
             'department_id': self.dept_child.id,
+            'work_email': 'ia.child.emp.2@iso.test',
         })
         ia_child_rec = self.env['upmin_iso.internal_auditor'].sudo().create({
             'name': ia_child_emp.id,

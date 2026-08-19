@@ -31,10 +31,12 @@ class TestUnitHeadSync(ISOAccessBase):
         cls.emp_mgr_a = cls.env['hr.employee'].create({
             'name': '[Test] Manager A',
             'department_id': cls.dept_a.id,
+            'work_email': 'test.manager.a@iso.test',
         })
         cls.emp_mgr_b = cls.env['hr.employee'].create({
             'name': '[Test] Manager B',
             'department_id': cls.dept_b.id,
+            'work_email': 'test.manager.b@iso.test',
         })
         cls.dept_c = cls.env['hr.department'].create({'name': '[Test] Dept C'})
 

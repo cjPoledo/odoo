@@ -185,6 +185,7 @@ class TestDirectoryAccess(ISOAccessBase):
         cls.emp_manager = cls.env['hr.employee'].create({
             'name': 'Test Manager',
             'department_id': cls.dept_a.id,
+            'work_email': 'test.manager@iso.test',
         })
         cls.dept_managed.manager_id = cls.emp_manager.id
         cls.uh_rec = cls.env['upmin_iso.unit_head'].sudo().create({
@@ -262,6 +263,7 @@ class TestDirectoryAccess(ISOAccessBase):
     def test_staff_can_create_ia(self):
         emp_new = self.env['hr.employee'].sudo().create({
             'name': '[Test] New IA Emp', 'department_id': self.dept_b.id,
+            'work_email': 'test.new.ia.emp@iso.test',
         })
         rec = self.env['upmin_iso.internal_auditor'].with_user(self.u4).create({
             'name': emp_new.id,
