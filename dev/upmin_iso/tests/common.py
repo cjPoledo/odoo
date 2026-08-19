@@ -69,6 +69,7 @@ class ISOAccessBase(TransactionCase):
             u = env['res.users'].with_context(no_reset_password=True).create({
                 'name': tag,
                 'login': f'{tag}@iso.test',
+                'email': f'{tag}@iso.test',
                 'groups_id': [(6, 0, groups)],
             })
             emp = env['hr.employee'].create({
@@ -81,6 +82,7 @@ class ISOAccessBase(TransactionCase):
         cls.u0 = env['res.users'].with_context(no_reset_password=True).create({
             'name': 'u0_plain',
             'login': 'u0@iso.test',
+            'email': 'u0@iso.test',
             'groups_id': [(6, 0, [g_user.id])],
         })
         cls.u1, cls.emp_u1 = _make('u1_ia',       cls.dept_b, [g_user.id, cls.g_ia.id])
