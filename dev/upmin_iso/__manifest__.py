@@ -1,7 +1,7 @@
 {
     "name": "ISO",
     "author": "Clent Japhet Poledo",
-    "version": "1.6",
+    "version": "1.7",
     "summary": "Tools for managing ISO-related documents",
     "application": True,
     "depends": [
